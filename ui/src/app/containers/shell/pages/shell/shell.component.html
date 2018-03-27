@@ -1,0 +1,158 @@
+<df-topbar>
+  <div class="left-group d-flex justify-content-between align-items-center px-lg-3"
+       #topbar
+       [@topbarState]="sidebarState"
+       (@topbarState.start)="onTopbarAnimationStart(topbar)"
+       (@topbarState.done)="onTopbarAnimationDone(topbar)"
+       [class.px-2]="isSidebarOpen"
+       [class.px-3]="!isSidebarOpen">
+    <app-logo class="d-flex align-items-center py-2 py-lg-3"
+              *ngIf="isLogoVisible"
+              [@logoState]>
+    </app-logo>
+    <button class="hamburger d-block d-lg-none p-0"
+            type="button"
+            (click)="onHamburgerClick()">
+      <span class="hamburger__wrapper d-flex flex-wrap align-content-between">
+        <span class="hamburger__line d-block"></span>
+        <span class="hamburger__line d-block"></span>
+        <span class="hamburger__line d-block"></span>
+      </span>
+    </button>
+  </div>
+
+  <div class="center-group d-flex align-items-stretch pl-3">
+    <div class="df-topbar-links d-none d-lg-flex align-items-stretch">
+      <!-- <a class="d-flex align-items-center"
+         routerLinkActive="active"
+         routerLink="/home">
+        <span class="df-topbar-link__text">Home</span>
+      </a> -->
+    </div>
+  </div>
+
+  <div class="right-group pr-lg-3 d-flex align-items-center">
+    <df-user-profile class="profile__wrapper"
+                     [showMessage]="false"
+                     [image]="user.image"
+                     (click)="closeSidebar()">
+      <div class="mb-2 profile">
+        <h5 class="mb-1 d-flex align-items-center profile__name">
+          {{user.firstName}} {{user.lastName}}
+          <i class="fa fa-circle ml-2 profile__state profile__state--{{user.state}}"
+             aria-hidden="true"
+             ngbTooltip="You are {{user.state}}"
+             placement="bottom"
+             container="body">
+          </i>
+        </h5>
+        <p class="mb-0 profile__email">{{user.username}}</p>
+      </div>
+      <button class="dropdown-item" type="button" (click)="onSignOutClick()">Logout</button>
+    </df-user-profile>
+    <button class="btn-clean px-3 d-block d-lg-none" type="button" df-button (click)="onEllipsisClick(portalTabs)">
+      <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+    </button>
+  </div>
+</df-topbar>
+
+<div class="col p-0 d-flex">
+  <df-sidebar class="d-block df-custom-scroll"
+              *ngIf="isSidebarOpen"
+              [@sidebarState]
+              [disableButton]="true"
+              [open]="true">
+    <div class="sidebar__primary-group d-inline-block">
+      <df-sidebar-item [hasIcon]="false" [link]="item.link" *ngFor="let item of primaryGroup">
+        <a class="h5"
+           [routerLink]="item.link"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{exact: true}"
+           [ngbTooltip]="item.label"
+           placement="right"
+           container="body">
+          <i class="fa {{item.icon}}" aria-hidden="true">
+            <df-badge [count]="item.count" *ngIf="item.count > 0" placement="bottom-right"></df-badge>
+          </i>
+        </a>
+      </df-sidebar-item>
+    </div>
+  </df-sidebar>
+
+  <main class="d-flex flex-column col p-0"
+        [class.no-scroll]="showOverlay">
+    <div class="overlay"
+        *ngIf="showOverlay"
+        [@overlayState]
+        (click)="closeSidebar()"></div>
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+<!-- badges -->
+<ng-template #auxTemplate let-data="data" let-item="item">
+  <span class="badge badge--{{data.class}}">{{data.info}}</span>
+</ng-template>
+
+<!-- portal search -->
+<ng-template #portalSearch>
+  <div class="w-100 h-100 px-3 pt-2 pb-3 d-flex flex-column">
+    <df-input-container>
+      <input type="text" placeholder="Search">
+    </df-input-container>
+  </div>
+</ng-template>
+
+<!-- tabs -->
+<ng-template #portalTabs>
+  <div class="w-100 h-100 p-3 d-flex flex-column">
+    <button class="btn-blue mb-3" type="button" df-button>
+      <i class="fa fa-plus mr-1" aria-hidden="true"></i>
+      New
+    </button>
+    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 portal-tabs__item">
+      <div>
+        <i class="fa fa-commenting-o mr-1" aria-hidden="true"></i>
+        New conversation
+      </div>
+      <button class="btn-clean px-2 portal-tabs__remove" type="button" df-button>
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 portal-tabs__item">
+      <div>
+        <i class="fa fa-search mr-1" aria-hidden="true"></i>
+        New search
+      </div>
+      <button class="btn-clean px-2 portal-tabs__remove" type="button" df-button>
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 portal-tabs__item">
+      <div>
+        <i class="fa fa-building mr-1" aria-hidden="true"></i>
+        New organization
+      </div>
+      <button class="btn-clean px-2 portal-tabs__remove" type="button" df-button>
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 portal-tabs__item">
+      <div>
+        <i class="fa fa-user mr-1" aria-hidden="true"></i>
+        New user
+      </div>
+      <button class="btn-clean px-2 portal-tabs__remove" type="button" df-button>
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- mobile notification -->
+<ng-template #mobileNotification>
+  <app-notifications [dates]="dates" [loading]="loading"></app-notifications>
+</ng-template>
