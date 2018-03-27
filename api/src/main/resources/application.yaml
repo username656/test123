@@ -1,8 +1,8 @@
 # IMPORTANT: If you change the prefix remember to adjust the ApiProperties object
-kayako:
+zbw:
     # API Configuration
     api:
-        title: Kayako Integration API
+        title: ZBW Integration API
         license: UNLICENSED
         version: 1.0.0
 

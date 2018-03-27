@@ -1,6 +1,6 @@
 # Introduction
 
-This project is a mock created for the kayako project. It does mainly contains the API's with some trivial mock code.
+This project is a mock created for the ZBW project. It does mainly contains the API's with some trivial mock code.
 
 This project was seed with https://github.com/trilogy-group/easier-template-java
 
@@ -49,12 +49,12 @@ curl -X GET \
 
 In order to build the docker image you need to run `./mvnw install dockerfile:build`.
 In order to build the docker image you need to run `./mvnw install dockerfile:build dockerfile:push`.
-In order to run it you have to execute `docker run --name kayako-mock-api -p 8080:8080 -t registry2.swarm.devfactory.com/easier/kayako/api:latest`
+In order to run it you have to execute `docker run --name zbw-mock-api -p 8080:8080 -t registry2.swarm.devfactory.com/easier/zbw/api:latest`
 In order to publish you must run (UNDER REVIEW):
 ```
 docker run -d --name dev_kayako_api-mocks -l "com.trilogy.company=aurea" \
 -l "com.trilogy.team=Easier" \
--l "com.trilogy.product=kayako" \
+-l "com.trilogy.product=zbw" \
 -l "com.trilogy.service=api-mocks" \
 -l "com.trilogy.stage=dev" \
 -l "com.trilogy.maintainer.skype=ignaciolarranaga" \
