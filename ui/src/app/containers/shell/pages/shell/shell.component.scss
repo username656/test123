@@ -14,22 +14,22 @@
       .df-topbar__center {
         flex-grow: 1;
       }
-  
+
       nav {
         background-color: map-get($au-neutral, 5);
       }
-  
+
       div.df-topbar-links {
         position: static;
         left: auto;
         height: auto;
-  
+
         a {
           height: auto;
           padding: 0 14px;
         }
       }
-  
+
       .df-topbar {
         &__center {
           display: flex;
@@ -38,15 +38,15 @@
         }
       }
     }
-  
+
     button.df-hamburger {
       display: none;
     }
-  
+
     df-sidebar {
       background-color: map-get($au-neutral, 5);
       overflow: auto;
-  
+
       .df-sidebar {
         position: relative;
         top: 0;
@@ -54,17 +54,17 @@
         border: none;
         transform: none;
         background-color: map-get($au-neutral, 5);
-  
+
         &__item {
           &__menu {
             overflow: hidden;
           }
-  
+
           &--active {
             box-shadow: none;
           }
         }
-  
+
         &--open {
           width: 57px;
         }
@@ -74,7 +74,7 @@
           bottom: 0;
         }
       }
-  
+
       &.ng-animating {
         .df-sidebar__item__menu:not(.df-sidebar__item__menu--active) {
           height: 0px;
@@ -140,7 +140,7 @@
     top: 1px;
     font-size: 12px;
 
-    &--online {
+    &--ONLINE {
       color: $au-green;
     }
   }
@@ -174,20 +174,6 @@
 
 .search {
   width: 150px;
-}
-
-.notifications {
-  .dropdown {
-    &-toggle::after {
-      display: none;
-    }
-
-    &-menu {
-      width: 480px;
-      background-color: white;
-      box-shadow: 0 1px 5px 0 rgba(0,0,0,.35);
-    }
-  }
 }
 
 @include media-breakpoint-down(md) {

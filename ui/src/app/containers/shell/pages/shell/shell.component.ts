@@ -3,23 +3,19 @@ import { Component, HostBinding, OnDestroy, OnInit, Renderer2, TemplateRef } fro
 import { NavigationStart, Router } from '@angular/router';
 import { User } from '@app/core/models/user';
 import { AuthenticationService } from '@app/core/services/authentication.service';
-import { NotificationService } from '@app/core/services/notification.service';
-import { UserService } from '@app/core/services/user.service';
+import { InboxService } from '@app/core/services/inbox.service';
 import { DfPortalOptions, DfPortalOrientation, DfPortalService } from '@devfactory/ngx-df/portal';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 
-import { ShellNotification, ShellNotificationByDate } from '../../models/shell-notification';
-
 import { logoState, overlayState, sidebarState, topbarState } from './shell.animation';
 
-
-enum SidebarState {
+export enum SidebarState {
   Open = 'open',
   Closed = 'closed'
 }
 
-enum LogoState {
+export enum LogoState {
   Visible = 'visible',
   Hidden = 'hidden'
 }
@@ -47,7 +43,6 @@ export class ShellComponent implements OnInit, OnDestroy {
   public breakpointObserver$: Subscription;
   public primaryGroup: IconGroup[];
   public loading: boolean = false;
-  public dates: ShellNotificationByDate[];
 
   public get isLogoVisible(): boolean {
     return this.logoState === LogoState.Visible;
@@ -73,12 +68,11 @@ export class ShellComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private portal: DfPortalService,
     private authenticationService: AuthenticationService,
-    private userService: UserService,
-    private notificationService: NotificationService
+    private inboxService: InboxService
   ) {}
 
   public ngOnInit(): void {
-    this.user = this.userService.user;
+    this.user = this.authenticationService.getCurrentUser();
     this.initPrimaryGroup();
     this.sidebarState = window.innerWidth > ShellComponent.MEDIA_MEDIUM ? SidebarState.Open : SidebarState.Closed;
     this.logoState = window.innerWidth > ShellComponent.MEDIA_MEDIUM ? LogoState.Visible : LogoState.Hidden;
@@ -91,7 +85,9 @@ export class ShellComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.breakpointObserver$.unsubscribe();
+    if (this.breakpointObserver$) {
+      this.breakpointObserver$.unsubscribe();
+    }
   }
 
   public onSignOutClick(): void {
@@ -126,49 +122,11 @@ export class ShellComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onSearchClick(template: TemplateRef<null>, searchInput: HTMLElement): void {
-    searchInput.blur();
-    const options: DfPortalOptions = new DfPortalOptions();
-    options.orientation = DfPortalOrientation.Top;
-    this.portal.open(template, options);
-    this.closeSidebar();
-  }
-
   public onEllipsisClick(template: TemplateRef<null>): void {
     const options: DfPortalOptions = new DfPortalOptions();
     options.orientation = DfPortalOrientation.Right;
     this.portal.open(template, options);
     this.closeSidebar();
-  }
-
-  public onNotificationsIconClick(evt: boolean): void {
-    if (evt) {
-      this.loadNotifications();
-    }
-  }
-
-  public onMobileNotificationsIconClick(template: TemplateRef<null>): void {
-    const options: DfPortalOptions = new DfPortalOptions();
-    options.orientation = DfPortalOrientation.Top;
-    options.height = 450;
-    this.portal.open(template, options);
-    this.loadNotifications();
-  }
-
-  public onNotificationMouseEnter(notification: ShellNotification): void {
-    if (!notification.read) {
-      notification.showLink = true;
-    }
-  }
-
-  public onNotificationMouseLeave(notification: ShellNotification): void {
-    notification.showLink = false;
-  }
-
-  public onMarkAsReadClick(evt: Event, notification: ShellNotification): void {
-    evt.preventDefault();
-    notification.read = true;
-    this.notificationService.updateNotificationReadState(notification, true);
   }
 
   public closeSidebar(): void {
@@ -177,7 +135,7 @@ export class ShellComponent implements OnInit, OnDestroy {
     }
   }
 
-  public listenToWindowResize(): void {
+  private listenToWindowResize(): void {
     this.breakpointObserver$ = this.breakpointObserver.observe([
       '(max-width: 991px)'
     ]).subscribe(result => {
@@ -197,7 +155,7 @@ export class ShellComponent implements OnInit, OnDestroy {
     });
   }
 
-  public initPrimaryGroup(): void {
+  private initPrimaryGroup(): void {
     this.primaryGroup = [
       {label: 'Inbox', link: '/', icon: 'fa-inbox'},
       {label: 'Users', icon: 'fa fa-address-card'},
@@ -205,22 +163,8 @@ export class ShellComponent implements OnInit, OnDestroy {
       {label: 'Insights', icon: 'fa fa-bar-chart'},
       {label: 'Helpcenter', icon: 'fa fa-book'}
     ];
+
+    this.inboxService.getBadgeCount().subscribe(badge => this.primaryGroup[0].count = badge);
   }
 
-  public loadNotifications(): void {
-    this.loading = true;
-      this.notificationService.getNotificationsByDay().subscribe(response => {
-        if (response.status === 'success') {
-          this.dates = response.dates.map(date => {
-            return Object.assign(date, {notifications: date.notifications.map(notification => {
-              return Object.assign(notification, {showLink: false});
-            })});
-          });
-        }
-        this.loading = false;
-      }, err => {
-        console.log(err);
-        this.loading = false;
-      });
-  }
 }

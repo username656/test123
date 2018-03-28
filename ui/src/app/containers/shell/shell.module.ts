@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '@app/shared/shared.module';
 import { NgbDropdownModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { NotificationsComponent } from './components/notifications/notifications.component';
 import { ShellComponent } from './pages/shell/shell.component';
 import { ShellRoutingModule } from './shell-routing.module';
 
@@ -16,8 +15,7 @@ import { ShellRoutingModule } from './shell-routing.module';
     NgbTooltipModule
   ],
   declarations: [
-    ShellComponent,
-    NotificationsComponent
+    ShellComponent
   ]
 })
 export class ShellModule { }
