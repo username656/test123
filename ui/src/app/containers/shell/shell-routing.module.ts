@@ -5,9 +5,7 @@ import { AuthGuard } from '@app/shared/guards/auth.guard';
 import { ShellComponent } from './pages/shell/shell.component';
 
 const routes: Routes = [
-  {path: '', component: ShellComponent, canActivate: [AuthGuard], children: [
-    {path: 'welcome', loadChildren: 'app/modules/welcome/welcome.module#WelcomeModule'}
-  ]}
+  { path: '', component: ShellComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
