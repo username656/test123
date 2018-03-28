@@ -9,6 +9,7 @@ import com.aurea.zbw.api.ApiProperties;
 import com.aurea.zbw.api.security.AccountCredentials;
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.annotations.VisibleForTesting;
+import io.swagger.annotations.ApiOperation;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -65,7 +66,7 @@ public class SwaggerDocumentationConfig {
     public Docket customImplementation() throws IOException {
         return new Docket(DocumentationType.SWAGGER_2)
             .select()
-            .apis(RequestHandlerSelectors.any())
+            .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
             // Excluding the root path from descriptions
             // It is the swagger documentation description
             .paths(and(
