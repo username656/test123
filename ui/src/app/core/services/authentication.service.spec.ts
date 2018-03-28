@@ -96,7 +96,7 @@ describe('AuthenticationService', () => {
 
       service.login('sample', 'secret', false).subscribe((res) => {});
 
-      let user: User = service.getUser();
+      let user: User = service.getCurrentUser();
       expect(user).toBeDefined();
       expect(user.username).toBe('sample');
       expect(user.firstName).toBe('John');
@@ -107,7 +107,7 @@ describe('AuthenticationService', () => {
 
       service.login('sample', 'secret', true).subscribe((res) => {});
 
-      let user: User = service.getUser();
+      let user: User = service.getCurrentUser();
       expect(user).toBeDefined();
       expect(user.username).toBe('sample');
       expect(user.firstName).toBe('John');
@@ -124,9 +124,9 @@ describe('AuthenticationService', () => {
     });
   });
 
-  describe('getUser', () => {
+  describe('getCurrentUser', () => {
     it('should not recover user when no login', () => {
-      let user: User = service.getUser();
+      let user: User = service.getCurrentUser();
       expect(user).toBeUndefined();
     });
 
@@ -136,7 +136,7 @@ describe('AuthenticationService', () => {
       service.login('sample', 'secret', false).subscribe((res) => {});
       service.logout();
 
-      let user: User = service.getUser();
+      let user: User = service.getCurrentUser();
       expect(user).toBeUndefined();
     });
 
@@ -146,7 +146,7 @@ describe('AuthenticationService', () => {
       service.login('sample', 'secret', true).subscribe((res) => {});
       service.logout();
 
-      let user: User = service.getUser();
+      let user: User = service.getCurrentUser();
       expect(user).toBeUndefined();
     });
   });
