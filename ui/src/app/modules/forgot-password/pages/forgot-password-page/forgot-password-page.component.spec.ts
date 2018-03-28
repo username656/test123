@@ -15,7 +15,6 @@ describe('ForgotPasswordPageComponent', () => {
   let component: ForgotPasswordPageComponent;
   let fixture: ComponentFixture<ForgotPasswordPageComponent>;
   let authenticationService: AuthenticationService;
-  let title: Title;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,7 +34,6 @@ describe('ForgotPasswordPageComponent', () => {
     fixture = TestBed.createComponent(ForgotPasswordPageComponent);
     component = fixture.componentInstance;
     authenticationService = TestBed.get(AuthenticationService);
-    title = TestBed.get(Title);
   });
 
   it('should be created', () => {
@@ -49,13 +47,10 @@ describe('ForgotPasswordPageComponent', () => {
     expect(component.loading).toBeFalsy();
   });
 
-  it('should create the form and set the title on ngOnInit', () => {
-    spyOn(title, 'setTitle');
-
+  it('should create the form on ngOnInit', () => {
     component.ngOnInit();
 
     expect(component.form).toBeDefined();
-    expect(title.setTitle).toHaveBeenCalledWith('Welcome to Kayako');
   });
 
   describe('isDisabled', () => {

@@ -17,7 +17,6 @@ describe('LoginPageComponent', () => {
   let fixture: ComponentFixture<LoginPageComponent>;
   let authenticationService: AuthenticationService;
   let router: Router;
-  let title: Title;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -41,7 +40,6 @@ describe('LoginPageComponent', () => {
     component = fixture.componentInstance;
     authenticationService = TestBed.get(AuthenticationService);
     router = TestBed.get(Router);
-    title = TestBed.get(Title);
   });
 
   it('should be created', () => {
@@ -56,15 +54,6 @@ describe('LoginPageComponent', () => {
     expect(component.alert.show).toBeFalsy();
     expect(component.alert.message).toBe('');
     expect(component.loading).toBeFalsy();
-  });
-
-  it('should create the form and set the title on ngOnInit', () => {
-    spyOn(title, 'setTitle');
-
-    component.ngOnInit();
-
-    expect(component.form).toBeDefined();
-    expect(title.setTitle).toHaveBeenCalledWith('Welcome to Kayako');
   });
 
   describe('isDisabled', () => {
