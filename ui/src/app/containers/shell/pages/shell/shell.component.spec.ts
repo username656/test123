@@ -19,7 +19,6 @@ import { User } from '@app/core/models/user';
 
 describe('ShellComponent', () => {
   const SAMPLE_INBOX_BADGE = 5;
-  const SAMPLE_WELCOME_BADGE = 3;
   const SAMPLE_USER = <User>{ firstName: 'Sample', lastName: 'Last' };
 
   let component: ShellComponent;
@@ -134,7 +133,6 @@ describe('ShellComponent', () => {
 
       expect(component.primaryGroup).toBeDefined();
       expect(component.primaryGroup[0].count).toBe(SAMPLE_INBOX_BADGE);
-      expect(component.primaryGroup[5].count).toBe(SAMPLE_WELCOME_BADGE);
     });
 
     it('should initialize the sidebarState/logoState', () => {
