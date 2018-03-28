@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ShellNotification, ShellNotificationByDate } from '../../models/shell-notification';
 
 import { logoState, overlayState, sidebarState, topbarState } from './shell.animation';
+import { AuthenticationService } from '@app/core/services/authentication.service';
 
 
 enum SidebarState {
@@ -71,6 +72,7 @@ export class ShellComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private renderer: Renderer2,
     private portal: DfPortalService,
+    private authenticationService: AuthenticationService,
     private userService: UserService,
     private notificationService: NotificationService
   ) {}
@@ -93,6 +95,7 @@ export class ShellComponent implements OnInit, OnDestroy {
   }
 
   public onSignOutClick(): void {
+    this.authenticationService.logout();
     this.router.navigateByUrl('/login');
   }
 
