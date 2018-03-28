@@ -1,0 +1,47 @@
+<div class="mb-3 pl-3 pr-2 d-flex justify-content-between align-items-center">
+  <h5 class="mb-0 notifications__title">My Notifications</h5>
+  <div class="d-flex">
+    <a class="url mr-2 d-flex align-items-center" href="#" (click)="onMarkAllAsReadClick($event)">
+      Mark all as read
+    </a>
+    <button class="btn-clean btn--sm px-2 notifications__config" type="button" df-button>
+      <i class="fa fa-cog" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>
+
+<ng-container *ngIf="loading; else notificationsContainer">
+  <div class="d-flex justify-content-center">
+    <i class="df-loader df-loader--sm"></i>
+  </div>
+</ng-container>
+
+<ng-template #notificationsContainer>
+  <div class="section__body h-100 d-flex flex-column">
+    <ng-container *ngFor="let date of dates">
+      <div class="px-3">
+        <h1 class="mb-0 p-2 section__sub-header">{{date.date}}</h1>
+      </div>
+
+      <div class="px-3"
+           *ngFor="let notification of date.notifications; last as last">
+        <div class="p-3 d-flex justify-content-between align-content-start notifications__item"
+             [class.notifications__item--not-read]="!notification.read"
+             [class.notifications__item--border]="!last">
+          <div class="mr-2 notifications__item__image position-relative">
+            <img class="pt-1 img-fluid" [src]="notification.image">
+          </div>
+          <p class="col p-0 text-left mr-2 mb-0 notifications__item__title" [innerHTML]="notification.title"></p>
+          <div class="d-flex justify-content-end notifications__right-container"
+                (mouseenter)="onNotificationMouseEnter(notification)"
+                (mouseleave)="onNotificationMouseLeave(notification)">
+            <p class="mb-0" *ngIf="!notification.showLink; else showLink">{{notification.relativeTime}}</p>
+            <ng-template #showLink>
+              <a class="url" href="#" (click)="onMarkAsReadClick($event, notification)">Mark as read</a>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
