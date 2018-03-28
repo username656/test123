@@ -96,7 +96,7 @@ export class AuthenticationService {
   }
 
   public isUserLogged(): boolean {
-    return this.getCurrentToken() !== undefined;
+    return !!this.getCurrentToken();
   }
 
   public getCurrentToken(): string {
@@ -113,7 +113,7 @@ export class AuthenticationService {
    *
    * @return {User} Current logged in user
    */
-  public getUser(): User {
+  public getCurrentUser(): User {
     const storageType: boolean = this.getStorageType();
     if (storageType !== undefined) {
       const data: string = this.storageService.getItem(AuthenticationService.CURRENT_USER_STORAGE_KEY, storageType);

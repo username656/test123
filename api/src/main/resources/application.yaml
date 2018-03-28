@@ -16,7 +16,7 @@ zbw:
             cors:
                 allowedOrigins: http://localhost:4200
                 allowedHeaders: Content-Type,Authorization,Pragma
-                allowedMethods: POST,PUT,GET,OPTIONS,DELETE
+                allowedMethods: POST,PUT,PATCH,GET,OPTIONS,DELETE
             authentication:
                 type: Bearer
                 loginPath: /auth/login

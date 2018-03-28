@@ -2,6 +2,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, HostBinding, OnDestroy, OnInit, Renderer2, TemplateRef } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { User } from '@app/core/models/user';
+import { AuthenticationService } from '@app/core/services/authentication.service';
 import { NotificationService } from '@app/core/services/notification.service';
 import { UserService } from '@app/core/services/user.service';
 import { DfPortalOptions, DfPortalOrientation, DfPortalService } from '@devfactory/ngx-df/portal';
@@ -71,6 +72,7 @@ export class ShellComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private renderer: Renderer2,
     private portal: DfPortalService,
+    private authenticationService: AuthenticationService,
     private userService: UserService,
     private notificationService: NotificationService
   ) {}
@@ -93,6 +95,7 @@ export class ShellComponent implements OnInit, OnDestroy {
   }
 
   public onSignOutClick(): void {
+    this.authenticationService.logout();
     this.router.navigateByUrl('/login');
   }
 
