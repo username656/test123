@@ -1,10 +1,9 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, HostBinding, OnDestroy, OnInit, Renderer2, TemplateRef } from '@angular/core';
+import { Component, HostBinding, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { User } from '@app/core/models/user';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { InboxService } from '@app/core/services/inbox.service';
-import { DfPortalOptions, DfPortalOrientation, DfPortalService } from '@devfactory/ngx-df/portal';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -66,7 +65,6 @@ export class ShellComponent implements OnInit, OnDestroy {
     private router: Router,
     private breakpointObserver: BreakpointObserver,
     private renderer: Renderer2,
-    private portal: DfPortalService,
     private authenticationService: AuthenticationService,
     private inboxService: InboxService
   ) {}
