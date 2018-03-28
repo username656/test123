@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { EmailUtilities } from '@app/shared/utilities/email-utilities';
@@ -23,7 +22,6 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
   public constructor(
     private fb: FormBuilder,
     private authenticationService: AuthenticationService,
-    private title: Title,
     private router: Router
   ) {}
 

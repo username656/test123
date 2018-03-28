@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { EmailUtilities } from '@app/shared/utilities/email-utilities';
 import { DfValidationMessagesMap } from '@devfactory/ngx-df/validation-messages';
@@ -25,8 +24,7 @@ export class ForgotPasswordPageComponent implements OnInit, AfterViewInit {
 
   public constructor(
     private fb: FormBuilder,
-    private service: AuthenticationService,
-    private title: Title
+    private service: AuthenticationService
   ) {}
 
   public ngOnInit(): void {

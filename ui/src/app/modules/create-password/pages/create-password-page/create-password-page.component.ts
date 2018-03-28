@@ -1,10 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
 import { AuthenticationService } from '@app/core/services/authentication.service';
-import { EmailUtilities } from '@app/shared/utilities/email-utilities';
-import { DfValidationMessagesMap } from '@devfactory/ngx-df/validation-messages';
 
 import { PasswordUtilities } from '@app/shared/utilities/password-utilities';
 
@@ -32,8 +29,7 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
   public constructor(
     private fb: FormBuilder,
     private service: AuthenticationService,
-    private title: Title,
-    private router: Router
+    private title: Title
   ) {}
 
   public ngOnInit(): void {

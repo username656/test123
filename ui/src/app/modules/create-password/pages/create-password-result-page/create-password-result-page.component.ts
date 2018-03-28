@@ -1,12 +1,8 @@
-import { AfterViewInit, Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, HostBinding, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { AuthenticationService } from '@app/core/services/authentication.service';
-import { EmailUtilities } from '@app/shared/utilities/email-utilities';
-import { DfValidationMessagesMap } from '@devfactory/ngx-df/validation-messages';
 
-import { PasswordUtilities } from '@app/shared/utilities/password-utilities.ts';
 
 
 @Component({

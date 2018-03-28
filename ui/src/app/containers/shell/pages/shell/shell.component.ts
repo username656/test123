@@ -2,6 +2,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, HostBinding, OnDestroy, OnInit, Renderer2, TemplateRef } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { User } from '@app/core/models/user';
+import { AuthenticationService } from '@app/core/services/authentication.service';
 import { NotificationService } from '@app/core/services/notification.service';
 import { UserService } from '@app/core/services/user.service';
 import { DfPortalOptions, DfPortalOrientation, DfPortalService } from '@devfactory/ngx-df/portal';
@@ -11,7 +12,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { ShellNotification, ShellNotificationByDate } from '../../models/shell-notification';
 
 import { logoState, overlayState, sidebarState, topbarState } from './shell.animation';
-import { AuthenticationService } from '@app/core/services/authentication.service';
 
 
 enum SidebarState {
