@@ -146,6 +146,8 @@
   }
 
   &__wrapper {
+    margin-right: 10px;
+
     .dropdown {
       &--border {
         border-bottom: 1px solid $au-gray-main;

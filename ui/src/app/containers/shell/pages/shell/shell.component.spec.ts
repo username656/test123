@@ -194,19 +194,6 @@ describe('ShellComponent', () => {
     });
   });
 
-  describe('onEllipsisClick', () => {
-    it('should open the portal and set the closebar on search click', () => {
-      let searchInput = mock(HTMLElement);
-      spyOn(portal, 'open');
-      spyOn(component, 'closeSidebar');
-
-      component.onEllipsisClick(mock(TemplateRef));
-
-      expect(portal.open).toHaveBeenCalled();
-      expect(component.closeSidebar).toHaveBeenCalled();
-    });
-  });
-
   describe('closeSidebar', () => {
     it('should delagate to onHamburgerClick on innerWidth <= ShellComponent.MEDIA_LARGE and sidebarState open', () => {
       spyOnProperty(window, 'innerWidth', 'get').and.returnValue(500);

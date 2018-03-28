@@ -122,13 +122,6 @@ export class ShellComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onEllipsisClick(template: TemplateRef<null>): void {
-    const options: DfPortalOptions = new DfPortalOptions();
-    options.orientation = DfPortalOrientation.Right;
-    this.portal.open(template, options);
-    this.closeSidebar();
-  }
-
   public closeSidebar(): void {
     if (window.innerWidth <= ShellComponent.MEDIA_LARGE && this.sidebarState === SidebarState.Open) {
       this.onHamburgerClick();

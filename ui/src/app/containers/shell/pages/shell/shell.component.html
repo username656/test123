@@ -50,9 +50,6 @@
       </div>
       <button class="dropdown-item" type="button" (click)="onSignOutClick()">Logout</button>
     </df-user-profile>
-    <button class="btn-clean px-3 d-block d-lg-none" type="button" df-button (click)="onEllipsisClick(portalTabs)">
-      <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-    </button>
   </div>
 </df-topbar>
 
@@ -92,62 +89,4 @@
 <!-- badges -->
 <ng-template #auxTemplate let-data="data" let-item="item">
   <span class="badge badge--{{data.class}}">{{data.info}}</span>
-</ng-template>
-
-<!-- portal search -->
-<ng-template #portalSearch>
-  <div class="w-100 h-100 px-3 pt-2 pb-3 d-flex flex-column">
-    <df-input-container>
-      <input type="text" placeholder="Search">
-    </df-input-container>
-  </div>
-</ng-template>
-
-<!-- tabs -->
-<ng-template #portalTabs>
-  <div class="w-100 h-100 p-3 d-flex flex-column">
-    <button class="btn-blue mb-3" type="button" df-button>
-      <i class="fa fa-plus mr-1" aria-hidden="true"></i>
-      New
-    </button>
-    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 portal-tabs__item">
-      <div>
-        <i class="fa fa-commenting-o mr-1" aria-hidden="true"></i>
-        New conversation
-      </div>
-      <button class="btn-clean px-2 portal-tabs__remove" type="button" df-button>
-        <i class="fa fa-times" aria-hidden="true"></i>
-      </button>
-    </div>
-
-    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 portal-tabs__item">
-      <div>
-        <i class="fa fa-search mr-1" aria-hidden="true"></i>
-        New search
-      </div>
-      <button class="btn-clean px-2 portal-tabs__remove" type="button" df-button>
-        <i class="fa fa-times" aria-hidden="true"></i>
-      </button>
-    </div>
-
-    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 portal-tabs__item">
-      <div>
-        <i class="fa fa-building mr-1" aria-hidden="true"></i>
-        New organization
-      </div>
-      <button class="btn-clean px-2 portal-tabs__remove" type="button" df-button>
-        <i class="fa fa-times" aria-hidden="true"></i>
-      </button>
-    </div>
-
-    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 portal-tabs__item">
-      <div>
-        <i class="fa fa-user mr-1" aria-hidden="true"></i>
-        New user
-      </div>
-      <button class="btn-clean px-2 portal-tabs__remove" type="button" df-button>
-        <i class="fa fa-times" aria-hidden="true"></i>
-      </button>
-    </div>
-  </div>
 </ng-template>
