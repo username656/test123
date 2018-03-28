@@ -32,8 +32,6 @@ export class UserServiceMock {
       username: 'ricardo.maturi@devfactory.com',
       firstName: 'Ricardo',
       lastName: 'Maturi',
-      activeMessenger: true,
-      invitedGang: true,
       image: '/assets/img/profile-image.jpg',
       state: 'online',
       badgeInbox: 12
