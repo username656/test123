@@ -32,16 +32,11 @@ export class UserServiceMock {
       username: 'ricardo.maturi@devfactory.com',
       firstName: 'Ricardo',
       lastName: 'Maturi',
-      linkedEmail: true,
-      linkedSocial: false,
-      linkedTwitter: true,
-      linkedFacebook: false,
       activeMessenger: true,
       invitedGang: true,
       image: '/assets/img/profile-image.jpg',
       state: 'online',
-      badgeInbox: 12,
-      badgeWelcome: 2
+      badgeInbox: 12
     };
   }
 }
