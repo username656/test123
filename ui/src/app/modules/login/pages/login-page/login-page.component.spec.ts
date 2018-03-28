@@ -56,6 +56,14 @@ describe('LoginPageComponent', () => {
     expect(component.loading).toBeFalsy();
   });
 
+  describe('ngOnInit', () => {
+    it('should create the form on ngOnInit', () => {
+      component.ngOnInit();
+
+      expect(component.form).toBeDefined();
+    });
+  });
+
   describe('isDisabled', () => {
     it('should return true for isDisabled on empty fields', () => {
       component.ngOnInit();
