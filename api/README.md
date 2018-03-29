@@ -50,9 +50,10 @@ curl -X GET \
 In order to build the docker image you need to run `./mvnw install dockerfile:build`.
 In order to build the docker image you need to run `./mvnw install dockerfile:build dockerfile:push`.
 In order to run it you have to execute `docker run --name zbw-mock-api -p 8080:8080 -t registry2.swarm.devfactory.com/easier/zbw/api:latest`
-In order to publish you must run (UNDER REVIEW):
+In order to publish you must run:
 ```
-docker run -d --name dev_kayako_api-mocks -l "com.trilogy.company=aurea" \
+docker -H dlb1.aureacentral.com run -d --name dev_zbw_api-mocks \
+-l "com.trilogy.company=aurea" \
 -l "com.trilogy.team=Easier" \
 -l "com.trilogy.product=zbw" \
 -l "com.trilogy.service=api-mocks" \
@@ -60,5 +61,6 @@ docker run -d --name dev_kayako_api-mocks -l "com.trilogy.company=aurea" \
 -l "com.trilogy.maintainer.skype=ignaciolarranaga" \
 -l "com.trilogy.maintainer.email=ignacio.larranaga@aurea.com" \
 --cpu-period=50000 --cpu-quota=200000 -m 24GB \
--p XXXXXX:8080
+-p 10202:8080 \
+registry2.swarm.devfactory.com/easier/zbw/api:latest
 ```
