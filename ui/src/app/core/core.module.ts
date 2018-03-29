@@ -14,9 +14,8 @@ import {
 import { NgbDropdownModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthenticationService } from '@app/core/services/authentication.service';
-import { NotificationService } from '@app/core/services/notification.service';
+import { InboxService } from '@app/core/services/inbox.service';
 import { StorageService } from '@app/core/services/storage.service';
-import { UserService } from '@app/core/services/user.service';
 
 /**
  * The Core module is used to hold all root-level providers. It should only be imported in the AppModule.
@@ -55,8 +54,7 @@ import { UserService } from '@app/core/services/user.service';
     /** Provide your app wide services here */
     StorageService,
     AuthenticationService,
-    UserService,
-    NotificationService,
+    InboxService,
 
     /** Guards */
     AuthGuard
