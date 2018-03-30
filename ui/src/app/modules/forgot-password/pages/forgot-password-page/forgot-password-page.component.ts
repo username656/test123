@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, HostBinding, OnInit, ViewChild } 
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { EmailUtilities } from '@app/shared/utilities/email-utilities';
+import { ErrorMessageHandler } from '@app/shared/utilities/error-message-handler';
 import { DfValidationMessagesMap } from '@devfactory/ngx-df/validation-messages';
 
 @Component({
@@ -54,7 +55,7 @@ export class ForgotPasswordPageComponent implements OnInit, AfterViewInit {
       this.alert = { show: true, error: false, message: 'An email with a reset link has been sent to your inbox' };
       this.loading = false;
     }, error => {
-      this.alert = { show: true, error: true, message: error.error.message };
+      this.alert = { show: true, error: true, message: ErrorMessageHandler.getErrorMessage(error) };
       this.loading = false;
     });
   }
@@ -65,7 +66,7 @@ export class ForgotPasswordPageComponent implements OnInit, AfterViewInit {
     }
 
     if (!EmailUtilities.EMAIL_VALIDATION_PATTERN.test(this.form.value.email)) {
-      this.form.get('email').setErrors({invalidEmail: 'Please provide a valid email'});
+      this.form.get('email').setErrors({ invalidEmail: 'Please provide a valid email' });
     }
   }
 
