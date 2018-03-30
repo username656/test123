@@ -237,4 +237,14 @@ describe('AuthenticationService', () => {
       });
     });
   });
+
+  describe('resetPassword', () => {
+    it('should delegate to the endpoint', () => {
+      spyOn(http, 'post').and.returnValue(of({}));
+
+      service.resetPassword('key', 'password').subscribe((res) => {
+        expect(res).toBeTruthy();
+      });
+    });
+  });
 });

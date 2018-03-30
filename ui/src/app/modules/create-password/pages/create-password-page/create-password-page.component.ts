@@ -19,7 +19,6 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
   public special: boolean = false;
 
   public key: string;
-  public keyMissing: boolean;
 
   @ViewChild('passwordInput') public passwordInput: ElementRef;
 
@@ -40,7 +39,6 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe((params) => {
       this.key = params['token'];
     });
-    this.keyMissing = !this.key;
   }
 
   public ngAfterViewInit(): void {

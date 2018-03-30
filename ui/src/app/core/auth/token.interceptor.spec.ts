@@ -41,6 +41,9 @@ describe('Token interceptor', () => {
 
         const request: TestRequest = httpMock.expectOne(req =>
           req.headers.has('Authorization') &&
+          req.headers.has('Content-Type') &&
+          req.headers.get('Content-Type') === 'application/json' &&
+          req.headers.has('Accept') &&
           req.headers.get('Authorization') === `Bearer ${TEST_TOKEN}`);
         expect(request.request.method).toEqual('GET');
 
