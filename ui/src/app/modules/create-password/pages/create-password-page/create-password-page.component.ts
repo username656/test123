@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
-import { AuthenticationService } from '@app/core/services/authentication.service';
+import {AfterViewInit, Component, ElementRef, HostBinding, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {AuthenticationService} from '@app/core/services/authentication.service';
 
-import { PasswordUtilities } from '@app/shared/utilities/password-utilities';
+import {ActivatedRoute, Router} from '@angular/router';
+import {PasswordUtilities} from '@app/shared/utilities/password-utilities';
 
 @Component({
   selector: 'app-create-password',
@@ -18,6 +18,9 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
   public number: boolean = false;
   public special: boolean = false;
 
+  public key: string;
+  public keyMissing: boolean;
+
   @ViewChild('passwordInput') public passwordInput: ElementRef;
 
   @HostBinding('class') public class: string = 'col p-0 d-flex justify-content-center align-items-center';
@@ -26,15 +29,18 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
     return !(this.length && this.uppercase && this.number && this.special);
   }
 
-  public constructor(
-    private fb: FormBuilder,
-    private service: AuthenticationService,
-    private title: Title
-  ) {}
+  public constructor(private fb: FormBuilder,
+                     private service: AuthenticationService,
+                     private route: ActivatedRoute,
+                     private router: Router) {
+  }
 
   public ngOnInit(): void {
     this.createForm();
-    this.title.setTitle('Versata');
+    this.route.params.subscribe((params) => {
+      this.key = params['token'];
+    });
+    this.keyMissing = !this.key;
   }
 
   public ngAfterViewInit(): void {
@@ -43,11 +49,13 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
 
   public onSubmit(): void {
     this.loading = true;
-    this.service.resetPassword(this.form.value.password).subscribe(response => {
+    this.service.resetPassword(this.key, this.form.value.password).subscribe(response => {
       this.loading = false;
-      // TODO: redirect to success
+      this.router.navigate(['../success'], {relativeTo: this.route});
     }, error => {
       this.loading = false;
+      this.router.navigate(['../error'], {relativeTo: this.route});
+
     });
   }
 

@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from 'environments/environment';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {environment} from 'environments/environment';
+import {map} from 'rxjs/operators';
+import {Observable} from 'rxjs/Observable';
 
-import { User } from '@app/core/models/user';
-import { StorageService } from '@app/core/services/storage.service';
+import {User} from '@app/core/models/user';
+import {StorageService} from '@app/core/services/storage.service';
 
 // tslint:disable-next-line
 const URLs = {
@@ -25,9 +25,8 @@ export class AuthenticationService {
   private static CURRENT_LOGIN_EXPIRATION_DAYS: number = 30;
   private static CURRENT_LOGIN_EXPIRATION_SESSION: string = 'session';
 
-  public constructor(
-    private http: HttpClient,
-    private storageService: StorageService) {
+  public constructor(private http: HttpClient,
+                     private storageService: StorageService) {
   }
 
   /**
@@ -39,22 +38,22 @@ export class AuthenticationService {
    * @return {boolean}          True if login was successful
    */
   public login(username: string, password: string, remember: boolean): Observable<boolean> {
-    return this.http.post<User>(URLs.login, JSON.stringify({ username, password }), { observe: 'response' })
+    return this.http.post<User>(URLs.login, JSON.stringify({username, password}), {observe: 'response'})
       .pipe(
         map(res => {
           const user: User = res.body;
 
           if (remember) {
-              const expiration: Date = new Date();
-              expiration.setDate(expiration.getDate() + AuthenticationService.CURRENT_LOGIN_EXPIRATION_DAYS);
-              this.storageService.setItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY,
-                  expiration.toString(), true);
+            const expiration: Date = new Date();
+            expiration.setDate(expiration.getDate() + AuthenticationService.CURRENT_LOGIN_EXPIRATION_DAYS);
+            this.storageService.setItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY,
+              expiration.toString(), true);
           } else {
-              this.storageService.setItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY,
-                AuthenticationService.CURRENT_LOGIN_EXPIRATION_SESSION, true);
+            this.storageService.setItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY,
+              AuthenticationService.CURRENT_LOGIN_EXPIRATION_SESSION, true);
           }
           this.storageService.setItem(AuthenticationService.CURRENT_TOKEN_STORAGE_KEY,
-              res.headers.get(AuthenticationService.AUTHORIZATION_HEADER), remember);
+            res.headers.get(AuthenticationService.AUTHORIZATION_HEADER), remember);
           this.storageService.setItem(AuthenticationService.CURRENT_USER_STORAGE_KEY, JSON.stringify(user), remember);
 
           return true;
@@ -84,15 +83,11 @@ export class AuthenticationService {
   }
 
   /**
-   * Mock method.
-   * TODO: Change this for the real one.
+   * @param {string} key generated reset key
    * @param {string} password New password
    */
-  public resetPassword(password: string): Observable<boolean> {
-    return this.http.post(`http://mockbin.com/request?foo=bar&foo=baz`, null)
-      .pipe(
-        map(() => true)
-      );
+  public resetPassword(key: string, password: string): Observable<HttpResponse<any>> {
+    return this.http.post(URLs.resetPassword, JSON.stringify({key, password}), {observe: 'response'});
   }
 
   public isUserLogged(): boolean {
@@ -138,7 +133,7 @@ export class AuthenticationService {
         const currentTime: Date = new Date();
         const expiration: Date = new Date(loginExpiration);
         if (currentTime < expiration) {
-            return true;
+          return true;
         }   // The login expired
       }
     }   // The user is not logged

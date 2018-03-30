@@ -4,7 +4,7 @@
   "license": "UNLICENCED",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.json -o",
+    "start": "ng serve --port=4000 --disable-host-check --proxy-config proxy.conf.json -o",
     "build": "ng build --prod",
     "test": "ng test",
     "test-coverage": "ng test --watch=false --code-coverage",

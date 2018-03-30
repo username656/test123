@@ -1,29 +1,35 @@
 package com.aurea.zbw.api.controllers;
 
-import static com.aurea.zbw.api.controllers.ForgotPasswordController.ENDPOINT;
-import static org.springframework.http.HttpStatus.OK;
-
 import com.aurea.zbw.api.exceptions.BadRequestException;
+import com.aurea.zbw.api.model.KeyPassword;
+import com.aurea.zbw.api.repositories.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.http.MediaType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.springframework.http.HttpStatus.OK;
+
 @Api(tags = "Login")
+@RequiredArgsConstructor
 @RestController
-@RequestMapping(path = ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
-public class ForgotPasswordController {
+@RequestMapping(path = "/auth")
+public class PasswordController {
 
     public static final String ENDPOINT = "/auth/forgot-password";
     private static final String ERROR_EMAIL = "error@example.org";
+    private static final String ERROR_RESET_KEY = "invalid-token";
+
+    private final UserRepository userRepository;
 
     @ApiOperation(value = "Forgot Password")
-    @PostMapping
+    @PostMapping(path = "/forgot-password")
     @ResponseStatus(OK)
     final void doPost(@ApiParam(required = true) @RequestParam final String email) {
         if (ERROR_EMAIL.equals(email)) {
@@ -31,4 +37,12 @@ public class ForgotPasswordController {
         }
     }
 
+    @ApiOperation(value = "Reset Password")
+    @PostMapping(path = "/reset-password")
+    @ResponseStatus(OK)
+    public void resetPassword(@RequestBody KeyPassword keyPassword) {
+        if (ERROR_RESET_KEY.equals(keyPassword.getKey())) {
+            throw new BadRequestException("Invalid reset key");
+        }
+    }
 }

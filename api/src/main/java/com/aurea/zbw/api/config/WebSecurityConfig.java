@@ -1,20 +1,14 @@
 package com.aurea.zbw.api.config;
 
-import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
-
 import com.aurea.zbw.api.ApiProperties;
-import com.aurea.zbw.api.controllers.ForgotPasswordController;
 import com.aurea.zbw.api.security.JWTAuthenticationFilter;
 import com.aurea.zbw.api.security.JWTLoginFilter;
 import com.aurea.zbw.api.security.MyUserDetailsService;
 import com.aurea.zbw.api.security.TokenAuthenticationService;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,6 +18,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import static com.aurea.zbw.api.controllers.PasswordController.ENDPOINT;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @EnableWebSecurity
@@ -52,30 +54,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected final void configure(final HttpSecurity http) throws Exception {
-        http
-            .csrf().disable()
-                .exceptionHandling()
-                    .authenticationEntryPoint(authenticationEntryPoint())
+        http.csrf()
+            .disable()
+            .exceptionHandling()
+            .authenticationEntryPoint(authenticationEntryPoint())
             .and()
-                .authorizeRequests()
-                // Allowing Swagger-UI to Work
-                .antMatchers(HttpMethod.GET, ROOT_PATH).permitAll()
-                .antMatchers(HttpMethod.GET, properties.getApi().getSwagger().getUiPath()).permitAll()
-                .antMatchers(HttpMethod.GET, properties.getApi().getSwagger().getResourcesPath1()).permitAll()
-                .antMatchers(HttpMethod.GET, properties.getApi().getSwagger().getResourcesPath2()).permitAll()
-                .antMatchers(HttpMethod.GET, apiDocsPath).permitAll()
-                .antMatchers(HttpMethod.POST, ForgotPasswordController.ENDPOINT).permitAll()
-                // Allowing Actuator Health
-                .antMatchers(HttpMethod.GET, endpointsHealthPath).permitAll()
-                // Allowing Authenticate Endpoint
-                .antMatchers(HttpMethod.POST, properties.getApi().getSecurity().getAuthentication().getLoginPath()).permitAll()
-                // Allowing Specific Endpoints
-                .anyRequest().authenticated()
+            .authorizeRequests()
+            // Allowing Swagger-UI to Work
+            .antMatchers(GET, ROOT_PATH).permitAll()
+            .antMatchers(GET, properties.getApi().getSwagger().getUiPath()).permitAll()
+            .antMatchers(GET, properties.getApi().getSwagger().getResourcesPath1()).permitAll()
+            .antMatchers(GET, properties.getApi().getSwagger().getResourcesPath2()).permitAll()
+            .antMatchers(GET, apiDocsPath).permitAll()
+            .antMatchers(POST, ENDPOINT).permitAll()
+            .antMatchers(POST, "/auth/reset-password*").permitAll()
+            // Allowing Actuator Health
+            .antMatchers(GET, endpointsHealthPath).permitAll()
+            // Allowing Authenticate Endpoint
+            .antMatchers(POST, properties.getApi().getSecurity().getAuthentication().getLoginPath()).permitAll()
+            // Allowing Specific Endpoints
+            .anyRequest().authenticated()
             .and()
-                // We filter the /login requests
-                .addFilterBefore(jwtLoginFilter(), UsernamePasswordAuthenticationFilter.class)
-                // And filter other requests to check the presence of JWT in header
-                .addFilterBefore(jWTAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            // We filter the /login requests
+            .addFilterBefore(jwtLoginFilter(), UsernamePasswordAuthenticationFilter.class)
+            // And filter other requests to check the presence of JWT in header
+            .addFilterBefore(jWTAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Autowired
