@@ -1,11 +1,11 @@
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {environment} from 'environments/environment';
-import {map} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 
-import {User} from '@app/core/models/user';
-import {StorageService} from '@app/core/services/storage.service';
+import { User } from '@app/core/models/user';
+import { StorageService } from '@app/core/services/storage.service';
 
 // tslint:disable-next-line
 const URLs = {
@@ -38,7 +38,7 @@ export class AuthenticationService {
    * @return {boolean}          True if login was successful
    */
   public login(username: string, password: string, remember: boolean): Observable<boolean> {
-    return this.http.post<User>(URLs.login, JSON.stringify({username, password}), {observe: 'response'})
+    return this.http.post<User>(URLs.login, JSON.stringify({ username, password }), { observe: 'response' })
       .pipe(
         map(res => {
           const user: User = res.body;
@@ -83,11 +83,11 @@ export class AuthenticationService {
   }
 
   /**
-   * @param {string} key generated reset key
+   * @param {string} token generated reset token
    * @param {string} password New password
    */
-  public resetPassword(key: string, password: string): Observable<HttpResponse<any>> {
-    return this.http.post(URLs.resetPassword, JSON.stringify({key, password}), {observe: 'response'});
+  public resetPassword(token: string, password: string): Observable<HttpResponse<any>> {
+    return this.http.post(URLs.resetPassword, JSON.stringify({ token, password }), { observe: 'response' });
   }
 
   public isUserLogged(): boolean {

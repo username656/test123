@@ -1,11 +1,11 @@
-import {HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
-import {HttpClientTestingModule, HttpTestingController, TestRequest} from '@angular/common/http/testing';
-import {async, getTestBed, inject, TestBed} from '@angular/core/testing';
-import {TokenInterceptor} from '@app/core/auth/token.interceptor';
-import {AuthenticationService} from '@app/core/services/authentication.service';
-import {mock} from 'ts-mockito';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { async, getTestBed, inject, TestBed } from '@angular/core/testing';
+import { TokenInterceptor } from '@app/core/auth/token.interceptor';
+import { AuthenticationService } from '@app/core/services/authentication.service';
+import { mock } from 'ts-mockito';
 
-describe('Token interceptor', () => {
+describe('TokenInterceptor', () => {
   let auth: AuthenticationService;
 
   beforeEach(async(() => {
@@ -27,7 +27,7 @@ describe('Token interceptor', () => {
   });
 
 
-  describe('making http calls', () => {
+  describe('intercept http calls', () => {
     const TEST_TOKEN: string = 'test-token';
     it('adds Authorization header', inject([HttpClient, HttpTestingController],
       (http: HttpClient, httpMock: HttpTestingController) => {

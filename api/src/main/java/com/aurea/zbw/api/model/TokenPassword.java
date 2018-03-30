@@ -3,8 +3,8 @@ package com.aurea.zbw.api.model;
 import lombok.Data;
 
 @Data
-public class KeyPassword {
+public class TokenPassword {
     
-    private String key;
+    private String token;
     private String password;
 }

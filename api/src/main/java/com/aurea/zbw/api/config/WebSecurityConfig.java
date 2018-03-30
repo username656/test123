@@ -22,7 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.aurea.zbw.api.controllers.PasswordController.ENDPOINT;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -66,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(GET, properties.getApi().getSwagger().getResourcesPath1()).permitAll()
             .antMatchers(GET, properties.getApi().getSwagger().getResourcesPath2()).permitAll()
             .antMatchers(GET, apiDocsPath).permitAll()
-            .antMatchers(POST, ENDPOINT).permitAll()
+            .antMatchers(POST, "/auth/forgot-password").permitAll()
             .antMatchers(POST, "/auth/reset-password*").permitAll()
             // Allowing Actuator Health
             .antMatchers(GET, endpointsHealthPath).permitAll()

@@ -1,14 +1,14 @@
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {ReactiveFormsModule} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AuthenticationService} from '@app/core/services/authentication.service';
-import {Observable} from 'rxjs/Observable';
-import {mock} from 'ts-mockito/lib/ts-mockito';
-import {of} from 'rxjs/observable/of';
-import {_throw} from 'rxjs/observable/throw';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from '@app/core/services/authentication.service';
+import { of } from 'rxjs/observable/of';
+import { _throw } from 'rxjs/observable/throw';
+import { Observable } from 'rxjs/Observable';
+import { mock } from 'ts-mockito/lib/ts-mockito';
 
-import {CreatePasswordPageComponent} from './create-password-page.component';
+import { CreatePasswordPageComponent } from './create-password-page.component';
 import Spy = jasmine.Spy;
 
 describe('CreatePasswordPageComponent', () => {
@@ -26,12 +26,11 @@ describe('CreatePasswordPageComponent', () => {
         ReactiveFormsModule
       ],
       providers: [
-        {provide: AuthenticationService, useFactory: () => mock(AuthenticationService)},
-        {provide: ActivatedRoute, useFactory: () => mock(ActivatedRoute)},
-        {provide: Router, useFactory: () => mock(Router)}
+        { provide: AuthenticationService, useFactory: () => mock(AuthenticationService) },
+        { provide: ActivatedRoute, useFactory: () => mock(ActivatedRoute) },
+        { provide: Router, useFactory: () => mock(Router) }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -42,7 +41,7 @@ describe('CreatePasswordPageComponent', () => {
     router = TestBed.get(Router);
 
     activatedRoute.params = Observable.create(observer => {
-      observer.next({'token': 'token'});
+      observer.next({ 'token': 'token' });
       observer.complete();
     });
   });
@@ -66,33 +65,35 @@ describe('CreatePasswordPageComponent', () => {
     expect(component.form).toBeDefined();
   });
 
+  describe('isDisabled', () => {
+    it('should return true for isDisabled on invalid password', () => {
+      component.ngOnInit();
 
-  it('should return true for isDisabled on invalid password', () => {
-    component.ngOnInit();
+      component.form.setValue({ password: 'test' });
 
-    component.form.setValue({password: 'test'});
+      expect(component.isDisabled).toBeTruthy();
+    });
 
-    expect(component.isDisabled).toBeTruthy();
+    it('should return false for isDisabled on valid password', () => {
+      component.ngOnInit();
+
+      component.form.setValue({ password: '12!@qwQW' });
+
+      expect(component.isDisabled).toBeFalsy();
+    });
   });
 
-  it('should return false for isDisabled on valid password', () => {
-    component.ngOnInit();
-
-    component.form.setValue({password: '12!@qwQW'});
-
-    expect(component.isDisabled).toBeFalsy();
-  });
   describe('onSubmit', () => {
     it('should call the service with the right arguments and route to success', () => {
       spyOn(authenticationService, 'resetPassword').and.returnValue(of(true));
-      const spy: Spy = spyOn(router, 'navigate');
+      const spy: Spy = spyOn(router, 'navigateByUrl');
       component.ngOnInit();
-      component.form.setValue({password: 'password'});
+      component.form.setValue({ password: 'password' });
 
       component.onSubmit();
 
       expect(authenticationService.resetPassword).toHaveBeenCalledWith('token', 'password');
-      expect(spy.calls.mostRecent().args[0]).toEqual(['../success']);
+      expect(spy.calls.mostRecent().args[0]).toEqual('/create-password/success');
     });
 
     it('should handle authenticationService.resetPassword error for api errors', () => {
@@ -102,17 +103,15 @@ describe('CreatePasswordPageComponent', () => {
             message: 'Sample error text'
           }
         }));
-      const spy: Spy = spyOn(router, 'navigate')
+      const spy: Spy = spyOn(router, 'navigateByUrl');
 
       component.ngOnInit();
-      component.form.setValue({password: 'password'});
+      component.form.setValue({ password: 'password' });
 
       component.onSubmit();
 
       expect(authenticationService.resetPassword).toHaveBeenCalledWith('token', 'password');
-      expect(spy.calls.mostRecent().args[0]).toEqual(['../error']);
-
+      expect(spy.calls.mostRecent().args[0]).toEqual('/create-password/error');
     });
   });
-
-})
+});

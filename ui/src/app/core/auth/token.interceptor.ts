@@ -6,16 +6,16 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  public constructor(public auth: AuthenticationService) {
+  public constructor(public authenticationService: AuthenticationService) {
   }
 
   /* tslint:disable:no-any */
   public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token: string = this.auth.getCurrentToken();
+    const token: string = this.authenticationService.getCurrentToken();
     if (!!token) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         }
       });
     }
