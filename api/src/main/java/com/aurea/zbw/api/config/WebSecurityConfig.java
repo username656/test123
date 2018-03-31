@@ -67,6 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(GET, apiDocsPath).permitAll()
             .antMatchers(POST, "/auth/forgot-password").permitAll()
             .antMatchers(POST, "/auth/reset-password*").permitAll()
+            .antMatchers(POST, "/auth/create-password*").permitAll()
             // Allowing Actuator Health
             .antMatchers(GET, endpointsHealthPath).permitAll()
             // Allowing Authenticate Endpoint

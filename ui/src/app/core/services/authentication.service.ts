@@ -6,12 +6,14 @@ import { Observable } from 'rxjs/Observable';
 
 import { User } from '@app/core/models/user';
 import { StorageService } from '@app/core/services/storage.service';
+import {Token} from "@app/core/models/token";
 
 // tslint:disable-next-line
 const URLs = {
   login: `${environment.apiPath}/auth/login`,
   forgotPassword: `${environment.apiPath}/auth/forgot-password`,
-  resetPassword: `${environment.apiPath}/auth/reset-password`
+  resetPassword: `${environment.apiPath}/auth/reset-password`,
+  token: `/data/tokens/search/findOneValidToken`
 };
 
 @Injectable()
@@ -139,6 +141,15 @@ export class AuthenticationService {
     }   // The user is not logged
 
     return undefined;
+  }
+
+  /**
+   * Get the token from the backend if not expired.
+   *
+   * @return (Token) the token registered
+   */
+  public getValidToken(token: string): Observable<Token> {
+    return this.http.get<Token>(`${URLs.token}?token=${token}`);
   }
 
 }

@@ -28,16 +28,29 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
     return !(this.length && this.uppercase && this.number && this.special);
   }
 
-  public constructor(private fb: FormBuilder,
-                     private authenticationService: AuthenticationService,
-                     private activatedRoute: ActivatedRoute,
-                     private router: Router) {
-  }
+  public constructor(
+    private fb: FormBuilder,
+    private authenticationService: AuthenticationService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router) {}
 
   public ngOnInit(): void {
     this.createForm();
     this.activatedRoute.params.subscribe((params) => {
       this.token = params['token'];
+
+      if(!this.token) {
+        this.router.navigateByUrl('/create-password/error');
+      } else {
+        this.loading = true;
+        this.authenticationService.getValidToken(this.token).subscribe(response => {
+          this.loading = false;
+        }, error => {
+          this.loading = false;
+          this.router.navigateByUrl('/create-password/error');
+        });
+      }
+
     });
   }
 
