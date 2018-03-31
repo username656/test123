@@ -4,6 +4,6 @@ export interface User {
   lastName: string;
   invitedGang?: boolean;
   image?: string;
-  state?: 'online' | 'offline';
+  status?: 'online' | 'offline';
   badgeInbox?: number;
 }
