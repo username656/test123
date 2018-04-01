@@ -1,25 +1,23 @@
-import { NO_ERRORS_SCHEMA, Component, ElementRef, TemplateRef } from '@angular/core';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { User } from '@app/core/models/user';
+import { AuthenticationService } from '@app/core/services/authentication.service';
+import { InboxService } from '@app/core/services/inbox.service';
+import { DfPortalService } from '@devfactory/ngx-df/portal';
 import { of } from 'rxjs/observable/of';
-import { _throw } from 'rxjs/observable/throw';
-import { Observable } from 'rxjs/Observable';
 import { mock } from 'ts-mockito/lib/ts-mockito';
 
-import { ShellComponent, SidebarState, LogoState } from './shell.component';
-import { AuthenticationService } from '@app/core/services/authentication.service';
-import { Title } from '@angular/platform-browser';
-import { InboxService } from '@app/core/services/inbox.service';
-import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { DfPortalService } from '@devfactory/ngx-df/portal';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { User } from '@app/core/models/user';
+import { LogoState, ShellComponent, SidebarState } from './shell.component';
 
 describe('ShellComponent', () => {
-  const SAMPLE_INBOX_BADGE = 5;
-  const SAMPLE_USER = <User>{ firstName: 'Sample', lastName: 'Last' };
+  const SAMPLE_INBOX_BADGE: number = 5;
+  const SAMPLE_USER: User = <User>{ firstName: 'Sample', lastName: 'Last' };
 
   let component: ShellComponent;
   let fixture: ComponentFixture<ShellComponent>;

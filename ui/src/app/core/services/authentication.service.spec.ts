@@ -1,23 +1,25 @@
+import { HttpClient, HttpClientModule, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { async, getTestBed, TestBed } from '@angular/core/testing';
-import { HttpClientModule, HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { of } from 'rxjs/observable/of';
 
-import { User } from '@app/core/models/user';
-import { StorageService } from '@app/core/services/storage.service';
-import { AuthenticationService } from '@app/core/services/authentication.service';
 import { CoreModule } from '@app/core/core.module';
+import { User } from '@app/core/models/user';
+import { AuthenticationService } from '@app/core/services/authentication.service';
+import { StorageService } from '@app/core/services/storage.service';
 
 describe('AuthenticationService', () => {
   let http: HttpClient;
   let storageService: StorageService;
   let service: AuthenticationService;
 
-  const CURRENT_USER_LOCAL_STORAGE = 'kayako-user';
-  const CURRENT_TOKEN_LOCAL_STORAGE = 'kayako-token';
-  const CURRENT_LOGIN_EXPIRATION_LOCAL_STORAGE = 'kayako-login-expiration';
-  const CURRENT_LOGIN_EXPIRATION_SESSION = 'session';
-  const SAMPLE_AUTHORIZATION = 'Bearer sample';
-  const SUCCESS_RESPONSE = new HttpResponse({
+  const CURRENT_USER_LOCAL_STORAGE: string = 'kayako-user';
+  const CURRENT_TOKEN_LOCAL_STORAGE: string = 'kayako-token';
+  const CURRENT_LOGIN_EXPIRATION_LOCAL_STORAGE: string = 'kayako-login-expiration';
+  const CURRENT_LOGIN_EXPIRATION_SESSION: string = 'session';
+  const SAMPLE_AUTHORIZATION: string = 'Bearer sample';
+
+  /* tslint:disable:no-any */
+  const SUCCESS_RESPONSE: HttpResponse<any> = new HttpResponse({
     body: {
       username: 'sample',
       firstName: 'John',
@@ -55,7 +57,7 @@ describe('AuthenticationService', () => {
     localStorage.removeItem(CURRENT_LOGIN_EXPIRATION_LOCAL_STORAGE);
     localStorage.removeItem(CURRENT_USER_LOCAL_STORAGE);
     localStorage.removeItem(CURRENT_TOKEN_LOCAL_STORAGE);
-  })
+  });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
@@ -84,9 +86,10 @@ describe('AuthenticationService', () => {
     it('should recover the authorization successfully / not remember option', () => {
       spyOn(http, 'post').and.returnValue(of(SUCCESS_RESPONSE));
 
-      service.login('sample', 'secret', false).subscribe((res) => {});
+      service.login('sample', 'secret', false).subscribe((res) => {
+      });
 
-      let token: string = service.getCurrentToken();
+      const token: string = service.getCurrentToken();
       expect(token).toBeDefined();
       expect(token).toBe(SAMPLE_AUTHORIZATION);
     });
@@ -94,9 +97,10 @@ describe('AuthenticationService', () => {
     it('should recover the user data successfully / not remember option', () => {
       spyOn(http, 'post').and.returnValue(of(SUCCESS_RESPONSE));
 
-      service.login('sample', 'secret', false).subscribe((res) => {});
+      service.login('sample', 'secret', false).subscribe((res) => {
+      });
 
-      let user: User = service.getCurrentUser();
+      const user: User = service.getCurrentUser();
       expect(user).toBeDefined();
       expect(user.username).toBe('sample');
       expect(user.firstName).toBe('John');
@@ -105,9 +109,10 @@ describe('AuthenticationService', () => {
     it('should recover the user data successfully / remember option', () => {
       spyOn(http, 'post').and.returnValue(of(SUCCESS_RESPONSE));
 
-      service.login('sample', 'secret', true).subscribe((res) => {});
+      service.login('sample', 'secret', true).subscribe((res) => {
+      });
 
-      let user: User = service.getCurrentUser();
+      const user: User = service.getCurrentUser();
       expect(user).toBeDefined();
       expect(user.username).toBe('sample');
       expect(user.firstName).toBe('John');
@@ -116,9 +121,10 @@ describe('AuthenticationService', () => {
     it('should recover the authorization successfully / remember option', () => {
       spyOn(http, 'post').and.returnValue(of(SUCCESS_RESPONSE));
 
-      service.login('sample', 'secret', true).subscribe((res) => {});
+      service.login('sample', 'secret', true).subscribe((res) => {
+      });
 
-      let token: string = service.getCurrentToken();
+      const token: string = service.getCurrentToken();
       expect(token).toBeDefined();
       expect(token).toBe(SAMPLE_AUTHORIZATION);
     });
@@ -126,54 +132,58 @@ describe('AuthenticationService', () => {
 
   describe('getCurrentUser', () => {
     it('should not recover user when no login', () => {
-      let user: User = service.getCurrentUser();
+      const user: User = service.getCurrentUser();
       expect(user).toBeUndefined();
     });
 
     it('should not have user after logout / no remember option', () => {
       spyOn(http, 'post').and.returnValue(of(SUCCESS_RESPONSE));
 
-      service.login('sample', 'secret', false).subscribe((res) => {});
+      service.login('sample', 'secret', false).subscribe((res) => {
+      });
       service.logout();
 
-      let user: User = service.getCurrentUser();
+      const user: User = service.getCurrentUser();
       expect(user).toBeUndefined();
     });
 
     it('should not have user after logout / remember option', () => {
       spyOn(http, 'post').and.returnValue(of(SUCCESS_RESPONSE));
 
-      service.login('sample', 'secret', true).subscribe((res) => {});
+      service.login('sample', 'secret', true).subscribe((res) => {
+      });
       service.logout();
 
-      let user: User = service.getCurrentUser();
+      const user: User = service.getCurrentUser();
       expect(user).toBeUndefined();
     });
   });
 
   describe('getCurrentToken', () => {
     it('should not recover token when no login', () => {
-      let token: string = service.getCurrentToken();
+      const token: string = service.getCurrentToken();
       expect(token).toBeUndefined();
     });
 
     it('should not have token after logout / no remember option', () => {
       spyOn(http, 'post').and.returnValue(of(SUCCESS_RESPONSE));
 
-      service.login('sample', 'secret', false).subscribe((res) => {});
+      service.login('sample', 'secret', false).subscribe((res) => {
+      });
       service.logout();
 
-      let token: string = service.getCurrentToken();
+      const token: string = service.getCurrentToken();
       expect(token).toBeUndefined();
     });
 
     it('should not have token after logout / remember option', () => {
       spyOn(http, 'post').and.returnValue(of(SUCCESS_RESPONSE));
 
-      service.login('sample', 'secret', true).subscribe((res) => {});
+      service.login('sample', 'secret', true).subscribe((res) => {
+      });
       service.logout();
 
-      let token: string = service.getCurrentToken();
+      const token: string = service.getCurrentToken();
       expect(token).toBeUndefined();
     });
   });

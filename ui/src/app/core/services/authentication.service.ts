@@ -86,6 +86,7 @@ export class AuthenticationService {
    * @param {string} token generated reset token
    * @param {string} password New password
    */
+  /* tslint:disable:no-any */
   public resetPassword(token: string, password: string): Observable<HttpResponse<any>> {
     return this.http.post(URLs.resetPassword, JSON.stringify({ token, password }), { observe: 'response' });
   }

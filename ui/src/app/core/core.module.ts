@@ -10,10 +10,10 @@ import { NgxDfCustom } from '@app/shared/ngx-custom.module';
 import { DfHttpErrorInterceptor, DfHttpIEInterceptor } from '@devfactory/ngx-df/interceptor';
 import { NgbDropdownModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { TokenInterceptor } from '@app/core/auth/token.interceptor';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { InboxService } from '@app/core/services/inbox.service';
 import { StorageService } from '@app/core/services/storage.service';
-import { TokenInterceptor } from '@app/core/auth/token.interceptor';
 
 /**
  * The Core module is used to hold all root-level providers. It should only be imported in the AppModule.
