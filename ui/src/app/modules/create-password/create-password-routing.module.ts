@@ -7,7 +7,7 @@ import { CreatePasswordResultPageComponent } from './pages/create-password-resul
 const routes: Routes = [
   {path: 'error', component: CreatePasswordResultPageComponent, data: {result: 'error'}},
   {path: 'success', component: CreatePasswordResultPageComponent, data: {result: 'success'}},
-  {path: ':token', component: CreatePasswordPageComponent}
+  {path: ':token', component: CreatePasswordPageComponent},
   {path: '', component: CreatePasswordPageComponent}
 ];
 

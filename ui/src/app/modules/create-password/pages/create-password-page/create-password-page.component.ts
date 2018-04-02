@@ -41,14 +41,19 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
 
       if(!this.token) {
         this.router.navigateByUrl('/create-password/error');
+
       } else {
         this.loading = true;
-        this.authenticationService.getValidToken(this.token).subscribe(response => {
-          this.loading = false;
-        }, error => {
-          this.loading = false;
-          this.router.navigateByUrl('/create-password/error');
-        });
+        this.authenticationService.checkForValidToken(this.token).subscribe(response => {
+            this.loading = false;
+            if(response['status'] === 204) {
+              this.router.navigateByUrl('/create-password/error');
+            }
+
+          }, error => {
+            this.loading = false;
+            this.router.navigateByUrl('/create-password/error');
+          });
       }
 
     });

@@ -1,17 +1,17 @@
 package com.aurea.zbw.api.controllers;
 
 import com.aurea.zbw.api.exceptions.BadRequestException;
+import com.aurea.zbw.api.exceptions.NotFoundException;
 import com.aurea.zbw.api.model.TokenPassword;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.websocket.server.PathParam;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -40,5 +40,15 @@ public class PasswordController {
         if (ERROR_RESET_KEY.equals(tokenPassword.getToken())) {
             throw new BadRequestException("Invalid reset key");
         }
+    }
+
+    @ApiOperation(value = "Check Validity of Token")
+    @GetMapping(path = "/check-token/{token}")
+    @ResponseStatus(OK)
+    public ResponseEntity<?> checkToken(@PathVariable("token") String token) {
+        if (ERROR_RESET_KEY.equals(token)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

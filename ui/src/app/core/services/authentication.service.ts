@@ -13,7 +13,7 @@ const URLs = {
   login: `${environment.apiPath}/auth/login`,
   forgotPassword: `${environment.apiPath}/auth/forgot-password`,
   resetPassword: `${environment.apiPath}/auth/reset-password`,
-  token: `/data/tokens/search/findOneValidToken`
+  token: `${environment.apiPath}/auth/check-token`
 };
 
 @Injectable()
@@ -28,7 +28,7 @@ export class AuthenticationService {
   private static CURRENT_LOGIN_EXPIRATION_SESSION: string = 'session';
 
   public constructor(private http: HttpClient,
-                     private storageService: StorageService) {
+    private storageService: StorageService) {
   }
 
   /**
@@ -148,8 +148,8 @@ export class AuthenticationService {
    *
    * @return (Token) the token registered
    */
-  public getValidToken(token: string): Observable<Token> {
-    return this.http.get<Token>(`${URLs.token}?token=${token}`);
+  public checkForValidToken(token: string): Observable<any> {
+    return this.http.get<any>(`${URLs.token}/${token}`);
   }
 
 }
