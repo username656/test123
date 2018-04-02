@@ -1,14 +1,13 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { AuthenticationService } from '@app/core/services/authentication.service';
+import { Observable } from 'rxjs/Observable';
+import { mock } from 'ts-mockito/lib/ts-mockito';
 
 import { AuthGuard } from './auth.guard';
-import { AuthenticationService } from '@app/core/services/authentication.service';
-import { mock } from 'ts-mockito/lib/ts-mockito';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 describe('AuthGuard', () => {
-  const authenticationService = mock(AuthenticationService);
-  const router = mock(Router);
+  const authenticationService: AuthenticationService = mock(AuthenticationService);
+  const router: Router = mock(Router);
   const guard: AuthGuard = new AuthGuard(authenticationService, router);
 
   it('should navigate to login when not logged', () => {
@@ -23,7 +22,8 @@ describe('AuthGuard', () => {
   it('should return true when logged', () => {
     spyOn(authenticationService, 'isUserLogged').and.returnValue(true);
 
-    const result = guard.canActivate(mock(ActivatedRouteSnapshot), mock(RouterStateSnapshot));
+    const result: Observable<boolean> | Promise<boolean> | boolean =
+      guard.canActivate(mock(ActivatedRouteSnapshot), mock(RouterStateSnapshot));
 
     expect(result).toBeTruthy();
   });

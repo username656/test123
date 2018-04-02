@@ -1,13 +1,13 @@
-import { StorageService } from "./storage.service";
+import { StorageService } from './storage.service';
 
-describe("StorageService", () => {
+describe('StorageService', () => {
 
-  let service = new StorageService();
+  const service: StorageService = new StorageService();
 
-  let SAMPLE_KEY = "key";
-  let SAMPLE_DATA = "data";
+  const SAMPLE_KEY: string = 'key';
+  const SAMPLE_DATA: string = 'data';
 
-  it("should store/remove the data in the correct place / persistent / localStorage available", () => {
+  it('should store/remove the data in the correct place / persistent / localStorage available', () => {
     service.localStorageAvailable = true;
 
     service.setItem(SAMPLE_KEY, SAMPLE_DATA, true);
@@ -19,7 +19,7 @@ describe("StorageService", () => {
     expect(service.getItem(SAMPLE_KEY, false)).toBeNull();
   });
 
-  it("should store/remove the data in the correct place / persistent / localStorage not-available", () => {
+  it('should store/remove the data in the correct place / persistent / localStorage not-available', () => {
     service.localStorageAvailable = false;
 
     service.setItem(SAMPLE_KEY, SAMPLE_DATA, true);
@@ -31,7 +31,7 @@ describe("StorageService", () => {
     expect(service.getItem(SAMPLE_KEY, false)).toBeNull();
   });
 
-  it("should store/remove the data in the correct place / non-persistent / sessionStorage available", () => {
+  it('should store/remove the data in the correct place / non-persistent / sessionStorage available', () => {
     service.sessionStorageAvailable = true;
 
     service.setItem(SAMPLE_KEY, SAMPLE_DATA, false);
@@ -43,7 +43,7 @@ describe("StorageService", () => {
     expect(service.getItem(SAMPLE_KEY, false)).toBeNull();
   });
 
-  it("should store/remove the data in the correct place / non-persistent / sessionStorage not-available", () => {
+  it('should store/remove the data in the correct place / non-persistent / sessionStorage not-available', () => {
     service.sessionStorageAvailable = false;
 
     service.setItem(SAMPLE_KEY, SAMPLE_DATA, false);
@@ -54,5 +54,4 @@ describe("StorageService", () => {
     expect(service.getItem(SAMPLE_KEY, true)).toBeNull();
     expect(service.getItem(SAMPLE_KEY, false)).toBeNull();
   });
-
 });

@@ -1,16 +1,14 @@
-import { NO_ERRORS_SCHEMA, Component, ElementRef } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AuthenticationService } from '@app/core/services/authentication.service';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
-import { Observable } from 'rxjs/Observable';
 import { mock } from 'ts-mockito/lib/ts-mockito';
 
 import { LoginPageComponent } from './login-page.component';
-import { AuthenticationService } from '@app/core/services/authentication.service';
-import { Title } from '@angular/platform-browser';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
@@ -20,19 +18,18 @@ describe('LoginPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        declarations: [ LoginPageComponent ],
-        imports: [
-          ReactiveFormsModule,
-          RouterTestingModule.withRoutes([
-            { path: '', component: Component }
-          ])
-        ],
-        providers: [
-            { provide: AuthenticationService, useFactory: () => mock(AuthenticationService) }
-        ]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [LoginPageComponent],
+      imports: [
+        ReactiveFormsModule,
+        RouterTestingModule.withRoutes([
+          { path: '', component: Component }
+        ])
+      ],
+      providers: [
+        { provide: AuthenticationService, useFactory: () => mock(AuthenticationService) }
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

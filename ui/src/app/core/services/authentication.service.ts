@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { map } from 'rxjs/operators';
@@ -25,9 +25,8 @@ export class AuthenticationService {
   private static CURRENT_LOGIN_EXPIRATION_DAYS: number = 30;
   private static CURRENT_LOGIN_EXPIRATION_SESSION: string = 'session';
 
-  public constructor(
-    private http: HttpClient,
-    private storageService: StorageService) {
+  public constructor(private http: HttpClient,
+                     private storageService: StorageService) {
   }
 
   /**
@@ -45,16 +44,16 @@ export class AuthenticationService {
           const user: User = res.body;
 
           if (remember) {
-              const expiration: Date = new Date();
-              expiration.setDate(expiration.getDate() + AuthenticationService.CURRENT_LOGIN_EXPIRATION_DAYS);
-              this.storageService.setItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY,
-                  expiration.toString(), true);
+            const expiration: Date = new Date();
+            expiration.setDate(expiration.getDate() + AuthenticationService.CURRENT_LOGIN_EXPIRATION_DAYS);
+            this.storageService.setItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY,
+              expiration.toString(), true);
           } else {
-              this.storageService.setItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY,
-                AuthenticationService.CURRENT_LOGIN_EXPIRATION_SESSION, true);
+            this.storageService.setItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY,
+              AuthenticationService.CURRENT_LOGIN_EXPIRATION_SESSION, true);
           }
           this.storageService.setItem(AuthenticationService.CURRENT_TOKEN_STORAGE_KEY,
-              res.headers.get(AuthenticationService.AUTHORIZATION_HEADER), remember);
+            res.headers.get(AuthenticationService.AUTHORIZATION_HEADER), remember);
           this.storageService.setItem(AuthenticationService.CURRENT_USER_STORAGE_KEY, JSON.stringify(user), remember);
 
           return true;
@@ -84,15 +83,12 @@ export class AuthenticationService {
   }
 
   /**
-   * Mock method.
-   * TODO: Change this for the real one.
+   * @param {string} token generated reset token
    * @param {string} password New password
    */
-  public resetPassword(password: string): Observable<boolean> {
-    return this.http.post(`http://mockbin.com/request?foo=bar&foo=baz`, null)
-      .pipe(
-        map(() => true)
-      );
+  /* tslint:disable:no-any */
+  public resetPassword(token: string, password: string): Observable<HttpResponse<any>> {
+    return this.http.post(URLs.resetPassword, JSON.stringify({ token, password }), { observe: 'response' });
   }
 
   public isUserLogged(): boolean {
@@ -138,7 +134,7 @@ export class AuthenticationService {
         const currentTime: Date = new Date();
         const expiration: Date = new Date(loginExpiration);
         if (currentTime < expiration) {
-            return true;
+          return true;
         }   // The login expired
       }
     }   // The user is not logged

@@ -7,12 +7,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthGuard } from '@app/shared/guards/auth.guard';
 import { NgxDfCustom } from '@app/shared/ngx-custom.module';
-import {
-  DfHttpErrorInterceptor,
-  DfHttpIEInterceptor
-} from '@devfactory/ngx-df/interceptor';
+import { DfHttpErrorInterceptor, DfHttpIEInterceptor } from '@devfactory/ngx-df/interceptor';
 import { NgbDropdownModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { TokenInterceptor } from '@app/core/auth/token.interceptor';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { InboxService } from '@app/core/services/inbox.service';
 import { StorageService } from '@app/core/services/storage.service';
@@ -49,6 +47,11 @@ import { StorageService } from '@app/core/services/storage.service';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: DfHttpIEInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
       multi: true
     },
     /** Provide your app wide services here */

@@ -5,6 +5,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.EnumType.STRING;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.List;
@@ -45,6 +46,9 @@ public class User implements Serializable {
     private Status status;
 
     private boolean enabled;
+
+    @JsonIgnore
+    private String resetKey;
 
     @OneToMany(fetch = EAGER)
     @JoinTable(
