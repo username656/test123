@@ -1,0 +1,42 @@
+aurea:
+  api:
+    info:
+      title: Zero Based Website API
+      license: UNLICENSED
+      version: 1.0.0
+    cors:
+      allowedOrigins: http://localhost:4200
+      allowedHeaders: Content-Type,Authorization,Pragma
+      allowedMethods: POST,PUT,PATCH,GET,OPTIONS,DELETE
+      maxAge: 3600
+    securitySchemeKeyName: ZeroBasedWebsite
+
+server.error.whitelabel.enabled: false
+
+spring:
+  datasource:
+    platform: h2
+  data:
+    rest:
+      base-path: /api/data
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs
+
+security:
+  oauth2:
+    client:
+      client-id: zwbapp
+      client-secret: zwbsecret
+    authorization:
+      check-token-access: isAuthenticated()
