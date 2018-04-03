@@ -47,7 +47,7 @@ public class PasswordController {
     @ResponseStatus(OK)
     public ResponseEntity<?> checkToken(@PathVariable("token") String token) {
         if (ERROR_RESET_KEY.equals(token)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Token not found or expired.", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }

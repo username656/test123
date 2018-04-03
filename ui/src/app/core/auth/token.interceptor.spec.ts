@@ -12,7 +12,7 @@ describe('TokenInterceptor', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        {provide: AuthenticationService, useFactory: () => mock(AuthenticationService)},
+        { provide: AuthenticationService, useFactory: () => mock(AuthenticationService) },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: TokenInterceptor,
@@ -25,7 +25,6 @@ describe('TokenInterceptor', () => {
   beforeEach(() => {
     auth = getTestBed().get(AuthenticationService);
   });
-
 
   describe('intercept http calls', () => {
     const TEST_TOKEN: string = 'test-token';
@@ -40,16 +39,40 @@ describe('TokenInterceptor', () => {
         );
 
         const request: TestRequest = httpMock.expectOne(req =>
-          req.headers.has('Authorization') &&
           req.headers.has('Content-Type') &&
           req.headers.get('Content-Type') === 'application/json' &&
           req.headers.has('Accept') &&
+          req.headers.get('Accept') === 'application/json' &&
+          req.headers.has('Authorization') &&
           req.headers.get('Authorization') === `Bearer ${TEST_TOKEN}`);
         expect(request.request.method).toEqual('GET');
 
         request.flush({});
         httpMock.verify();
       }));
+
+    it('does not add Authorization header', inject([HttpClient, HttpTestingController],
+      (http: HttpClient, httpMock: HttpTestingController) => {
+
+        spyOn(auth, 'getCurrentToken');
+
+        http.get('/data').subscribe(response => {
+            expect(response).toBeTruthy();
+          }
+        );
+
+        const request: TestRequest = httpMock.expectOne(req =>
+          !req.headers.has('Authorization') &&
+          req.headers.has('Content-Type') &&
+          req.headers.get('Content-Type') === 'application/json' &&
+          req.headers.has('Accept') &&
+          req.headers.get('Accept') === 'application/json');
+        expect(request.request.method).toEqual('GET');
+
+        request.flush({});
+        httpMock.verify();
+      }));
+
   });
 
 });

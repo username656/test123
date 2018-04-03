@@ -32,6 +32,9 @@ import static org.springframework.http.HttpMethod.POST;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String ROOT_PATH = "/";
+    private static final String AUTH_FORGOT_PASSWORD = "/auth/forgot-password";
+    private static final String AUTH_RESET_PASSWORD = "/auth/reset-password*";
+    private static final String AUTH_CHECK_TOKEN = "/auth/check-token/*";
 
     @Value("${springfox.documentation.swagger.v2.path}")
     private String apiDocsPath;
@@ -65,10 +68,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(GET, properties.getApi().getSwagger().getResourcesPath1()).permitAll()
             .antMatchers(GET, properties.getApi().getSwagger().getResourcesPath2()).permitAll()
             .antMatchers(GET, apiDocsPath).permitAll()
-            .antMatchers(POST, "/auth/forgot-password").permitAll()
-            .antMatchers(POST, "/auth/reset-password*").permitAll()
-            .antMatchers(GET, "/auth/check-token/*").permitAll()
-
+            .antMatchers(GET, AUTH_CHECK_TOKEN).permitAll()
+            .antMatchers(POST, AUTH_FORGOT_PASSWORD).permitAll()
+            .antMatchers(POST, AUTH_RESET_PASSWORD).permitAll()
             // Allowing Actuator Health
             .antMatchers(GET, endpointsHealthPath).permitAll()
             // Allowing Authenticate Endpoint
