@@ -1,0 +1,13 @@
+buildscript {
+    ext {
+        rootGradleDir = "${rootProject.rootDir}/gradle"
+        serviceGradleDir = "${rootProject.rootDir}/service/gradle"
+    }
+}
+
+wrapper.gradleVersion = '4.5.1'
+
+configure(allprojects) {
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+}

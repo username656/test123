@@ -1,0 +1,33 @@
+FROM sgrio/java-oracle:server_jre_8_unlimited
+
+MAINTAINER alexander.yushchenko@aurea.com
+
+RUN mkdir -p /opt
+
+# Launcher script.
+ADD docker/start.sh /opt/start.sh
+RUN chmod +x /opt/start.sh
+
+# Logging.
+ENV GRAYLOG_SWITCH_ON on
+ENV APP_ENVIRONMENT dev
+ENV FACILITY zero
+
+# Default port to be exposed.
+EXPOSE 8080
+# Below port is needed for connecting to yourkit agent
+EXPOSE 10001
+
+# Import application.
+ADD build/libs/sample-zbw-api.jar /opt/sample-zbw-api.jar
+
+LABEL com.trilogy.company=aurea
+LABEL com.trilogy.maintainer=alexander.yushchenko@aurea.com
+LABEL com.trilogy.maintainer=alexander.yushchenko
+LABEL com.trilogy.product=aurea-zero-based
+LABEL com.trilogy.service=api-mocks-v2
+LABEL com.trilogy.stage=dev
+LABEL com.trilogy.team=Easier.BackendRewrite
+
+# Run in foreground.
+CMD [ "/opt/start.sh" ]
