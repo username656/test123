@@ -149,8 +149,8 @@ export class AuthenticationService {
    *
    * @return (Token) the token registered
    */
-  public checkForValidToken(token: string): Observable<any> {
-    return this.http.get<any>(`${URLs.token}/${token}`);
+  public isTokenValid(token: string): Observable<null> {
+    return this.http.get<null>(`${URLs.token}/${token}`);
   }
 
 }

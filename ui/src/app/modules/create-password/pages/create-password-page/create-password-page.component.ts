@@ -38,13 +38,11 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
     this.createForm();
     this.activatedRoute.params.subscribe((params) => {
       this.token = params['token'];
-
       if(!this.token) {
         this.router.navigateByUrl('/create-password/error');
-
       } else {
         this.loading = true;
-        this.authenticationService.checkForValidToken(this.token).subscribe(response => {
+        this.authenticationService.isTokenValid(this.token).subscribe(response => {
             this.loading = false;
           }, error => {
             this.loading = false;

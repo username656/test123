@@ -260,10 +260,10 @@ describe('AuthenticationService', () => {
     });
   });
 
-  describe('createPassword', () => {
+  describe('tokenCheck', () => {
     it('should return an invalid token response', () => {
       spyOn(http, 'get').and.returnValue(Observable.throw({status: 404}));
-      service.checkForValidToken('invalid-token').subscribe(
+      service.isTokenValid('invalid-token').subscribe(
         (res) => {
         }, (err) => {
           expect(err).toBeTruthy();
@@ -272,12 +272,11 @@ describe('AuthenticationService', () => {
 
     it('should return an valid token response', () => {
       spyOn(http, 'get').and.returnValue(Observable.of({status: 200}));
-      service.checkForValidToken('valid-token').subscribe(
+      service.isTokenValid('valid-token').subscribe(
         (res) => {
           expect(res).toBeTruthy();
         }, (err) => {
         });
     });
   });
-
 });
