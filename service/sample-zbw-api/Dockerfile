@@ -15,8 +15,6 @@ ENV FACILITY zero
 
 # Default port to be exposed.
 EXPOSE 8080
-# Below port is needed for connecting to yourkit agent
-EXPOSE 10001
 
 # Import application.
 ADD build/libs/sample-zbw-api.jar /opt/sample-zbw-api.jar
@@ -25,7 +23,7 @@ LABEL com.trilogy.company=aurea
 LABEL com.trilogy.maintainer=alexander.yushchenko@aurea.com
 LABEL com.trilogy.maintainer=alexander.yushchenko
 LABEL com.trilogy.product=aurea-zero-based
-LABEL com.trilogy.service=api-mocks-v2
+LABEL com.trilogy.service=sample-zbw-api
 LABEL com.trilogy.stage=dev
 LABEL com.trilogy.team=Easier.BackendRewrite
 
