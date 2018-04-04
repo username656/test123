@@ -1,4 +1,4 @@
-**JIRA Ticket URL:** https://jira.devfactory.com/browse/KAYAKORW-?????
+**JIRA Ticket URL:** https://jira.devfactory.com/browse/JIRA-?????
 
 **Changes proposed in the pull request:**
 - It does ....
@@ -7,7 +7,7 @@
 
 **Checklist**
 - [ ] I checked I'm only including the changes I intend to make and nothing else
-- [ ] The PR summary starts with the ticket number, e.g.: 'KAYAKORW-?????: ....'
+- [ ] The PR summary starts with the ticket number, e.g.: 'JIRA-?????: ....'
 - [ ] The latest changes from develop branch are merged
 - [ ] The build/checks has been verified to succeed
 - [ ] All the reviewers are assigned (PCA & Easier CA at least)

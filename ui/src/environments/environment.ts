@@ -4,6 +4,6 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  apiPath: 'http://localhost:8080',
+  apiPath: 'http://dlb1.aureacentral.com:10233',
   production: false
 };

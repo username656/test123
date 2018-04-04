@@ -1,4 +1,4 @@
-# REST Integration API for AlertFind MessageOne
+# REST Integration API for Sample Zero Based project
 
 We design our interface following common expected behavior that we will just document once and follow all across the
 API without exception.
