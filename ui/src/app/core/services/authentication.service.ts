@@ -1,19 +1,19 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 
+import { Token } from '@app/core/models/token';
 import { User } from '@app/core/models/user';
 import { StorageService } from '@app/core/services/storage.service';
-import {Token} from "@app/core/models/token";
 
 // tslint:disable-next-line
 const URLs = {
   login: `${environment.apiPath}/auth/login`,
   forgotPassword: `${environment.apiPath}/auth/forgot-password`,
   resetPassword: `${environment.apiPath}/auth/reset-password`,
-  token: `${environment.apiPath}/auth/check-token`
+  token: `${environment.apiPath}/oauth/check_reset_token`
 };
 
 @Injectable()
@@ -122,6 +122,18 @@ export class AuthenticationService {
   }
 
   /**
+   * Get the token from the backend if not expired.
+   *
+   * @return (Token) the token registered
+   */
+  public isTokenValid(token: string): Observable<null> {
+    const headers: HttpHeaders = new HttpHeaders({
+      'Authorization': 'Basic ' + btoa('zwbapp:zwbsecret')
+    });
+    return this.http.get<null>(`${URLs.token}?token=${token}`, {headers: headers});
+  }
+
+  /**
    * Get the storage type to be used to get the data from (according to the login) or undefined if expired/not logged.
    *
    * @return {boolean} True if persistent storage has to be used, false if session storage or undefined if the login
@@ -143,14 +155,4 @@ export class AuthenticationService {
 
     return undefined;
   }
-
-  /**
-   * Get the token from the backend if not expired.
-   *
-   * @return (Token) the token registered
-   */
-  public isTokenValid(token: string): Observable<null> {
-    return this.http.get<null>(`${URLs.token}/${token}`);
-  }
-
 }

@@ -4,6 +4,7 @@ import { AuthenticationService } from '@app/core/services/authentication.service
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { PasswordUtilities } from '@app/shared/utilities/password-utilities';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-create-password',
@@ -43,13 +44,12 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
       } else {
         this.loading = true;
         this.authenticationService.isTokenValid(this.token).subscribe(response => {
-            this.loading = false;
-          }, error => {
-            this.loading = false;
-            this.router.navigateByUrl('/create-password/error');
-          });
+          this.loading = false;
+        }, error => {
+          this.loading = false;
+          this.router.navigateByUrl('/create-password/error');
+        });
       }
-
     });
   }
 
@@ -79,4 +79,5 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
     this.uppercase = PasswordUtilities.UPPER_CASE_PATTERN.test(password);
     this.special = PasswordUtilities.SPECIAL_CHARACTERS_PATTERN.test(password);
   }
+
 }
