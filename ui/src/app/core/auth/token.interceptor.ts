@@ -19,13 +19,13 @@ export class TokenInterceptor implements HttpInterceptor {
         }
       });
     }
-    request = request.clone({
-      setHeaders: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    });
-
+    if (request.headers.get('Content-Type') === undefined) {
+      request = request.clone({
+        setHeaders: {
+          'Content-Type': 'application/json'
+        }
+      });
+    }
     return next.handle(request);
   }
 }
