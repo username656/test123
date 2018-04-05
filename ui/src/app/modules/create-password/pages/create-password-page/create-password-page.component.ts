@@ -78,5 +78,4 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
     this.uppercase = PasswordUtilities.UPPER_CASE_PATTERN.test(password);
     this.special = PasswordUtilities.SPECIAL_CHARACTERS_PATTERN.test(password);
   }
-
 }
