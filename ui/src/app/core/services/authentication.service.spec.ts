@@ -5,8 +5,8 @@ import { CoreModule } from '@app/core/core.module';
 import { User } from '@app/core/models/user';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { StorageService } from '@app/core/services/storage.service';
+import { Observable } from 'rxjs/observable';
 import { of } from 'rxjs/observable/of';
-import { _throw } from 'rxjs/observable/throw';
 import { instance, mock } from 'ts-mockito';
 
 import { environment } from '../../../environments/environment';
@@ -268,28 +268,22 @@ describe('AuthenticationService', () => {
 
   describe('tokenCheck', () => {
     it('should return an invalid token response', () => {
-      const http: HttpClient = instance(mock(HttpClient));
-      const storage: StorageService = instance(mock(StorageService));
-      const authService: AuthenticationService = new AuthenticationService(http, storage);
-      spyOn(http, 'get').and.returnValue(_throw({status: 404}));
-      authService.isTokenValid('token').subscribe(
+      const request: TestRequest = httpMock.expectOne(`${URLs.token}?token=invalid-token`);
+      request.error(null, { status: 404 });
+      service.isTokenValid('invalid-token').subscribe(
         (res) => {
-          expect(false).toBeTruthy();
         }, (err) => {
-          expect(true).toBeTruthy();
+          expect(err).toBeTruthy();
         });
     });
 
-    it('should return a valid token response', () => {
-      const http: HttpClient = instance(mock(HttpClient));
-      const storage: StorageService = instance(mock(StorageService));
-      const authService: AuthenticationService = new AuthenticationService(http, storage);
-      spyOn(http, 'get').and.returnValue(of(null));
-      authService.isTokenValid('token').subscribe(
+    it('should return an valid token response', () => {
+      const request: TestRequest = httpMock.expectOne(`${URLs.token}?token=valid-token`);
+      request.flush({});
+      service.isTokenValid('valid-token').subscribe(
         (res) => {
-          expect(true).toBeTruthy();
+          expect(res).toBeTruthy();
         }, (err) => {
-          expect(false).toBeTruthy();
         });
     });
   });
