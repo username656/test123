@@ -14,7 +14,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/api/data/browser/**").permitAll()
                 .antMatchers("/api/users/forgot-password").permitAll()
                 .antMatchers("/api/users/reset-password").permitAll()
-                .antMatchers("/oauth/check_reset_token").permitAll()
+                .antMatchers("/oauth/check-reset-token").permitAll()
                 .antMatchers("/oauth/**").authenticated()
                 .antMatchers("/api/**").authenticated();
     }

@@ -13,7 +13,7 @@ const URLs = {
   login: `${environment.apiPath}/auth/login`,
   forgotPassword: `${environment.apiPath}/auth/forgot-password`,
   resetPassword: `${environment.apiPath}/auth/reset-password`,
-  token: `${environment.apiPath}/oauth/check_reset_token`
+  token: `${environment.apiPath}/oauth/check-reset-token`
 };
 
 @Injectable()

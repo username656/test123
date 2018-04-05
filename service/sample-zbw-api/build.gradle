@@ -1,8 +1,5 @@
 dependencies {
     runtime 'com.h2database:h2'
-    runtime 'javax.xml.bind:jaxb-api:2.3.0'
-    runtime 'javax.xml:jaxb-impl:2.1'
-    runtime 'javax.activation:activation:1.1.1'
     compile 'org.springframework.boot:spring-boot-autoconfigure'
     compile project(':service:aurea-boot-starter:rest-api-oauth2-starter')
 }
