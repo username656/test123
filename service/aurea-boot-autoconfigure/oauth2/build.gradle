@@ -1,6 +1,6 @@
 
 dependencies {
-    compile project(':service:aurea-boot-autoconfigure:data-user')
+    compile project("${modulesBase}:service:aurea-boot-autoconfigure:data-user")
     compile 'org.springframework.boot:spring-boot-autoconfigure'
     compile 'org.springframework.cloud:spring-cloud-starter-oauth2'
 

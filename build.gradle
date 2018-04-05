@@ -1,13 +1,17 @@
-buildscript {
-    ext {
-        rootGradleDir = "${rootProject.rootDir}/gradle"
-        serviceGradleDir = "${rootProject.rootDir}/service/gradle"
+if ( !hasProperty('isAureaZeroBasedSubmodule') || !isAureaZeroBasedSubmodule.toBoolean()) {
+    buildscript {
+        ext {
+            rootGradleDir = "${rootProject.rootDir}/gradle"
+            serviceGradleDir = "${rootProject.rootDir}/service/gradle"
+            gradlePluginsRepo= "https://plugins.gradle.org/m2/"
+            modulesBase = ""
+        }
     }
-}
 
-wrapper.gradleVersion = '4.5.1'
+    wrapper.gradleVersion = '4.5.1'
 
-configure(allprojects) {
-    apply plugin: 'idea'
-    apply plugin: 'eclipse'
+    configure(allprojects) {
+        apply plugin: 'idea'
+        apply plugin: 'eclipse'
+    }
 }
