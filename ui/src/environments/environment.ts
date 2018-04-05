@@ -3,8 +3,10 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
+const SERVER_PATH: string = 'http://localhost:8080';
+
 export const environment: { [key: string]: string | boolean } = {
-  apiPath: 'http://localhost:8080',
-  dataPath: 'http://localhost:8080/api/data',
+  serverPath: `${SERVER_PATH}`,
+  apiPath: `${SERVER_PATH}/api`,
   production: false
 };

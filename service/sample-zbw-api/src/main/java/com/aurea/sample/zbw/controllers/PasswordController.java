@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "api-reset-password")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/oauth")
+@RequestMapping("/oauth")
 public class PasswordController {
 
     private static final String ERROR_RESET_KEY = "invalid-token";
 
-    @ApiOperation(value = "Validate the reset password token")
+    @ApiOperation("Validate the reset password token")
     @GetMapping(path = "/check-reset-token")
     @ResponseStatus(OK)
     public ResponseEntity checkToken(@RequestParam("token") String token) {

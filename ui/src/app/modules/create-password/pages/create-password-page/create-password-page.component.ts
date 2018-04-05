@@ -1,10 +1,9 @@
 import { AfterViewInit, Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AuthenticationService } from '@app/core/services/authentication.service';
 
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from '@app/core/services/authentication.service';
 import { PasswordUtilities } from '@app/shared/utilities/password-utilities';
-import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-create-password',
@@ -39,7 +38,7 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
     this.createForm();
     this.activatedRoute.params.subscribe((params) => {
       this.token = params['token'];
-      if(!this.token) {
+      if (!this.token) {
         this.router.navigateByUrl('/create-password/error');
       } else {
         this.loading = true;

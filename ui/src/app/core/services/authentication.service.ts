@@ -1,34 +1,44 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'environments/environment';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
-
-import { Token } from '@app/core/models/token';
 import { User } from '@app/core/models/user';
 import { StorageService } from '@app/core/services/storage.service';
+import { environment } from 'environments/environment';
+import 'rxjs/add/operator/do';
+import { map, mergeMap, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 
-// tslint:disable-next-line
-const URLs = {
-  login: `${environment.apiPath}/auth/login`,
-  forgotPassword: `${environment.apiPath}/auth/forgot-password`,
-  resetPassword: `${environment.apiPath}/auth/reset-password`,
+
+const URLs: { [string: string]: string } = {
+  login: `${environment.serverPath}/oauth/token`,
+  forgotPassword: `${environment.serverPath}/auth/forgot-password`,
+  resetPassword: `${environment.serverPath}/auth/reset-password`,
+  user: `${environment.apiPath}/users/current`,
+  users: `${environment.apiPath}/data/users`,
   token: `${environment.apiPath}/oauth/check-reset-token`
 };
+
+interface TokenResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  refresh_token: string;
+  scope: string;
+  state?: string;
+}
 
 @Injectable()
 export class AuthenticationService {
 
-  private static AUTHORIZATION_HEADER: string = 'Authorization';
-
   private static CURRENT_USER_STORAGE_KEY: string = 'kayako-user';
-  private static CURRENT_TOKEN_STORAGE_KEY: string = 'kayako-token';
+  private static CURRENT_ACCESS_TOKEN_LOCAL_STORAGE: string = 'kayako-access-token';
+  private static CURRENT_REFRESH_TOKEN_LOCAL_STORAGE: string = 'kayako-refresh-token';
   private static CURRENT_LOGIN_EXPIRATION_STORAGE_KEY: string = 'kayako-login-expiration';
   private static CURRENT_LOGIN_EXPIRATION_DAYS: number = 30;
   private static CURRENT_LOGIN_EXPIRATION_SESSION: string = 'session';
+  private static BASIC_AUTH: string = 'Basic ' + btoa('zwbapp:zwbsecret');
 
   public constructor(private http: HttpClient,
-    private storageService: StorageService) {
+                     private storageService: StorageService) {
   }
 
   /**
@@ -39,26 +49,22 @@ export class AuthenticationService {
    * @param {boolean} remember  Indicate if the login has to be remembered or not
    * @return {boolean}          True if login was successful
    */
-  public login(username: string, password: string, remember: boolean): Observable<boolean> {
-    return this.http.post<User>(URLs.login, JSON.stringify({ username, password }), { observe: 'response' })
+  public login(username: string, password: string, remember: boolean): Observable<User> {
+    const data: string = `username=${username}&password=${password}&grant_type=password&scope=read`;
+
+
+    const headers: HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': AuthenticationService.BASIC_AUTH
+    });
+    return this.http.post<TokenResponse>(URLs.login, data, {headers: headers})
       .pipe(
-        map(res => {
-          const user: User = res.body;
-
-          if (remember) {
-            const expiration: Date = new Date();
-            expiration.setDate(expiration.getDate() + AuthenticationService.CURRENT_LOGIN_EXPIRATION_DAYS);
-            this.storageService.setItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY,
-              expiration.toString(), true);
-          } else {
-            this.storageService.setItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY,
-              AuthenticationService.CURRENT_LOGIN_EXPIRATION_SESSION, true);
-          }
-          this.storageService.setItem(AuthenticationService.CURRENT_TOKEN_STORAGE_KEY,
-            res.headers.get(AuthenticationService.AUTHORIZATION_HEADER), remember);
-          this.storageService.setItem(AuthenticationService.CURRENT_USER_STORAGE_KEY, JSON.stringify(user), remember);
-
-          return true;
+        tap(res => this.storeToken(remember, res)),
+        mergeMap(() => {
+          return this.getUser()
+            .pipe(tap(user => {
+              this.storageService.setItem(AuthenticationService.CURRENT_USER_STORAGE_KEY, JSON.stringify(user), remember);
+            }));
         })
       );
   }
@@ -70,12 +76,15 @@ export class AuthenticationService {
     // Remove user from storage to log user out
     this.storageService.removeItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY, true);
 
-    this.storageService.removeItem(AuthenticationService.CURRENT_TOKEN_STORAGE_KEY, false);
+    this.storageService.removeItem(AuthenticationService.CURRENT_ACCESS_TOKEN_LOCAL_STORAGE, false);
+    this.storageService.removeItem(AuthenticationService.CURRENT_REFRESH_TOKEN_LOCAL_STORAGE, false);
     this.storageService.removeItem(AuthenticationService.CURRENT_USER_STORAGE_KEY, false);
 
-    this.storageService.removeItem(AuthenticationService.CURRENT_TOKEN_STORAGE_KEY, true);
+    this.storageService.removeItem(AuthenticationService.CURRENT_ACCESS_TOKEN_LOCAL_STORAGE, true);
+    this.storageService.removeItem(AuthenticationService.CURRENT_REFRESH_TOKEN_LOCAL_STORAGE, true);
     this.storageService.removeItem(AuthenticationService.CURRENT_USER_STORAGE_KEY, true);
   }
+
 
   public forgotPassword(email: string): Observable<boolean> {
     return this.http.post(`${URLs.forgotPassword}?email=${email}`, null)
@@ -88,9 +97,10 @@ export class AuthenticationService {
    * @param {string} token generated reset token
    * @param {string} password New password
    */
+
   /* tslint:disable:no-any */
   public resetPassword(token: string, password: string): Observable<HttpResponse<any>> {
-    return this.http.post(URLs.resetPassword, JSON.stringify({ token, password }), { observe: 'response' });
+    return this.http.post(URLs.resetPassword, JSON.stringify({token, password}), {observe: 'response'});
   }
 
   public isUserLogged(): boolean {
@@ -100,7 +110,7 @@ export class AuthenticationService {
   public getCurrentToken(): string {
     const storageType: boolean = this.getStorageType();
     if (storageType !== undefined) {
-      return this.storageService.getItem(AuthenticationService.CURRENT_TOKEN_STORAGE_KEY, storageType);
+      return this.storageService.getItem(AuthenticationService.CURRENT_ACCESS_TOKEN_LOCAL_STORAGE, storageType);
     } else {
       return undefined; // The user is not logged or login expired
     }
@@ -154,5 +164,23 @@ export class AuthenticationService {
     }   // The user is not logged
 
     return undefined;
+  }
+
+  private storeToken(remember: boolean, res: TokenResponse): void {
+    if (remember) {
+      const expiration: Date = new Date();
+      expiration.setDate(expiration.getDate() + AuthenticationService.CURRENT_LOGIN_EXPIRATION_DAYS);
+      this.storageService.setItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY,
+        expiration.toString(), true);
+    } else {
+      this.storageService.setItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY,
+        AuthenticationService.CURRENT_LOGIN_EXPIRATION_SESSION, true);
+    }
+    this.storageService.setItem(AuthenticationService.CURRENT_ACCESS_TOKEN_LOCAL_STORAGE, res.access_token, remember);
+    this.storageService.setItem(AuthenticationService.CURRENT_REFRESH_TOKEN_LOCAL_STORAGE, res.refresh_token, remember);
+  }
+
+  private getUser(): Observable<User> {
+    return this.http.get<User>(`${URLs.user}`);
   }
 }

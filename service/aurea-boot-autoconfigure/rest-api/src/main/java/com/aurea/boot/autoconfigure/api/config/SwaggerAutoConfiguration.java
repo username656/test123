@@ -40,12 +40,11 @@ public class SwaggerAutoConfiguration {
             new AuthorizationScope("Global", "To access everything")};
 
     @Bean
-    public Docket restApi() throws IOException {
+    public Docket restApi() {
         return new Docket(SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
                         .title(apiProps.getInfo().getTitle())
-                        .description(
-                                IOUtils.toString(apiDescriptionResource.getInputStream(), Charsets.UTF_8))
+                        .description(getDescription())
                         .license(apiProps.getInfo().getLicense())
                         .version(apiProps.getInfo().getVersion())
                         .build())
@@ -67,5 +66,13 @@ public class SwaggerAutoConfiguration {
                                 .forPaths(PathSelectors.regex("/.*"))
                                 .build()
                 ));
+    }
+
+    private String getDescription() {
+        try {
+            return IOUtils.toString(apiDescriptionResource.getInputStream(), Charsets.UTF_8);
+        } catch (IOException ex) {
+            return "";
+        }
     }
 }

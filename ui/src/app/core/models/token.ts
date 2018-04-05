@@ -1,8 +1,8 @@
-import {User} from './user';
+import { User } from './user';
 
 export interface Token {
-  token;
-  expiration_date;
+  token: string;
+  expiration_date: string;
   type: 'FORGOT_PASSWORD';
   user: User;
 }

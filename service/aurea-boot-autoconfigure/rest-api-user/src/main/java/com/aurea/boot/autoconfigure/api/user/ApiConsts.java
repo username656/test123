@@ -10,12 +10,15 @@ public class ApiConsts {
 
         @UtilityClass
         public static final class Mapping {
+
             public static final String API_USER = API_ROOT + "/users";
             public static final String FORGOT_PASSWORD = "/forgot-password";
             public static final String RESET_PASSWORD = "/reset-password";
+            public static final String CURRENT_USER = "/current";
         }
 
         public static final class Param {
+
             public static final String EMAIL = "email";
         }
     }

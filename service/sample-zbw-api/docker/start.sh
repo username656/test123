@@ -26,13 +26,8 @@ if (( SYSTEM_MEMORY > 1024 )); then
     # Give something little (20%) to OS processes
     JAVA_MEMORY=$((SYSTEM_MEMORY * 8 / 10))
 
-    #Install Yourkit profiler
-    cd /opt
-    wget https://www.yourkit.com/download/yjp-2014-build-14124-linux.tar.bz2
-    tar xjf yjp-2014-build-14124-linux.tar.bz2
-
     # Set mandatory options, which are not overridden by JAVA_OPTS setting
-    MANDATORY_JAVA_OPTS=${MANDATORY_JAVA_OPTS:-"-agentpath:/opt/yjp-2014-build-14124/bin/linux-x86-64/libyjpagent.so=disablestacktelemetry,disableexceptiontelemetry,delay=10000 -Xmx${JAVA_MEMORY}m -XX:+PrintGC -Djava.security.egd=file:/dev/./urandom"}
+    MANDATORY_JAVA_OPTS=${MANDATORY_JAVA_OPTS:-" -Xmx${JAVA_MEMORY}m -XX:+PrintGC -Djava.security.egd=file:/dev/./urandom"}
 else
     echo "Host reported ${SYSTEM_MEMORY} MB of memory which is less than 1024. Skipping setting any JVM options"
 fi
