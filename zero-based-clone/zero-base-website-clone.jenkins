@@ -1,0 +1,48 @@
+properties([
+        parameters([
+                string(name:'GIT_REPO_URL', defaultValue:''),
+                string(name:'GIT_CREDENTIALS_ID', defaultValue: ''),
+                string(name:'GIT_BRANCH', defaultValue: 'master'),
+                string(name:'GITHUB_REPO_OWNER', defaultValue: 'trilogy-group'),
+                string(name:'GITHUB_REPO_NAME', decription:'Give here just the name of the github repo, e.g. if the git repo url is github.com/trilogy-group/aurea-kayako, the GITHUB_REPO_NAME will be aurea-kayako'),
+                string(name:'JENIKINS_PROJECT_NAME', defaultValue: '')
+        ])
+])
+
+pipeline {
+    agent any
+    stages {
+        stage('Clone zero base git repo and running initial build for the new project') {
+            steps {
+                script {
+                    git branch: params.GIT_BRANCH, changelog: true, credentialsId: params.GIT_CREDENTIALS_ID, poll: false, url: params.GIT_REPO_URL
+                    echo 'Successfully checked out the new git repo'
+                    sh """git submodule add https://github.com/trilogy-group/aurea-zer-based.git
+                        ./aurea-zero-based/.git_submodule/init.sh
+                        ./gradlew clean build
+                    """
+                }
+            }
+        }
+        stage('Commiting changed files') {
+            steps {
+                script {
+                    def gitRepoURL = params.GIT_REPO_URL
+                    def gitRepoURLSuffix = gitRepoURL.substring(gitRepoURL.indexOf("//")+2)
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: params.GIT_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                        sh """ git add -u && git commit -m \"Initial checkin from Jenkins job to seed the zero base repo\" || true
+                            git push https://${USERNAME}:${PASSWORD}@${gitRepoURLSuffix} || true
+                        """
+                    }
+                }
+            }
+        }
+        stage('Creating Jenkins Jobs for the new project') {
+            steps {
+                script {
+                   jobdsl targets:'zero-based-clone/jenkins/zbw-jenkins-jobs-cloning.groovy'
+                }
+            }
+        }
+    }
+}
