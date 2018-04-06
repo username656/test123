@@ -54,8 +54,13 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
       .subscribe(response => {
         this.router.navigateByUrl('/');
         this.loading = false;
-      }, error => {
-        this.alert = { show: true, message: error.error.message };
+      }, errorResponse => {
+        // The Authentication API has it's own error response format
+        if (errorResponse.status === 0) {
+          this.alert = { show: true, message: 'There was an error when communicating with the backend.' };
+        } else {
+          this.alert = { show: true, message: errorResponse.error.error_description };
+        }
         this.loading = false;
       });
   }
