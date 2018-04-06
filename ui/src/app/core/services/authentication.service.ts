@@ -14,7 +14,7 @@ const URLs: { [string: string]: string } = {
   resetPassword: `${environment.serverPath}/auth/reset-password`,
   user: `${environment.apiPath}/users/current`,
   users: `${environment.apiPath}/data/users`,
-  token: `${environment.apiPath}/oauth/check-reset-token`
+  token: `${environment.apiPath}/api/users/check-reset-password-token`
 };
 
 interface TokenResponse {
@@ -137,10 +137,7 @@ export class AuthenticationService {
    * @return (Token) the token registered
    */
   public isTokenValid(token: string): Observable<null> {
-    const headers: HttpHeaders = new HttpHeaders({
-      'Authorization': 'Basic ' + btoa('zwbapp:zwbsecret')
-    });
-    return this.http.get<null>(`${URLs.token}?token=${token}`, {headers: headers});
+    return this.http.get<null>(`${URLs.token}?token=${token}`);
   }
 
   /**

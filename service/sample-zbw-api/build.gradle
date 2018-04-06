@@ -1,5 +1,4 @@
 dependencies {
     runtime 'com.h2database:h2'
-    compile 'org.springframework.boot:spring-boot-autoconfigure'
-    compile project(':service:aurea-boot-starter:rest-api-oauth2-starter')
+    compile project(':service:aurea-boot-starter:rest-api-user-oauth2-starter')
 }

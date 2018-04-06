@@ -15,6 +15,7 @@ public class ResourceServerAutoConfiguration extends ResourceServerConfigurerAda
                 .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers("/api/data/browser/**").permitAll()
                 .antMatchers("/api/users/forgot-password").permitAll()
+                .antMatchers("/oauth/check-reset-token").permitAll()
                 .antMatchers("/oauth/**").authenticated()
                 .antMatchers("/api/**").authenticated();
     }

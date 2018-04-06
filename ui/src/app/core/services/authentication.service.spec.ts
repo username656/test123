@@ -45,8 +45,7 @@ describe('AuthenticationService', () => {
     forgotPassword: `${environment.serverPath}/auth/forgot-password`,
     resetPassword: `${environment.serverPath}/auth/reset-password`,
     user: `${environment.apiPath}/users/current`,
-    users: `${environment.apiPath}/data/users`,
-    token: `${environment.apiPath}/oauth/check-reset-token`
+    users: `${environment.apiPath}/data/users`
   };
 
   const headers: HttpHeaders = new HttpHeaders({
@@ -267,7 +266,7 @@ describe('AuthenticationService', () => {
   });
 
   describe('tokenCheck', () => {
-    it('should return an invalid token response', () => {
+    it('should not return a valid token response', () => {
       const http: HttpClient = instance(mock(HttpClient));
       const storage: StorageService = instance(mock(StorageService));
       const authService: AuthenticationService = new AuthenticationService(http, storage);
