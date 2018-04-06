@@ -20,7 +20,6 @@ pipeline {
                     echo 'Current working directory is '+ pwd()
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: params.GIT_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
                         sh "git submodule add https://${USERNAME}:${PASSWORD}@github.com/trilogy-group/aurea-zero-based; " +
-                            //sh "git submodule add https://github.com/trilogy-group/aurea-zero-based.git; "+
                             "chmod +x ./aurea-zero-based/.git_submodule/init.sh; ./aurea-zero-based/.git_submodule/init.sh; " +
                             "./gradlew clean build;"
                     }
@@ -33,7 +32,7 @@ pipeline {
                     def gitRepoURL = params.GIT_REPO_URL
                     def gitRepoURLSuffix = gitRepoURL.substring(gitRepoURL.indexOf("//")+2)
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: params.GIT_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                        sh """ git add -u && git commit -m \"Initial checkin from Jenkins job to seed the zero base repo\" || true
+                        sh """ git add -A . && git commit -m \"Initial checkin from Jenkins job to seed the zero base repo\" || true
                             git push https://${USERNAME}:${PASSWORD}@${gitRepoURLSuffix} || true
                         """
                     }
@@ -43,7 +42,7 @@ pipeline {
         stage('Creating Jenkins Jobs for the new project') {
             steps {
                 script {
-                   jobdsl targets:'zero-based-clone/jenkins/zbw-jenkins-jobs-cloning.groovy'
+                   jobDsl targets:'zero-based-clone/jenkins/zbw-jenkins-jobs-cloning.groovy'
                 }
             }
         }
