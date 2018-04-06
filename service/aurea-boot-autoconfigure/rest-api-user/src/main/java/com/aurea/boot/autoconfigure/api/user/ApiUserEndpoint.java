@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class ApiUserEndpoint {
 
+    private static final String ERROR_RESET_KEY = "invalid-token";
+
     private final UserRepository userRepository;
 
     @ApiOperation("Forgot Password")
@@ -60,8 +62,6 @@ public class ApiUserEndpoint {
     @ApiOperation("Validate the reset password token")
     @GetMapping(path = "/check-reset-password-token")
     public ResponseEntity checkToken(@ApiParam(required = true) @RequestParam String token) {
-        // left this variable declaration here concentrate this mocked data and it will be replaced
-        final String ERROR_RESET_KEY = "invalid-token";
         if (ERROR_RESET_KEY.equals(token)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

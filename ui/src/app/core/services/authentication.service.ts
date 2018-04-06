@@ -14,7 +14,7 @@ const URLs: { [string: string]: string } = {
   resetPassword: `${environment.serverPath}/auth/reset-password`,
   user: `${environment.apiPath}/users/current`,
   users: `${environment.apiPath}/data/users`,
-  token: `${environment.apiPath}/api/users/check-reset-password-token`
+  token: `${environment.apiPath}/users/check-reset-password-token`
 };
 
 interface TokenResponse {
