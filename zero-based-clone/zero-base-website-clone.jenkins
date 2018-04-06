@@ -42,8 +42,7 @@ pipeline {
         stage('Creating Jenkins Jobs for the new project') {
             steps {
                 script {
-                    checkout scm
-                    jobDsl targets:'zero-based-clone/jenkins/zbw_jenkins_jobs_cloning.groovy', sandbox: true
+                    build job: 'Zero Base Website Jenkins Job Cloning'
                 }
             }
         }
