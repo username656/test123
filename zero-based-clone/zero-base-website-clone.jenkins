@@ -1,11 +1,11 @@
 properties([
         parameters([
-                string(name:'GIT_REPO_URL', defaultValue:''),
-                string(name:'GIT_CREDENTIALS_ID', defaultValue: ''),
+                string(name:'GIT_REPO_URL', defaultValue:'https://github.com/sahkaa/cloned-zbw'),
+                string(name:'GIT_CREDENTIALS_ID', defaultValue: 'kayako-rw-sample-git-id'),
                 string(name:'GIT_BRANCH', defaultValue: 'master'),
-                string(name:'GITHUB_REPO_OWNER', defaultValue: 'trilogy-group'),
-                string(name:'GITHUB_REPO_NAME', decription:'Give here just the name of the github repo, e.g. if the git repo url is github.com/trilogy-group/aurea-kayako, the GITHUB_REPO_NAME will be aurea-kayako'),
-                string(name:'JENIKINS_PROJECT_NAME', defaultValue: '')
+                string(name:'GITHUB_REPO_OWNER', defaultValue: 'sahkaa'),
+                string(name:'GITHUB_REPO_NAME', defaultValue: 'cloned-zbw', decription:'Give here just the name of the github repo, e.g. if the git repo url is github.com/trilogy-group/aurea-kayako, the GITHUB_REPO_NAME will be aurea-kayako'),
+                string(name:'JENIKINS_PROJECT_NAME', defaultValue: 'SampleZBWebsite')
         ])
 ])
 
