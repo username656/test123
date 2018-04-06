@@ -99,11 +99,11 @@ describe('LoginPageComponent', () => {
       expect(component.loading).toBeFalsy();
     });
 
-    it('should handle authenticationService.login error for ApiErrors', () => {
+    it('should handle authenticationService.login error for api errors', () => {
       spyOn(authenticationService, 'login').and
         .returnValue(_throw({
           error: {
-            message: 'Sample error text'
+            error_description: 'Sample error text'
           }
         }));
       component.ngOnInit();
