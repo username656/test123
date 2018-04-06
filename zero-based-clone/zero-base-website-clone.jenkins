@@ -17,10 +17,9 @@ pipeline {
                 script {
                     git branch: params.GIT_BRANCH, changelog: true, credentialsId: params.GIT_CREDENTIALS_ID, poll: false, url: params.GIT_REPO_URL
                     echo 'Successfully checked out the new git repo'
-                    sh """git submodule add https://github.com/trilogy-group/aurea-zero-based.git
-                        ./aurea-zero-based/.git_submodule/init.sh
-                        ./gradlew clean build
-                    """
+                    sh "cd "+ params.GITHUB_REPO_NAME +"; git submodule add https://github.com/trilogy-group/aurea-zero-based.git; "+
+                        "chmod +x ./aurea-zero-based/.git_submodule/init.sh; ./aurea-zero-based/.git_submodule/init.sh; " +
+                        "./gradlew clean build;"
                 }
             }
         }
