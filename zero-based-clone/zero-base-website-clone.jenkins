@@ -42,7 +42,7 @@ pipeline {
         stage('Creating Jenkins Jobs for the new project') {
             steps {
                 script {
-                    build job: 'Zero Base Website Jenkins Job Cloning'
+                    build job: 'KayakoRewrite/Zero Base Website Jenkins Job Cloning'
                 }
             }
         }
