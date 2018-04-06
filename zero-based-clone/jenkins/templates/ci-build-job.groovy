@@ -6,9 +6,9 @@ class CIBuildJobTemplate {
         multibranchPipelineJob(jobName) {
             branchSources {
                 github {
-                    scanCredentialsId(params.GIT_CREDENTIALS_ID)
-                    repoOwner(params.GITHUB_REPO_OWNER)
-                    repository(params.GITHUB_REPO_NAME)
+                    scanCredentialsId("${GIT_CREDENTIALS_ID}")
+                    repoOwner("${GITHUB_REPO_OWNER}")
+                    repository("${GITHUB_REPO_NAME}")
                     includes('feature/* bugfix/* hotfix/* env/stage revert-* revert/* bugifx/* env/dev')
                     buildOriginBranchWithPR()
                 }
