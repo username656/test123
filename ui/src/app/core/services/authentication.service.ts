@@ -133,10 +133,8 @@ export class AuthenticationService {
 
   /**
    * Get the token from the backend if not expired.
-   *
-   * @return (Token) the token registered
    */
-  public isTokenValid(token: string): Observable<null> {
+  public isCreatePasswordTokenValid(token: string): Observable<null> {
     return this.http.get<null>(`${URLs.token}?token=${token}`);
   }
 

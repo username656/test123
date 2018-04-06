@@ -42,7 +42,7 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
         this.router.navigateByUrl('/create-password/error');
       } else {
         this.loading = true;
-        this.authenticationService.isTokenValid(this.token).subscribe(response => {
+        this.authenticationService.isCreatePasswordTokenValid(this.token).subscribe(response => {
           this.loading = false;
         }, error => {
           this.loading = false;

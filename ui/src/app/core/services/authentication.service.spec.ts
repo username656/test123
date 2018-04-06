@@ -265,13 +265,13 @@ describe('AuthenticationService', () => {
     });
   });
 
-  describe('tokenCheck', () => {
+  describe('isCreatePasswordTokenValid', () => {
     it('should not return a valid token response', () => {
       const http: HttpClient = instance(mock(HttpClient));
       const storage: StorageService = instance(mock(StorageService));
       const authService: AuthenticationService = new AuthenticationService(http, storage);
       spyOn(http, 'get').and.returnValue(_throw({status: 404}));
-      authService.isTokenValid('invalid-token').subscribe(
+      authService.isCreatePasswordTokenValid('invalid-token').subscribe(
         (res) => {
           expect(false).toBeTruthy();
         }, (err) => {
@@ -284,7 +284,7 @@ describe('AuthenticationService', () => {
       const storage: StorageService = instance(mock(StorageService));
       const authService: AuthenticationService = new AuthenticationService(http, storage);
       spyOn(http, 'get').and.returnValue(of(null));
-      authService.isTokenValid('invalid-token').subscribe(
+      authService.isCreatePasswordTokenValid('invalid-token').subscribe(
         (res) => {
           expect(true).toBeTruthy();
         }, (err) => {
