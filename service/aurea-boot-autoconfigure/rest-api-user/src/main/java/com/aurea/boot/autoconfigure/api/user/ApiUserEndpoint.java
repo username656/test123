@@ -59,10 +59,9 @@ public class ApiUserEndpoint {
 
     @ApiOperation("Validate the reset password token")
     @GetMapping(Mapping.CHECK_RESET_PASSWORD_TOKEN)
-    public ResponseEntity checkToken(@ApiParam(required = true) @RequestParam String token) {
+    public void checkResetPasswordToken(@ApiParam(required = true) @RequestParam String token) {
         if ("invalid-token".equals(token)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new BadRequestException("Invalid token");
         }
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
