@@ -43,7 +43,7 @@ pipeline {
             steps {
                 script {
                     checkout scm
-                    jobDsl targets:'zero-based-clone/jenkins/zbw_jenkins_jobs_cloning.groovy'
+                    jobDsl targets:'zero-based-clone/jenkins/zbw_jenkins_jobs_cloning.groovy', sandbox: true
                 }
             }
         }
