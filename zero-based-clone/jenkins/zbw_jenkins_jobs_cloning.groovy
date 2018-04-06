@@ -6,8 +6,9 @@ import templates.*
 //def buildParams = parametersAction.parameters
 
 //def params = bindings.variables
+def cIJobCreation = load "templates/ci-build-job.groovy"
+cIJobCreation.createCIJob("CI Build "+${JENIKINS_PROJECT_NAME}, null)
 
-CIBuildJobTemplate.create("CI Build "+${JENIKINS_PROJECT_NAME}, params)
 IncrementBuildJobTemplate.create("Increment Build "+ ${JENIKINS_PROJECT_NAME}, params)
 RCBuildJobTemplate.create("RC Build "+ ${JENIKINS_PROJECT_NAME}, params)
 
