@@ -26,3 +26,5 @@ class RCBuildJobTemplate {
         }
     }
 }
+
+return this;

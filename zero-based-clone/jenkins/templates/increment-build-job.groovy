@@ -25,3 +25,5 @@ class IncrementBuildJobTemplate {
         }
     }
 }
+
+return this;

@@ -27,3 +27,5 @@ class CIBuildJobTemplate {
         }
     }
 }
+
+return this;
