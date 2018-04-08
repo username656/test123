@@ -1,6 +1,5 @@
-import hudson.model.*
-
-multibranchPipelineJob("CI Build "+${JENIKINS_PROJECT_NAME}) {
+//CI Job
+multibranchPipelineJob("${JENIKINS_PROJECT_NAME}/CI Build") {
     branchSources {
         github {
             scanCredentialsId("${GIT_CREDENTIALS_ID}")
@@ -12,7 +11,7 @@ multibranchPipelineJob("CI Build "+${JENIKINS_PROJECT_NAME}) {
     }
     factory {
         workflowMultiBranchProjectFactory {
-            scriptPath('cicd/pipeline/jobs/ci-build.jenkins')
+            scriptPath('aurea-zero-based/cicd/pipeline/jobs/ci-build.jenkins')
         }
     }
     orphanedItemStrategy {
@@ -23,17 +22,18 @@ multibranchPipelineJob("CI Build "+${JENIKINS_PROJECT_NAME}) {
     }
 }
 
-multibranchPipelineJob("Increment Build "+ ${JENIKINS_PROJECT_NAME}) {
+//Increment Job
+multibranchPipelineJob("${JENIKINS_PROJECT_NAME}/Increment Build") {
     branchSources {
         git {
-            remote(params.GIT_REPO_URL)
-            credentialsId(params.GIT_CREDENTIALS_ID)
+            remote("${GIT_REPO_URL}")
+            credentialsId("${GIT_CREDENTIALS_ID}")
             includes('develop')
         }
     }
     factory {
         workflowMultiBranchProjectFactory {
-            scriptPath('cicd/pipeline/jobs/increment-build.jenkins')
+            scriptPath('aurea-zero-based/cicd/pipeline/jobs/increment-build.jenkins')
         }
     }
     orphanedItemStrategy {
@@ -44,18 +44,19 @@ multibranchPipelineJob("Increment Build "+ ${JENIKINS_PROJECT_NAME}) {
     }
 }
 
-multibranchPipelineJob("RC Build "+ ${JENIKINS_PROJECT_NAME}) {
+//RC Job
+multibranchPipelineJob("${JENIKINS_PROJECT_NAME}/RC Build") {
     branchSources {
         github {
-            scanCredentialsId(params.GIT_CREDENTIALS_ID)
-            repoOwner(params.GITHUB_REPO_OWNER)
-            repository(params.GITHUB_REPO_NAME)
+            scanCredentialsId("${GIT_CREDENTIALS_ID}")
+            repoOwner("${GITHUB_REPO_OWNER}")
+            repository("${GITHUB_REPO_NAME}")
             includes('develop')
         }
     }
     factory {
         workflowMultiBranchProjectFactory {
-            scriptPath('cicd/pipeline/jobs/rc-build.jenkins')
+            scriptPath('aurea-zero-based/cicd/pipeline/jobs/rc-build.jenkins')
         }
     }
     orphanedItemStrategy {
