@@ -20,8 +20,8 @@ pipeline {
                     echo 'Current working directory is '+ pwd()
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'kayako-rw-sample-git-id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
                         sh "git submodule add https://${USERNAME}:${PASSWORD}@github.com/trilogy-group/aurea-zero-based; " +
-                            "chmod +x ./aurea-zero-based/.git_submodule/init.sh; ./aurea-zero-based/.git_submodule/init.sh; " +
-                            "./gradlew clean build;"
+                            "chmod +x ./aurea-zero-based/.git_submodule/init.sh; ./aurea-zero-based/.git_submodule/init.sh; "
+//                            "./gradlew clean build;"
                     }
                 }
             }
