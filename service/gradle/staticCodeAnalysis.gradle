@@ -12,7 +12,8 @@ checkstyle {
 
 findbugs {
     toolVersion = "3.0.1"
-    ignoreFailures = false
+    ignoreFailures =
+    excludeFilter = file("${serviceGradleDir}/static-code-analysis/findbugs/exclude.xml")
 }
 
 pmd {
