@@ -30,16 +30,16 @@ pipeline {
         stage('Commiting changed files') {
             steps {
                 script {
-                    //Wipe out credential info from .gitmodule file
-                    String gitModuleContents = new File(".gitmodules").getText('UTF-8')
-                    String credentials = gitModuleContents.substring(gitModuleContents.indexOf("//")+2, gitModuleContents.indexOf("@")+1)
-                    gitModuleContents = gitModuleContents - credentials
-
-                    def outputFile = new File(".gitmodules")
-                    outputFile.withWriter('UTF-8') { writer ->
-                        writer.write(gitModuleContents)
-                        writer.close()
-                    }
+//                    //Wipe out credential info from .gitmodule file
+//                    String gitModuleContents = new File(".gitmodules").getText('UTF-8')
+//                    String credentials = gitModuleContents.substring(gitModuleContents.indexOf("//")+2, gitModuleContents.indexOf("@")+1)
+//                    gitModuleContents = gitModuleContents - credentials
+//
+//                    def outputFile = new File(".gitmodules")
+//                    outputFile.withWriter('UTF-8') { writer ->
+//                        writer.write(gitModuleContents)
+//                        writer.close()
+//                    }
 
                     //Now commit all the files back into git repo
                     def gitRepoURL = params.GIT_REPO_URL
