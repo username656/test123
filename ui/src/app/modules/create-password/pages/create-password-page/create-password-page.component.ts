@@ -13,6 +13,7 @@ import { PasswordUtilities } from '@app/shared/utilities/password-utilities';
 export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
   public form: FormGroup;
   public loading: boolean = false;
+  public tokenValid: boolean = false;
   public length: boolean = false;
   public uppercase: boolean = false;
   public number: boolean = false;
@@ -41,6 +42,7 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
       this.loading = true;
       this.authenticationService.isCreatePasswordTokenValid(this.token).subscribe(() => {
           this.loading = false;
+          this.tokenValid = true;
         }, () => {
           this.loading = false;
           this.router.navigateByUrl('/create-password/error');
