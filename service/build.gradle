@@ -5,7 +5,7 @@ buildscript {
                 springCloud         : 'Finchley.M9',
                 ioSpringPlatform    : 'Cairo-RC1',
                 logstashGelf        : '1.7.2',
-                springFoxSwagger    : '2.9.0'
+                springFoxSwagger    : '2.8.0'
         ]
         // Spring repositories
         springReleaseRepo = 'https://repo.spring.io/libs-release'
@@ -62,8 +62,6 @@ configure(javaProjects + baseProjects) {
         dependencies {
             dependency "biz.paluch.logging:logstash-gelf:${versions.logstashGelf}"
             dependency "io.springfox:springfox-swagger-ui:${versions.springFoxSwagger}"
-            dependency "io.springfox:springfox-data-rest:${versions.springFoxSwagger}"
-            dependency "io.springfox:springfox-bean-validators:${versions.springFoxSwagger}"
             dependency "io.springfox:springfox-swagger2:${versions.springFoxSwagger}"
         }
     }
