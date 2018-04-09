@@ -44,8 +44,7 @@ public class SwaggerAutoConfiguration {
         return new Docket(SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
                         .title(apiProps.getInfo().getTitle())
-                        .description(
-                                IOUtils.toString(apiDescriptionResource.getInputStream(), Charsets.UTF_8))
+                        .description(IOUtils.toString(apiDescriptionResource.getInputStream(), Charsets.UTF_8))
                         .license(apiProps.getInfo().getLicense())
                         .version(apiProps.getInfo().getVersion())
                         .build())
