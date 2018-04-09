@@ -16,6 +16,7 @@ public class ResourceServerAutoConfiguration extends ResourceServerConfigurerAda
                 .antMatchers("/api/data/browser/**").permitAll()
                 .antMatchers("/api/users/forgot-password").permitAll()
                 .antMatchers("/api/users/check-reset-password-token").permitAll()
+                .antMatchers("/api/users/reset-password").permitAll()
                 .antMatchers("/oauth/**").authenticated()
                 .antMatchers("/api/**").authenticated();
     }

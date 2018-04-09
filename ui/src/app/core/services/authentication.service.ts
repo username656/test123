@@ -10,8 +10,8 @@ import { Observable } from 'rxjs/Observable';
 
 const URLs: { [string: string]: string } = {
   login: `${environment.serverPath}/oauth/token`,
-  forgotPassword: `${environment.serverPath}/auth/forgot-password`,
-  resetPassword: `${environment.serverPath}/auth/reset-password`,
+  forgotPassword: `${environment.apiPath}/users/forgot-password`,
+  resetPassword: `${environment.apiPath}/users/reset-password`,
   user: `${environment.apiPath}/users/current`,
   users: `${environment.apiPath}/data/users`,
   token: `${environment.apiPath}/users/check-reset-password-token`
@@ -87,7 +87,7 @@ export class AuthenticationService {
 
 
   public forgotPassword(email: string): Observable<boolean> {
-    return this.http.post(`${URLs.forgotPassword}?email=${email}`, null)
+    return this.http.post(`${URLs.forgotPassword}`, email)
       .pipe(
         map(() => true) // There is no response from the backend apart from OK (which is implicit)
       );
