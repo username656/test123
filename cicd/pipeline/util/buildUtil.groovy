@@ -9,7 +9,7 @@ def checkout() {
 def buildService() {
     def gitCommit = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
     shortCommit = gitCommit.take(6)
-    sh "./gradlew clean build"
+    sh "./gradlew clean build cpdCheck"
     echo 'Ran build successfully'
     junit allowEmptyResults: true, testResults: '**/build/test-results/**/*.xml'
     echo 'Generated unit test results'
@@ -24,7 +24,7 @@ def buildServiceWithAline() {
     devfactory (portfolio: 'TestPFAurea', product: 'ZeroBasedProject', productVersion: 'Develop',
             types: 'Java') {
         //Removing findbugs as it is slowing down the build and giving some errors
-        sh "./gradlew clean build cpdCheck -x findbugsMain -x findbugsTest"
+        sh "./gradlew clean build cpdCheck"
     }
     echo 'Ran build successfully'
     junit allowEmptyResults: true, testResults: '**/build/test-results/**/*.xml'

@@ -1,10 +1,16 @@
+String jenikinsProjectName ="${JENKINS_PROJECT_NAME}"
+String gitCredentialsId = "${GIT_CREDENTIALS_ID}"
+String gitRepoUrl = "${GIT_REPO_URL}"
+String githubRepoOwner = "${GITHUB_REPO_OWNER}"
+String githubRepoName = "${GITHUB_REPO_NAME}"
+
 //CI Job
-multibranchPipelineJob("${JENIKINS_PROJECT_NAME}/CI Build") {
+multibranchPipelineJob(jenikinsProjectName + "/CI Build") {
     branchSources {
         github {
-            scanCredentialsId("${GIT_CREDENTIALS_ID}")
-            repoOwner("${GITHUB_REPO_OWNER}")
-            repository("${GITHUB_REPO_NAME}")
+            scanCredentialsId(gitCredentialsId)
+            repoOwner(githubRepoOwner)
+            repository(githubRepoName)
             includes('feature/* bugfix/* hotfix/* env/stage revert-* revert/* bugifx/* env/dev')
             buildOriginBranchWithPR()
         }
@@ -23,11 +29,11 @@ multibranchPipelineJob("${JENIKINS_PROJECT_NAME}/CI Build") {
 }
 
 //Increment Job
-multibranchPipelineJob("${JENIKINS_PROJECT_NAME}/Increment Build") {
+multibranchPipelineJob(jenikinsProjectName + "/Increment Build") {
     branchSources {
         git {
-            remote("${GIT_REPO_URL}")
-            credentialsId("${GIT_CREDENTIALS_ID}")
+            remote(gitRepoUrl)
+            credentialsId(gitCredentialsId)
             includes('develop')
         }
     }
@@ -45,12 +51,12 @@ multibranchPipelineJob("${JENIKINS_PROJECT_NAME}/Increment Build") {
 }
 
 //RC Job
-multibranchPipelineJob("${JENIKINS_PROJECT_NAME}/RC Build") {
+multibranchPipelineJob(jenikinsProjectName+"/RC Build") {
     branchSources {
         github {
-            scanCredentialsId("${GIT_CREDENTIALS_ID}")
-            repoOwner("${GITHUB_REPO_OWNER}")
-            repository("${GITHUB_REPO_NAME}")
+            scanCredentialsId(gitCredentialsId)
+            repoOwner(githubRepoOwner)
+            repository(githubRepoName)
             includes('develop')
         }
     }
@@ -66,8 +72,3 @@ multibranchPipelineJob("${JENIKINS_PROJECT_NAME}/RC Build") {
         }
     }
 }
-
-
-
-
-
