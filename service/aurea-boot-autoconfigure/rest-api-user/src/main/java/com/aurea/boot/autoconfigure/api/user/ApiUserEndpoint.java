@@ -47,4 +47,12 @@ public class ApiUserEndpoint {
         return userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new BadRequestException("User not found"));
     }
+
+    @ApiOperation("Validate the reset password token")
+    @GetMapping(Mapping.CHECK_RESET_PASSWORD_TOKEN)
+    public void checkResetPasswordToken(@ApiParam(required = true) @RequestParam String token) {
+        if ("invalid-token".equals(token)) {
+            throw new BadRequestException("Invalid token");
+        }
+    }
 }

@@ -14,8 +14,10 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -23,11 +25,13 @@ import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.service.contexts.SecurityContext;
+import springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
+@Import({SpringDataRestConfiguration.class, BeanValidatorPluginsConfiguration.class})
 @RequiredArgsConstructor
 public class SwaggerAutoConfiguration {
 
@@ -44,8 +48,7 @@ public class SwaggerAutoConfiguration {
         return new Docket(SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
                         .title(apiProps.getInfo().getTitle())
-                        .description(
-                                IOUtils.toString(apiDescriptionResource.getInputStream(), Charsets.UTF_8))
+                        .description(IOUtils.toString(apiDescriptionResource.getInputStream(), Charsets.UTF_8))
                         .license(apiProps.getInfo().getLicense())
                         .version(apiProps.getInfo().getVersion())
                         .build())

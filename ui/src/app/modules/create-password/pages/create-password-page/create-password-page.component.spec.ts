@@ -59,26 +59,31 @@ describe('CreatePasswordPageComponent', () => {
     expect(component.isDisabled).toBeTruthy();
   });
 
-  it('should create the form on ngOnInit', () => {
+  it('should create the form on ngOnInit with a valid token', () => {
+    spyOn(authenticationService, 'isCreatePasswordTokenValid').and.returnValue(of({status: 200}));
     component.ngOnInit();
-
     expect(component.form).toBeDefined();
+  });
+
+  it('should redirect to error page on ngOnInit', () => {
+    spyOn(authenticationService, 'isCreatePasswordTokenValid').and.returnValue(_throw({status: 404}));
+    spyOn(router, 'navigateByUrl');
+    component.ngOnInit();
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/create-password/error');
   });
 
   describe('isDisabled', () => {
     it('should return true for isDisabled on invalid password', () => {
+      spyOn(authenticationService, 'isCreatePasswordTokenValid').and.returnValue(of({status: 200}));
       component.ngOnInit();
-
       component.form.setValue({ password: 'test' });
-
       expect(component.isDisabled).toBeTruthy();
     });
 
     it('should return false for isDisabled on valid password', () => {
+      spyOn(authenticationService, 'isCreatePasswordTokenValid').and.returnValue(of({status: 200}));
       component.ngOnInit();
-
       component.form.setValue({ password: '12!@qwQW' });
-
       expect(component.isDisabled).toBeFalsy();
     });
   });
@@ -87,6 +92,7 @@ describe('CreatePasswordPageComponent', () => {
     it('should call the service with the right arguments and route to success', () => {
       spyOn(authenticationService, 'resetPassword').and.returnValue(of(true));
       const spy: Spy = spyOn(router, 'navigateByUrl');
+      spyOn(authenticationService, 'isCreatePasswordTokenValid').and.returnValue(of({status: 200}));
       component.ngOnInit();
       component.form.setValue({ password: 'password' });
 
@@ -105,6 +111,7 @@ describe('CreatePasswordPageComponent', () => {
         }));
       const spy: Spy = spyOn(router, 'navigateByUrl');
 
+      spyOn(authenticationService, 'isCreatePasswordTokenValid').and.returnValue(of({status: 200}));
       component.ngOnInit();
       component.form.setValue({ password: 'password' });
 

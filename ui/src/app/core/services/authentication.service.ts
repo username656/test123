@@ -13,7 +13,8 @@ const URLs: { [string: string]: string } = {
   forgotPassword: `${environment.apiPath}/users/forgot-password`,
   resetPassword: `${environment.apiPath}/users/reset-password`,
   user: `${environment.apiPath}/users/current`,
-  users: `${environment.apiPath}/data/users`
+  users: `${environment.apiPath}/data/users`,
+  token: `${environment.apiPath}/users/check-reset-password-token`
 };
 
 interface TokenResponse {
@@ -128,6 +129,13 @@ export class AuthenticationService {
     } else {
       return undefined; // The user is not logged or login expired
     }
+  }
+
+  /**
+   * Get the token from the backend if not expired.
+   */
+  public isCreatePasswordTokenValid(token: string): Observable<Response> {
+    return this.http.get<Response>(`${URLs.token}?token=${token}`);
   }
 
   /**

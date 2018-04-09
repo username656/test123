@@ -15,6 +15,7 @@ public class ApiConsts {
             public static final String FORGOT_PASSWORD = "/forgot-password";
             public static final String RESET_PASSWORD = "/reset-password";
             public static final String CURRENT_USER = "/current";
+            public static final String CHECK_RESET_PASSWORD_TOKEN = "/check-reset-password-token";
         }
 
         public static final class Param {

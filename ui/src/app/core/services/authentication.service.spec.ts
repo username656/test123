@@ -5,6 +5,8 @@ import { CoreModule } from '@app/core/core.module';
 import { User } from '@app/core/models/user';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { StorageService } from '@app/core/services/storage.service';
+import { of } from 'rxjs/observable/of';
+import { _throw } from 'rxjs/observable/throw';
 import { instance, mock } from 'ts-mockito';
 
 import { environment } from '../../../environments/environment';
@@ -65,7 +67,6 @@ describe('AuthenticationService', () => {
       ]
     });
   }));
-
 
   beforeEach(() => {
     storageService = getTestBed().get(StorageService);
@@ -262,6 +263,34 @@ describe('AuthenticationService', () => {
 
       const request: TestRequest = httpMock.expectOne(URLs.resetPassword);
       request.flush({});
+    });
+  });
+
+  describe('isCreatePasswordTokenValid', () => {
+    it('should not return a valid token response', () => {
+      const http: HttpClient = instance(mock(HttpClient));
+      const storage: StorageService = instance(mock(StorageService));
+      const authService: AuthenticationService = new AuthenticationService(http, storage);
+      spyOn(http, 'get').and.returnValue(_throw({status: 404}));
+      authService.isCreatePasswordTokenValid('invalid-token').subscribe(
+        (res) => {
+          expect(false).toBeTruthy();
+        }, (err) => {
+          expect(true).toBeTruthy();
+        });
+    });
+
+    it('should return an valid token response', () => {
+      const http: HttpClient = instance(mock(HttpClient));
+      const storage: StorageService = instance(mock(StorageService));
+      const authService: AuthenticationService = new AuthenticationService(http, storage);
+      spyOn(http, 'get').and.returnValue(of(null));
+      authService.isCreatePasswordTokenValid('invalid-token').subscribe(
+        (res) => {
+          expect(true).toBeTruthy();
+        }, (err) => {
+          expect(false).toBeTruthy();
+        });
     });
   });
 });
