@@ -5,6 +5,8 @@ import { CoreModule } from '@app/core/core.module';
 import { User } from '@app/core/models/user';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { StorageService } from '@app/core/services/storage.service';
+import { of } from 'rxjs/observable/of';
+import { _throw } from 'rxjs/observable/throw';
 import { instance, mock } from 'ts-mockito';
 
 import { environment } from '../../../environments/environment';
@@ -40,8 +42,8 @@ describe('AuthenticationService', () => {
 
   const URLs: { [string: string]: string } = {
     login: `${environment.serverPath}/oauth/token`,
-    forgotPassword: `${environment.serverPath}/auth/forgot-password`,
-    resetPassword: `${environment.serverPath}/auth/reset-password`,
+    forgotPassword: `${environment.apiPath}/users/forgot-password`,
+    resetPassword: `${environment.apiPath}/users/reset-password`,
     user: `${environment.apiPath}/users/current`,
     users: `${environment.apiPath}/data/users`
   };
@@ -65,7 +67,6 @@ describe('AuthenticationService', () => {
       ]
     });
   }));
-
 
   beforeEach(() => {
     storageService = getTestBed().get(StorageService);
@@ -135,7 +136,7 @@ describe('AuthenticationService', () => {
     });
 
     it('should not have user after logout / no remember option', () => {
-      spyOn(storageService, 'getItem').and.callFake(function(arg1: string, arg2: boolean): string {
+      spyOn(storageService, 'getItem').and.callFake(function (arg1: string, arg2: boolean): string {
         if (arg1 === CURRENT_LOGIN_EXPIRATION_LOCAL_STORAGE && arg2 === true) {
           return CURRENT_LOGIN_EXPIRATION_SESSION;
         } else {
@@ -152,7 +153,7 @@ describe('AuthenticationService', () => {
     });
 
     it('should not have user after logout / no remember option', () => {
-      spyOn(storageService, 'getItem').and.callFake(function(arg1: string, arg2: boolean): string {
+      spyOn(storageService, 'getItem').and.callFake(function (arg1: string, arg2: boolean): string {
         if (arg1 === CURRENT_LOGIN_EXPIRATION_LOCAL_STORAGE && arg2 === true) {
           return CURRENT_LOGIN_EXPIRATION_LOCAL_STORAGE;
         }
@@ -179,7 +180,7 @@ describe('AuthenticationService', () => {
     });
 
     it('user is logged', () => {
-      spyOn(storageService, 'getItem').and.callFake(function(arg1: string, arg2: boolean): string {
+      spyOn(storageService, 'getItem').and.callFake(function (arg1: string, arg2: boolean): string {
         if (arg1 === CURRENT_LOGIN_EXPIRATION_LOCAL_STORAGE && arg2 === true) {
           return CURRENT_LOGIN_EXPIRATION_SESSION;
         } else {
@@ -248,7 +249,8 @@ describe('AuthenticationService', () => {
         expect(res).toBeTruthy();
       });
 
-      const request: TestRequest = httpMock.expectOne(`${URLs.forgotPassword}?email=${email}`);
+      const request: TestRequest = httpMock.expectOne(`${URLs.forgotPassword}`);
+      expect(request.request.body).toEqual(email);
       request.flush({});
     });
   });
@@ -261,6 +263,34 @@ describe('AuthenticationService', () => {
 
       const request: TestRequest = httpMock.expectOne(URLs.resetPassword);
       request.flush({});
+    });
+  });
+
+  describe('isCreatePasswordTokenValid', () => {
+    it('should not return a valid token response', () => {
+      const http: HttpClient = instance(mock(HttpClient));
+      const storage: StorageService = instance(mock(StorageService));
+      const authService: AuthenticationService = new AuthenticationService(http, storage);
+      spyOn(http, 'get').and.returnValue(_throw({status: 404}));
+      authService.isCreatePasswordTokenValid('invalid-token').subscribe(
+        (res) => {
+          expect(false).toBeTruthy();
+        }, (err) => {
+          expect(true).toBeTruthy();
+        });
+    });
+
+    it('should return an valid token response', () => {
+      const http: HttpClient = instance(mock(HttpClient));
+      const storage: StorageService = instance(mock(StorageService));
+      const authService: AuthenticationService = new AuthenticationService(http, storage);
+      spyOn(http, 'get').and.returnValue(of(null));
+      authService.isCreatePasswordTokenValid('invalid-token').subscribe(
+        (res) => {
+          expect(true).toBeTruthy();
+        }, (err) => {
+          expect(false).toBeTruthy();
+        });
     });
   });
 });

@@ -1,6 +1,6 @@
 package com.aurea.boot.autoconfigure.api.user;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping.RESET_PASSWORD;
 
 import com.aurea.boot.autoconfigure.api.annotation.ApiEndpointMapping;
 import com.aurea.boot.autoconfigure.api.error.BadRequestException;
@@ -12,10 +12,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @ApiEndpointMapping(
@@ -29,24 +28,17 @@ public class ApiUserEndpoint {
 
     @ApiOperation("Forgot Password")
     @PostMapping(Mapping.FORGOT_PASSWORD)
-    public ResponseEntity<String> forgotPassword(
-            @ApiParam(required = true)
-            @RequestParam final String email) {
+    public void forgotPassword(@ApiParam(required = true) @RequestBody String email) {
         if ("error@example.org".equals(email)) {
-            return new ResponseEntity<>(
-                    "The email provided does not appear on our records.", BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>("Forgot password mail sent.", HttpStatus.OK);
+            throw new BadRequestException("The email provided does not appear on our records");
         }
     }
 
     @ApiOperation("Reset Password")
-    @PostMapping(Mapping.RESET_PASSWORD)
-    public ResponseEntity<String> resetPassword(TokenPasswordJson tokenPasswordJson) {
+    @PostMapping(RESET_PASSWORD)
+    public void resetPassword(@RequestBody TokenPasswordJson tokenPasswordJson) {
         if ("invalid-token".equals(tokenPasswordJson.getToken())) {
-            return new ResponseEntity<>("Invalid reset key", BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>("Password has been reset.", HttpStatus.OK);
+            throw new BadRequestException("Invalid reset key");
         }
     }
 
@@ -55,5 +47,13 @@ public class ApiUserEndpoint {
     public User getCurrentUser(Principal principal) {
         return userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new BadRequestException("User not found"));
+    }
+
+    @ApiOperation("Validate the reset password token")
+    @GetMapping(Mapping.CHECK_RESET_PASSWORD_TOKEN)
+    public void checkResetPasswordToken(@ApiParam(required = true) @RequestParam String token) {
+        if ("invalid-token".equals(token)) {
+            throw new BadRequestException("Invalid token");
+        }
     }
 }

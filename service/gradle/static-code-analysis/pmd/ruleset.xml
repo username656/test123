@@ -20,6 +20,8 @@
         PMD RuleSets set by Quality Enforcement team for DevFactory projects
     </description>
 
+    <exclude-pattern>.*Mock\.java</exclude-pattern>
+
     <!-- Documentation for PMD Java rules: https://pmd.github.io/pmd-5.5.4/pmd-java/rules -->
 
     <rule ref="rulesets/java/basic.xml"/>

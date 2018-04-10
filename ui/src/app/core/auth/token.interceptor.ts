@@ -2,6 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { Observable } from 'rxjs/Observable';
+import { isNullOrUndefined } from 'util';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -19,7 +20,7 @@ export class TokenInterceptor implements HttpInterceptor {
         }
       });
     }
-    if (request.headers.get('Content-Type') === undefined) {
+    if (isNullOrUndefined(request.headers.get('Content-Type'))) {
       request = request.clone({
         setHeaders: {
           'Content-Type': 'application/json'

@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AuthenticationService } from '@app/core/services/authentication.service';
 
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from '@app/core/services/authentication.service';
 import { PasswordUtilities } from '@app/shared/utilities/password-utilities';
 
 @Component({
@@ -13,6 +13,7 @@ import { PasswordUtilities } from '@app/shared/utilities/password-utilities';
 export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
   public form: FormGroup;
   public loading: boolean = false;
+  public tokenValid: boolean = false;
   public length: boolean = false;
   public uppercase: boolean = false;
   public number: boolean = false;
@@ -28,16 +29,24 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
     return !(this.length && this.uppercase && this.number && this.special);
   }
 
-  public constructor(private fb: FormBuilder,
-                     private authenticationService: AuthenticationService,
-                     private activatedRoute: ActivatedRoute,
-                     private router: Router) {
-  }
+  public constructor(
+    private fb: FormBuilder,
+    private authenticationService: AuthenticationService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router) {}
 
   public ngOnInit(): void {
     this.createForm();
     this.activatedRoute.params.subscribe((params) => {
       this.token = params['token'];
+      this.loading = true;
+      this.authenticationService.isCreatePasswordTokenValid(this.token).subscribe(() => {
+          this.loading = false;
+          this.tokenValid = true;
+        }, () => {
+          this.loading = false;
+          this.router.navigateByUrl('/create-password/error');
+        });
     });
   }
 
