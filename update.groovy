@@ -53,7 +53,7 @@ static def copyAndReplaceText(source, dest, Closure replaceText){
     dest.write(replaceText(source.text))
 }
 
-def source = new File('testupdate/cicd/pipeline/util/buildUtil.groovy')
+def source = new File('cicd/pipeline/util/buildUtil.groovy')
 
 copyAndReplaceText(source, source) {
     it.replaceAll('Develop', options.gb)
