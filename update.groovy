@@ -62,9 +62,10 @@ copyAndReplaceText(source, source) {
 }
 println "Templates are copied"
 
-OkHttpClient client = new OkHttpClient();
-client.setConnectTimeout(15, TimeUnit.SECONDS)
-client.setReadTimeout(15, TimeUnit.SECONDS)
+OkHttpClient client = new OkHttpClient.Builder()
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .readTimeout(15, TimeUnit.SECONDS)
+        .build();
 
 // Basic authorization is used both for aline and jenkins
 String auth = options.u + ":" + options.p;
