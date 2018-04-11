@@ -5,8 +5,6 @@ import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import okhttp3.*
 
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 
 def cli = new CliBuilder(usage: 'create/update zero-web-site dependencies')
@@ -36,7 +34,7 @@ if (options.h) {
 
 // Template initialisation
 println "Starting cicd/gradle templates initialisation"
-Files.delete(Paths.get("aurea-zero-based/.git"))
+new File("aurea-zero-based/.git").deleteDir()
 
 builder = new AntBuilder()
 builder.sequential {
