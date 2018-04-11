@@ -62,6 +62,8 @@ copyAndReplaceText(source, source) {
 println "Templates are copied"
 
 OkHttpClient client = new OkHttpClient();
+client.setConnectTimeout(15, TimeUnit.SECONDS)
+client.setReadTimeout(15, TimeUnit.SECONDS)
 
 // Basic authorization is used both for aline and jenkins
 String auth = options.u + ":" + options.p;
@@ -70,7 +72,7 @@ String authHeader = "Basic " +  auth.bytes.encodeBase64().toString();
 // aline integration
 if (options.ap) {
     println 'Starting aline integration'
-    def inputFile = new File("aurea-zero-based/cloning/aline-product-version-template.json")
+    def inputFile = new File("cloning/aline-product-version-template.json")
     def alineJson = new JsonSlurper().parseText(inputFile.text)
     alineJson['name'] = options.gb
     alineJson['productId'] = options.ap
@@ -86,6 +88,8 @@ if (options.ap) {
     Response response = client.newCall(request).execute();
     println "Aline processed: $response"
 }
+
+exit()
 
 // Cloning jenkins jobs
 def githubUrlEncoded = URLEncoder.encode(options.g, "UTF-8")
