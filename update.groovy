@@ -74,7 +74,7 @@ String authHeader = "Basic " +  auth.bytes.encodeBase64().toString();
 // aline integration
 if (options.ap) {
     println 'Starting aline integration'
-    def inputFile = new File("cloning/aline-product-version-template.json")
+    def inputFile = new File("aurea-zero-based/cloning/aline-product-version-template.json")
     def alineJson = new JsonSlurper().parseText(inputFile.text)
     alineJson['name'] = options.gb
     alineJson['productId'] = options.ap
