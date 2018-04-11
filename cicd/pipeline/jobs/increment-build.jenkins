@@ -49,34 +49,6 @@ pipeline {
                 }
             }
         }
-        stage('Create docker images and push to swarm registry') {
-            parallel {
-                stage('Build service docker image') {
-                    steps {
-                        agent {
-                            docker {
-                                image 'circleci/node:9.3-stretch-browsers'
-                            }
-                        }
-                        script {
-                            def serviceWorkspace = pwd() + "/service/sample-zbw-api"
-                            def serviceDockerImageName = "sample-zbw-api"
-                            buildFlow.buildDockerImage(sanitizedBranchName, buildVersion, serviceWorkspace, serviceDockerImageName)
-                        }
-                    }
-
-                }
-                stage('Build UI docker image') {
-                    steps {
-                        script {
-                            def uiWorkspace = pwd() + "/ui"
-                            def uiDockerImagename = "sample-zbw-ui"
-                            buildFlow.buildDockerImage(sanitizedBranchName, buildVersion, uiWorkspace, uiDockerImagename)
-                        }
-                    }
-                }
-            }
-        }
     }
     post {
         always {
