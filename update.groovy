@@ -44,6 +44,8 @@ builder.sequential {
             include(name: "gradle*")
             include(name: "gradle/**/*")
             include(name: "cicd/**/*")
+            include(name: "ui/**/*")
+            include(name: ".gitignore")
             include(name: "docker-compose.yml")
         }
     }
