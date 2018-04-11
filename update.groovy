@@ -51,6 +51,8 @@ builder.sequential {
             include(name: "docker-compose.yml")
         }
     }
+    chmod(dir: myDir, perm:"+x", includes:"gradlew")
+    chmod(dir: "cicd/scripts/", perm:"+x", includes:"*.sh")
 }
 
 static def copyAndReplaceText(source, dest, Closure replaceText){
