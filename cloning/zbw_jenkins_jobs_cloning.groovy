@@ -28,7 +28,7 @@ multibranchPipelineJob(jenikinsProjectName + "/CI Build") {
         }
     }
     triggers {
-        pollSCM('H */4 * * *')
+        cron('H */4 * * *')
     }
 }
 
