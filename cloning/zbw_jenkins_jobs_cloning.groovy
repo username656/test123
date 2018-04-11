@@ -15,8 +15,9 @@ multibranchPipelineJob(jenikinsProjectName + "/CI Build") {
             buildOriginBranchWithPR()
         }
     }
-    factory {
-        workflowMultiBranchProjectFactory {
+    configure {
+        it / factory(class: 'org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory') {
+            owner(class: 'org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject', reference: '../..')
             scriptPath('cicd/pipeline/jobs/ci-build.jenkins')
         }
     }
@@ -37,8 +38,9 @@ multibranchPipelineJob(jenikinsProjectName + "/Increment Build") {
             includes('develop')
         }
     }
-    factory {
-        workflowMultiBranchProjectFactory {
+    configure {
+        it / factory(class: 'org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory') {
+            owner(class: 'org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject', reference: '../..')
             scriptPath('cicd/pipeline/jobs/increment-build.jenkins')
         }
     }
@@ -60,8 +62,9 @@ multibranchPipelineJob(jenikinsProjectName+"/RC Build") {
             includes('develop')
         }
     }
-    factory {
-        workflowMultiBranchProjectFactory {
+    configure {
+        it / factory(class: 'org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory') {
+            owner(class: 'org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject', reference: '../..')
             scriptPath('cicd/pipeline/jobs/rc-build.jenkins')
         }
     }

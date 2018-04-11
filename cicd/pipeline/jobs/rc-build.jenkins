@@ -16,9 +16,7 @@ pipeline {
         pollSCM('23 0 * * *')
     }
     environment {
-        DOCKER_HOST='tcp://dlb1.aureacentral.com:2376'
-        DOCKER_TLS_VERIFY='1'
-        DOCKER_CERT_PATH='/opt/.docker/'
+        DOCKER_HOST='tcp://dlb1.aureacentral.com:2375'
     }
     stages {
         stage('Checkout code') {
