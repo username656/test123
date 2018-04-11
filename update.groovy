@@ -89,9 +89,8 @@ if (options.ap) {
             .build();
     Response response = client.newCall(request).execute();
     println "Aline processed: $response"
+    assert response.code == 201
 }
-
-exit()
 
 // Cloning jenkins jobs
 def githubUrlEncoded = URLEncoder.encode(options.g, "UTF-8")
