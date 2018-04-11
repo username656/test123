@@ -36,7 +36,7 @@ def buildServiceWithAline() {
 
 def buildUI() {
     sh "cd ui; npm install --@devfactory:registry=http://nexus-rapid-proto.devfactory.com/repository/npm-proto/; " +
-            "npm run lint; npm run test-coverage; npm run build"
+            "npm run build"
     echo "Finished the UI build"
 }
 

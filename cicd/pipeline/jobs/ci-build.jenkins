@@ -26,6 +26,11 @@ pipeline {
         stage('Build Service and UI') {
             parallel {
                 stage('Build UI') {
+                    agent {
+                        docker {
+                            image 'circleci/node:9.3-stretch-browsers'
+                        }
+                    }
                     steps {
                         script {
                             buildFlow.buildUI()
