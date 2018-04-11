@@ -27,10 +27,13 @@ multibranchPipelineJob(jenikinsProjectName + "/CI Build") {
             numToKeep(30)
         }
     }
+    triggers {
+        pollSCM('H */4 * * *')
+    }
 }
 
 //Increment Job
-multibranchPipelineJob(jenikinsProjectName + "/Increment Build") {
+pipelineJob(jenikinsProjectName + "/Increment Build") {
     branchSources {
         git {
             remote(gitRepoUrl)
@@ -50,10 +53,13 @@ multibranchPipelineJob(jenikinsProjectName + "/Increment Build") {
             numToKeep(30)
         }
     }
+    triggers {
+        pollSCM('H */4 * * *')
+    }
 }
 
 //RC Job
-multibranchPipelineJob(jenikinsProjectName+"/RC Build") {
+pipelineJob(jenikinsProjectName + "/RC Build") {
     branchSources {
         github {
             scanCredentialsId(gitCredentialsId)
@@ -73,5 +79,8 @@ multibranchPipelineJob(jenikinsProjectName+"/RC Build") {
             daysToKeep(4)
             numToKeep(30)
         }
+    }
+    triggers {
+        cron('@daily')
     }
 }
