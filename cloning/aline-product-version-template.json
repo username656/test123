@@ -1,0 +1,36 @@
+{
+  "name": "$productVersionName",
+  "productVersionStatusCode": "Tooling",
+  "emailModeStatusCode": "ALL",
+  "description": "",
+  "productId": "$productId",
+  "modules": [],
+  "metricsConfigs": [
+    {
+      "sonarQualityProfileCode": "Advanced-1.4",
+      "cacheDisabled": false
+    }
+  ],
+  "svnRepoConfigs": [
+    {
+      "svnRepo": "$svnRepo/?branch=$branch",
+      "localRepoMapping": "./",
+      "originalGitUrl": "",
+      "isPrimaryRepo": true
+    }
+  ],
+  "revert": null,
+  "rejectBrokenBuild": true,
+  "rejectCodeQualityDecrease": true,
+  "rejectCoverageDecrease": true,
+  "rejectNewUnitTestFailures": true,
+  "enforceStyling": false,
+  "emailNotifications": false,
+  "subscribers": "",
+  "svnRepos": "",
+  "originalGitUrl": "",
+  "showSvnMetadataWhenDetected": false,
+  "parent_product_version_id": null,
+  "uploadLibraries": false,
+  "parentProductVersionId": null
+}

@@ -17,7 +17,7 @@ multibranchPipelineJob(jenikinsProjectName + "/CI Build") {
     }
     factory {
         workflowMultiBranchProjectFactory {
-            scriptPath('aurea-zero-based/cicd/pipeline/jobs/ci-build.jenkins')
+            scriptPath('cicd/pipeline/jobs/ci-build.jenkins')
         }
     }
     orphanedItemStrategy {
@@ -39,7 +39,7 @@ multibranchPipelineJob(jenikinsProjectName + "/Increment Build") {
     }
     factory {
         workflowMultiBranchProjectFactory {
-            scriptPath('aurea-zero-based/cicd/pipeline/jobs/increment-build.jenkins')
+            scriptPath('cicd/pipeline/jobs/increment-build.jenkins')
         }
     }
     orphanedItemStrategy {
@@ -62,7 +62,7 @@ multibranchPipelineJob(jenikinsProjectName+"/RC Build") {
     }
     factory {
         workflowMultiBranchProjectFactory {
-            scriptPath('aurea-zero-based/cicd/pipeline/jobs/rc-build.jenkins')
+            scriptPath('cicd/pipeline/jobs/rc-build.jenkins')
         }
     }
     orphanedItemStrategy {

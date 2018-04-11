@@ -1,23 +1,23 @@
 @Grapes(
         @Grab(group='com.squareup.okhttp3', module='okhttp', version='3.10.0')
 )
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
+import okhttp3.*
 
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import okhttp3.FormBody
-
-def cli = new CliBuilder(usage: 'showdate.groovy -[chflms] [date] [prefix]')
+def cli = new CliBuilder(usage: 'create/update zero-web-site dependencies')
 // Create the list of options.
 cli.with {
     h longOpt: 'help', 'Show usage information'
     u longOpt: 'user', args: 1, 'AD username'
     p longOpt: 'password', args: 1, 'AD password'
     j longOpt: 'jenkins_project', args: 1, 'Jenkins project'
-    g longOpt: 'github_url', args: 1, 'Use DateFormat#LONG format'
+    g longOpt: 'github_url', args: 1, 'Github repo url'
+    gb longOpt: 'github_branch', args: 1, 'Github repo branch'
     go longOpt: 'github_owner', args: 1, 'Github owner'
     gr longOpt: 'github_repo', args: 1, 'Github repository'
-    ap longOpt: 'aline_product', args: 1, 'Aline product'
+    ap longOpt: 'aline_product_id', args: 1, 'Aline product id'
+    apn longOpt: 'aline_product_name', args: 1, 'Aline product name'
     cred_id longOpt: 'jenkins_scm_credentials_id', args: 1, 'Client github jenkins credentials id'
 }
 def options = cli.parse(args)
@@ -30,6 +30,62 @@ if (options.h) {
     return
 }
 
+// Template initialisation
+println "Starting cicd/gradle templates initialisation"
+builder = new AntBuilder()
+builder.sequential {
+    def myDir = "testupdate"
+    copy(todir: myDir) {
+        fileset(dir: "aurea-zero-based") {
+            include(name: "gradle*")
+            include(name: "gradle/**/*")
+            include(name: "cicd/**/*")
+            include(name: "docker-compose.yml")
+        }
+    }
+    copy(todir: myDir) {
+        fileset(dir: "aurea-zero-based/cloning/gradle")
+    }
+}
+
+
+static def copyAndReplaceText(source, dest, Closure replaceText){
+    dest.write(replaceText(source.text))
+}
+
+def source = new File('testupdate/cicd/pipeline/util/buildUtil.groovy')
+
+copyAndReplaceText(source, source) {
+    it.replaceAll('Develop', options.gb)
+    it.replaceAll('ZeroBasedProject', options.apn)
+}
+println "Templates are copied"
+
+OkHttpClient client = new OkHttpClient();
+
+// Basic authorization is used both for aline and jenkins
+String auth = options.u + ":" + options.p;
+String authHeader = "Basic " +  auth.bytes.encodeBase64().toString();
+
+// aline integration
+if (options.ap) {
+    println 'Starting aline integration'
+    def inputFile = new File("aurea-zero-based/cloning/aline-product-version-template.json")
+    def alineJson = new JsonSlurper().parseText(inputFile.text)
+    alineJson['name'] = options.gb
+    alineJson['productId'] = options.ap
+    alineJson['svnRepoConfigs'][0]['svnRepo'] = options.g + '/?branch=' + options.gb
+
+    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
+            new JsonBuilder(alineJson).toPrettyString());
+    Request request = new Request.Builder()
+            .url("https://aline-mdm.devfactory.com/api/1.0/crud/saveProductVersion")
+            .post(body)
+            .addHeader("Authorization", authHeader)
+            .build();
+    Response response = client.newCall(request).execute();
+    println "Aline processed: $response"
+}
 
 // Cloning jenkins jobs
 def githubUrlEncoded = URLEncoder.encode(options.g, "UTF-8")
@@ -40,32 +96,13 @@ def params = [GIT_REPO_URL        : githubUrlEncoded,
            JENKINS_PROJECT_NAME: options.j
 ]
 
-OkHttpClient client = new OkHttpClient();
-
-String auth = options.u + ":" + options.p;
-String authHeader = "Basic " +  auth.bytes.encodeBase64().toString();
-
 Request request = new Request.Builder()
         .url("http://jenkins.aureacentral.com/job/KayakoRewrite/job/Zero%20Base%20Website%20Jenkins%20Job%20Cloning/" +
             "buildWithParameters?" + params.collect { k,v -> "$k=$v" }.join('&'))
         .post(new FormBody.Builder().build())
-        .addHeader("Cache-Control", "no-cache")
         .addHeader("Authorization", authHeader)
-        .addHeader("Postman-Token", "ef229d63-c086-4cb6-8bac-65a7ef254d6a")
         .build();
 
 Response response = client.newCall(request).execute();
 assert response.code == 201
 println "Jenkins projects are updated: " + response
-
-
-// Cloning aline
-
-
-////URL triggerJob = new URL("http://${options.u}:${passwordEncoded}@jenkins.aureacentral.com/job/KayakoRewrite/job/Zero%20Base%20Website%20Jenkins%20Job%20Cloning/buildWithParameters?" + params.collect { k,v -> "$k=$v" }.join('&'))
-//def connection = triggerJob.openConnection()
-//connection.with {
-//    doOutput = true
-//    requestMethod = 'POST'
-//    println content.text
-//}
