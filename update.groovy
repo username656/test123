@@ -34,7 +34,7 @@ if (options.h) {
 println "Starting cicd/gradle templates initialisation"
 builder = new AntBuilder()
 builder.sequential {
-    def myDir = "testupdate"
+    def myDir = "."
     copy(todir: myDir) {
         fileset(dir: "aurea-zero-based") {
             include(name: "gradle*")
@@ -105,4 +105,4 @@ Request request = new Request.Builder()
 
 Response response = client.newCall(request).execute();
 assert response.code == 201
-println "Jenkins projects are updated: " + response
+println "Jenkins jobs are updated: " + response
