@@ -42,15 +42,14 @@ builder.sequential {
     copy(todir: myDir) {
         fileset(dir: "aurea-zero-based") {
             include(name: "gradle*")
+            include(name: "*gradle")
             include(name: "gradle/**/*")
             include(name: "cicd/**/*")
             include(name: "ui/**/*")
+            include(name: "service/**/*")
             include(name: ".gitignore")
             include(name: "docker-compose.yml")
         }
-    }
-    copy(todir: myDir) {
-        fileset(dir: "aurea-zero-based/cloning/gradle")
     }
 }
 
