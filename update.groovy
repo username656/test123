@@ -50,7 +50,6 @@ builder.sequential {
     copy(todir: myDir) {
         fileset(dir: "aurea-zero-based/cloning/gradle")
     }
-    chmod(".", perm:'+x', includes:"gradlew")
 }
 
 static def copyAndReplaceText(source, dest, Closure replaceText){
