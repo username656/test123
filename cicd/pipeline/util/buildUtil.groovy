@@ -24,7 +24,7 @@ def buildServiceWithAline() {
     devfactory (portfolio: 'TestPFAurea', product: 'ZeroBasedProject', productVersion: 'Develop',
             types: 'Java') {
         //Removing findbugs as it is slowing down the build and giving some errors
-        sh "./gradlew clean build --continue"
+        sh "./gradlew clean build --continue -x findbugsMain -x findbugsTest"
     }
     echo 'Ran build successfully'
     junit allowEmptyResults: true, testResults: '**/build/test-results/**/*.xml'
