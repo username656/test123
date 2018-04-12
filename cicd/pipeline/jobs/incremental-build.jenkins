@@ -1,11 +1,9 @@
 #!groovy
-//This is the increment pipeline which will normally be triggered manually (but can be done on every pull request)
+//This is the incremental pipeline which will normally be triggered manually (but can be done on every pull request)
 //and will try to do the build and deploy for the service, which includes:
 //Checkout GIT repo, compile, run code quality checks, run unit/integration/perf tests and build docker image
 
 def pipelineScriptPath = "cicd/pipeline/"
-def sanitizedBranchName = env.BRANCH_NAME.replaceAll("/","-")
-def buildVersion = env.BUILD_NUMBER
 def buildFlow
 
 pipeline {
@@ -13,9 +11,7 @@ pipeline {
         label 'docker&&docker-compose&&docker-tls-cert'
     }
     environment {
-        DOCKER_HOST='tcp://dlb1.aureacentral.com:2376'
-        DOCKER_TLS_VERIFY='1'
-        DOCKER_CERT_PATH='/opt/.docker/'
+        DOCKER_HOST='tcp://dlb1.aureacentral.com:2375'
     }
     stages {
         stage('Checkout code') {
@@ -29,11 +25,6 @@ pipeline {
         stage('Build Service and UI') {
             parallel {
                 stage('Build UI') {
-                    agent {
-                        docker {
-                            image 'circleci/node:9.3-stretch-browsers'
-                        }
-                    }
                     steps {
                         script {
                             buildFlow.buildUI()
@@ -53,29 +44,6 @@ pipeline {
             steps {
                 script {
                     buildFlow.runIntegrationTests()
-                }
-            }
-        }
-        stage('Create docker images and push to swarm registry') {
-            parallel {
-                stage('Build service docker image') {
-                    steps {
-                        script {
-                            def serviceWorkspace = pwd() + "/service/sample-zbw-api"
-                            def serviceDockerImageName = "sample-zbw-api"
-                            buildFlow.buildDockerImage(sanitizedBranchName, buildVersion, serviceWorkspace, serviceDockerImageName)
-                        }
-                    }
-
-                }
-                stage('Build UI docker image') {
-                    steps {
-                        script {
-                            def uiWorkspace = pwd() + "/ui"
-                            def uiDockerImagename = "sample-zbw-ui"
-                            buildFlow.buildDockerImage(sanitizedBranchName, buildVersion, uiWorkspace, uiDockerImagename)
-                        }
-                    }
                 }
             }
         }

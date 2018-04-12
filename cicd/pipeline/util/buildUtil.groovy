@@ -9,7 +9,7 @@ def checkout() {
 def buildService() {
     def gitCommit = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
     shortCommit = gitCommit.take(6)
-    sh "./gradlew clean build"
+    sh "./gradlew clean build cpdCheck"
     echo 'Ran build successfully'
     junit allowEmptyResults: true, testResults: '**/build/test-results/**/*.xml'
     echo 'Generated unit test results'
@@ -24,7 +24,7 @@ def buildServiceWithAline() {
     devfactory (portfolio: 'TestPFAurea', product: 'ZeroBasedProject', productVersion: 'Develop',
             types: 'Java') {
         //Removing findbugs as it is slowing down the build and giving some errors
-        sh "./gradlew clean build cpdCheck -x findbugsMain -x findbugsTest"
+        sh "./gradlew clean build --continue -x findbugsMain -x findbugsTest"
     }
     echo 'Ran build successfully'
     junit allowEmptyResults: true, testResults: '**/build/test-results/**/*.xml'
@@ -36,7 +36,7 @@ def buildServiceWithAline() {
 
 def buildUI() {
     sh "cd ui; npm install --@devfactory:registry=http://nexus-rapid-proto.devfactory.com/repository/npm-proto/; " +
-            "npm run lint; npm run test-coverage; npm run build"
+            "npm run build"
     echo "Finished the UI build"
 }
 
@@ -62,10 +62,8 @@ def buildDockerImage(String branchName, String tag, String workspace, String doc
 }
 
 def pushDockerImageToRegistry(String branchName, String tag, String dockerImageName) {
-    withCredentials([usernamePassword(credentialsId: 'docker-registry-login-id', usernameVariable: 'USERID', passwordVariable: 'PASSWORD')]) {
-        sh "cd cicd/scripts; ./push-docker-to-registry.sh $branchName $tag $dockerImageName $USERID $PASSWORD;"
-        echo 'Pushed docker image to Docker Registry successfully'
-    }
+    sh "cd cicd/scripts; ./push-docker-to-registry.sh $branchName $tag $dockerImageName;"
+    echo 'Pushed docker image to Docker Registry successfully'
 }
 
 return this;

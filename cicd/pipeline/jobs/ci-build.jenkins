@@ -9,9 +9,7 @@ def buildFlow
 pipeline {
     agent any
     environment {
-        DOCKER_HOST='tcp://dlb1.aureacentral.com:2376'
-        DOCKER_TLS_VERIFY='1'
-        DOCKER_CERT_PATH='/opt/.docker/'
+        DOCKER_HOST='tcp://dlb1.aureacentral.com:2375'
     }
     triggers {
         pollSCM('H/2 * * * *')
@@ -28,11 +26,6 @@ pipeline {
         stage('Build Service and UI') {
             parallel {
                 stage('Build UI') {
-                    agent {
-                        docker {
-                            image 'circleci/node:9.3-stretch-browsers'
-                        }
-                    }
                     steps {
                         script {
                             buildFlow.buildUI()
