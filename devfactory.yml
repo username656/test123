@@ -2,6 +2,11 @@ devfactory:
   version: 1
   coverage:
      excludes:
-       - "**/*.Test.class"
-       - "**/*.Application.class"
-       - "**/*.Consts.class"
+      - "**/*.Test.class"
+      - "**/*.Application.class"
+      - "**/*.Consts.class"
+      - "**/*.Consts.java"
+      - "**/*.Consts.java"
+      - "**/*.Consts.java"
+
+

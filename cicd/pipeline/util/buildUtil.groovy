@@ -17,8 +17,8 @@ def buildService(gradleOptions = "") {
             exclusionPattern: '**/*Application.class **/*Test.class **/*Config.class **/*Consts.class',
             maximumBranchCoverage: '100', maximumClassCoverage: '100', maximumComplexityCoverage: '100',
             maximumInstructionCoverage: '100', maximumLineCoverage: '100', maximumMethodCoverage: '100',
-            minimumBranchCoverage: '80', minimumClassCoverage: '80', minimumComplexityCoverage: '80',
-            minimumInstructionCoverage: '80', minimumLineCoverage: '80', minimumMethodCoverage: '80'
+            minimumBranchCoverage: '50', minimumClassCoverage: '50', minimumComplexityCoverage: '50',
+            minimumInstructionCoverage: '50', minimumLineCoverage: '80', minimumMethodCoverage: '50'
 
     echo 'Recorded Test coverage report'
 }
