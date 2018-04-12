@@ -12,7 +12,7 @@
 groovy aurea-zero-based/update.groovy -u ayushchenko -p $AD_PASSWORD \ 
     -j KayakoRewrite/Cloned -g https://github.com/sahkaa/cloned-zbw.git 
     -go sahkaa -gr cloned-zbw -cred_id kayako-rw-sample-git-id 
-    -gb master -g https://github.com/trilogy-group/aurea-kayako.git -ap 3924 -apn Cloned-ZBW
+    -gb develop -g https://github.com/trilogy-group/aurea-kayako.git -ap 3924 -apn Cloned-ZBW
 ```
 
 
