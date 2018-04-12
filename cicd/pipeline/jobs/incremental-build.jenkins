@@ -4,8 +4,6 @@
 //Checkout GIT repo, compile, run code quality checks, run unit/integration/perf tests and build docker image
 
 def pipelineScriptPath = "cicd/pipeline/"
-def sanitizedBranchName = "develop"
-def buildVersion = env.BUILD_NUMBER
 def buildFlow
 
 pipeline {
