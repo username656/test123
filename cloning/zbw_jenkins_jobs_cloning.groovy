@@ -32,8 +32,8 @@ multibranchPipelineJob(jenikinsProjectName + "/CI Build") {
     }
 }
 
-//Incremental Job
-pipelineJob(jenikinsProjectName + "/Incremental Build") {
+//Increment Job
+pipelineJob(jenikinsProjectName + "/Increment Build") {
     logRotator {
         daysToKeep(10)
         numToKeep(30)
@@ -54,7 +54,7 @@ pipelineJob(jenikinsProjectName + "/Incremental Build") {
                     }
                 }
             }
-            scriptPath('cicd/pipeline/jobs/incremental-build.jenkins')
+            scriptPath('cicd/pipeline/jobs/increment-build.jenkins')
         }
     }
     triggers {

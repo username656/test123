@@ -1,6 +1,6 @@
 def notifyBuild(String buildStatus = 'STARTED') {
     // build status of null means successful
-    buildStatus =  buildStatus ?: 'SUCCESSFUL'
+    buildStatus = buildStatus ?: 'SUCCESSFUL'
 
     // Default values
     def colorName = 'RED'
@@ -24,12 +24,6 @@ def notifyBuild(String buildStatus = 'STARTED') {
 
     // Send notifications to slack - commenting for now as we don't have Slack Jenkins plugin installed
     //slackSend (color: colorCode, message: summary)
-
-    emailext(
-            subject: subject,
-            body: details,
-            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-    )
 }
 
 return this;

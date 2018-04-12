@@ -9,7 +9,7 @@ def buildFlow
 pipeline {
     agent any
     environment {
-        DOCKER_HOST='tcp://dlb1.aureacentral.com:2375'
+        DOCKER_HOST = 'tcp://dlb1.aureacentral.com:2375'
     }
     triggers {
         pollSCM('H/2 * * * *')

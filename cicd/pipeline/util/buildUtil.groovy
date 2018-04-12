@@ -6,32 +6,28 @@ def checkout() {
     checkout scm
 }
 
-def buildService() {
-    def gitCommit = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-    shortCommit = gitCommit.take(6)
-    sh "./gradlew clean build cpdCheck"
+def buildService(gradleOptions = "") {
+    sh "./gradlew clean build $gradleOptions"
     echo 'Ran build successfully'
     junit allowEmptyResults: true, testResults: '**/build/test-results/**/*.xml'
     echo 'Generated unit test results'
-    step([$class: 'JacocoPublisher', classPattern: '**/build/classes/java/main', sourcePattern: '**/src/main/java'])
+    jacoco buildOverBuild: true, changeBuildStatus: true, deltaBranchCoverage: '15', deltaClassCoverage: '15',
+            deltaComplexityCoverage: '15', deltaInstructionCoverage: '15', deltaLineCoverage: '15',
+            deltaMethodCoverage: '15',
+            exclusionPattern: '**/*Application.class **/*Test.class **/*Config.class **/*Consts.class',
+            maximumBranchCoverage: '100', maximumClassCoverage: '100', maximumComplexityCoverage: '100',
+            maximumInstructionCoverage: '100', maximumLineCoverage: '100', maximumMethodCoverage: '100',
+            minimumBranchCoverage: '80', minimumClassCoverage: '80', minimumComplexityCoverage: '80',
+            minimumInstructionCoverage: '80', minimumLineCoverage: '80', minimumMethodCoverage: '80'
+
     echo 'Recorded Test coverage report'
-    return shortCommit
 }
 
 def buildServiceWithAline() {
-    def gitCommit = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-    shortCommit = gitCommit.take(6)
-    devfactory (portfolio: 'TestPFAurea', product: 'ZeroBasedProject', productVersion: 'Develop',
-            types: 'Java') {
-        //Removing findbugs as it is slowing down the build and giving some errors
-        sh "./gradlew clean build --continue -x findbugsMain -x findbugsTest"
+    devfactory(portfolio: 'TestPFAurea', product: 'ZeroBasedProject', productVersion: 'Develop', types: 'Java',
+            jacocoFile: "**/*.exec") {
+        buildService("--continue -x findbugsMain -x findbugsTest")
     }
-    echo 'Ran build successfully'
-    junit allowEmptyResults: true, testResults: '**/build/test-results/**/*.xml'
-    echo 'Generated unit test results'
-    step([$class: 'JacocoPublisher', classPattern: '**/build/classes/java/main', sourcePattern: '**/src/main/java'])
-    echo 'Recorded Test coverage report'
-    return shortCommit
 }
 
 def buildUI() {

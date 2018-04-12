@@ -1,3 +1,5 @@
+#!/usr/bin/env groovy
+
 @Grapes(
         @Grab(group='com.squareup.okhttp3', module='okhttp', version='3.10.0')
 )
@@ -45,9 +47,11 @@ builder.sequential {
             include(name: "*gradle")
             include(name: "gradle/**/*")
             include(name: "cicd/**/*")
+            include(name: "config/**/*")
             include(name: "ui/**/*")
             include(name: "service/**/*")
             include(name: ".gitignore")
+            include(name: "devfactory.yml")
             include(name: "docker-compose.yml")
         }
     }
