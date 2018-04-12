@@ -4,9 +4,6 @@ devfactory:
      excludes:
       - "**/*.Test.class"
       - "**/*.Application.class"
-      - "**/*.Consts.class"
-      - "**/*.Consts.java"
+      - "**/*.Consts*"
       - "**/*.Application.java"
       - "**/*.Test.java"
-
-
