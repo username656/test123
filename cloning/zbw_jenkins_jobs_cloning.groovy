@@ -78,10 +78,6 @@ pipelineJob(jenikinsProjectName + "/RC Build") {
                         url(gitRepoUrl)
                         credentials(gitCredentialsId)
                     }
-                    extensions {
-                        localBranch()
-                        wipeOutWorkspace()
-                    }
                 }
             }
             scriptPath('cicd/pipeline/jobs/rc-build.jenkins')
