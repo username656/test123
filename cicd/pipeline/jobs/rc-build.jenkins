@@ -4,7 +4,7 @@
 //build, deploy docker image and trigger deployment pipeline
 
 def pipelineScriptPath = "cicd/pipeline/"
-def sanitizedBranchName = env.BRANCH_NAME.replaceAll("/","-")
+def sanitizedBranchName = "develop"
 def buildVersion = env.BUILD_NUMBER
 def buildFlow
 
