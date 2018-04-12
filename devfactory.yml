@@ -6,7 +6,7 @@ devfactory:
       - "**/*.Application.class"
       - "**/*.Consts.class"
       - "**/*.Consts.java"
-      - "**/*.Consts.java"
-      - "**/*.Consts.java"
+      - "**/*.Application.java"
+      - "**/*.Test.java"
 
 
