@@ -1,4 +1,4 @@
-String jenikinsProjectName ="${JENKINS_PROJECT_NAME}"
+String jenikinsProjectName = "${JENKINS_PROJECT_NAME}"
 String gitCredentialsId = "${GIT_CREDENTIALS_ID}"
 String gitRepoUrl = "${GIT_REPO_URL}"
 String githubRepoOwner = "${GITHUB_REPO_OWNER}"
@@ -34,50 +34,57 @@ multibranchPipelineJob(jenikinsProjectName + "/CI Build") {
 
 //Increment Job
 pipelineJob(jenikinsProjectName + "/Increment Build") {
-    branchSources {
-        git {
-            remote(gitRepoUrl)
-            credentialsId(gitCredentialsId)
-            includes('develop')
-        }
+    logRotator {
+        daysToKeep(10)
+        numToKeep(30)
     }
-    configure {
-        it / factory(class: 'org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory') {
-            owner(class: 'org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject', reference: '../..')
+    concurrentBuild(false)
+    definition {
+        cpsScm {
+            scm {
+                git {
+                    branch("develop")
+                    remote {
+                        url(gitRepoUrl)
+                        credentials(gitCredentialsId)
+                    }
+                    extensions {
+                        localBranch()
+                        wipeOutWorkspace()
+                    }
+                }
+            }
             scriptPath('cicd/pipeline/jobs/increment-build.jenkins')
         }
     }
-    orphanedItemStrategy {
-        discardOldItems {
-            daysToKeep(4)
-            numToKeep(30)
-        }
-    }
     triggers {
-        pollSCM('H */4 * * *')
+        cron('H */4 * * *')
     }
 }
 
 //RC Job
-pipelineJob(jenikinsProjectName + "/RC Build") {
-    branchSources {
-        github {
-            scanCredentialsId(gitCredentialsId)
-            repoOwner(githubRepoOwner)
-            repository(githubRepoName)
-            includes('develop')
-        }
+pipelineJob(jenikinsProjectName + "/Increment Build") {
+    logRotator {
+        daysToKeep(10)
+        numToKeep(30)
     }
-    configure {
-        it / factory(class: 'org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory') {
-            owner(class: 'org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject', reference: '../..')
+    concurrentBuild(false)
+    definition {
+        cpsScm {
+            scm {
+                git {
+                    branch("develop")
+                    remote {
+                        url(gitRepoUrl)
+                        credentials(gitCredentialsId)
+                    }
+                    extensions {
+                        localBranch()
+                        wipeOutWorkspace()
+                    }
+                }
+            }
             scriptPath('cicd/pipeline/jobs/rc-build.jenkins')
-        }
-    }
-    orphanedItemStrategy {
-        discardOldItems {
-            daysToKeep(4)
-            numToKeep(30)
         }
     }
     triggers {
