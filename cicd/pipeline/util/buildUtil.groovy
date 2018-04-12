@@ -57,7 +57,7 @@ def runPerfTests() {
 }
 
 def buildDockerImage(String branchName, String tag, String workspace, String dockerImageName) {
-    sh "cd cicd/scripts; ./build-docker.sh '$branchName' '$tag' '$workspace' '$dockerImageName';"
+    sh "cd cicd/scripts; ./build-docker.sh $branchName $tag $workspace $dockerImageName;"
     echo 'Built Docker Image'
 }
 

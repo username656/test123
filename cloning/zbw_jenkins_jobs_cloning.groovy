@@ -63,7 +63,7 @@ pipelineJob(jenikinsProjectName + "/Incremental Build") {
 }
 
 //RC Job
-pipelineJob(jenikinsProjectName + "/RC Build") {
+pipelineJob(jenikinsProjectName + "/RC_Build") {
     logRotator {
         daysToKeep(10)
         numToKeep(30)
