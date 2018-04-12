@@ -57,15 +57,13 @@ def runPerfTests() {
 }
 
 def buildDockerImage(String branchName, String tag, String workspace, String dockerImageName) {
-    sh "cd cicd/scripts; ./build-docker.sh $branchName $tag $workspace $dockerImageName;"
+    sh "cd cicd/scripts; ./build-docker.sh '$branchName' '$tag' '$workspace' '$dockerImageName';"
     echo 'Built Docker Image'
 }
 
 def pushDockerImageToRegistry(String branchName, String tag, String dockerImageName) {
-    withCredentials([usernamePassword(credentialsId: 'docker-registry-login-id', usernameVariable: 'USERID', passwordVariable: 'PASSWORD')]) {
-        sh "cd cicd/scripts; ./push-docker-to-registry.sh $branchName $tag $dockerImageName $USERID $PASSWORD;"
-        echo 'Pushed docker image to Docker Registry successfully'
-    }
+    sh "cd cicd/scripts; ./push-docker-to-registry.sh $branchName $tag $dockerImageName;"
+    echo 'Pushed docker image to Docker Registry successfully'
 }
 
 return this;
