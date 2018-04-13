@@ -15,14 +15,13 @@ server.error.whitelabel.enabled: false
 
 spring:
   datasource:
-    platform: h2
+    url: jdbc:h2:mem:zwb_h2_db
+    driver-class-name: org.h2.Driver
   data:
     rest:
       base-path: /api/data
   jpa:
     show-sql: true
-    hibernate:
-      ddl-auto: create-drop
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
