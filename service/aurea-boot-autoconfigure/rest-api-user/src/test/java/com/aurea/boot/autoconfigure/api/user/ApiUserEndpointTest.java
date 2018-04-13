@@ -20,7 +20,7 @@ import org.springframework.web.util.NestedServletException;
 
 public class ApiUserEndpointTest {
 
-    private MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new ApiUserEndpoint(mock(UserRepository.class)))
+    private final MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new ApiUserEndpoint(mock(UserRepository.class)))
             .addFilter(new SecurityContextPersistenceFilter()).build();
 
     @Test
