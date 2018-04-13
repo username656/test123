@@ -16,7 +16,7 @@ pipeline {
         pollSCM('23 0 * * *')
     }
     environment {
-        DOCKER_HOST='tcp://dlb1.aureacentral.com:2375'
+        DOCKER_HOST = 'tcp://dlb1.aureacentral.com:2375'
     }
     stages {
         stage('Checkout code') {
@@ -42,13 +42,6 @@ pipeline {
                             buildFlow.buildService()
                         }
                     }
-                }
-            }
-        }
-        stage('Run integration tests') {
-            steps {
-                script {
-                    buildFlow.runIntegrationTests()
                 }
             }
         }

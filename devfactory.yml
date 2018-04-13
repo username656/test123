@@ -1,0 +1,8 @@
+devfactory:
+  version: 1
+  coverage:
+     excludes:
+      - "**/*Test*"
+      - "**/*Consts*"
+      - "**/*Json*"
+      - "**/*Application*"

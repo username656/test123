@@ -1,5 +1,6 @@
 package com.aurea.boot.base.logging;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.util.Map;
 import org.slf4j.Logger;
 
@@ -15,7 +16,8 @@ import org.slf4j.Logger;
 @SuppressWarnings({"PMD.LoggerIsNotStaticFinal", "PMD.DoNotUseThreads"})
 public final class TopLevelExceptionHandler {
 
-    private static final String LOCK_WAIT_TIMEOUT = "Lock wait timeout";
+    @VisibleForTesting
+    static final String LOCK_WAIT_TIMEOUT = "Lock wait timeout";
 
     private final Logger logger;
 

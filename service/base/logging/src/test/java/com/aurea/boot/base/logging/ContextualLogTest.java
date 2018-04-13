@@ -83,6 +83,16 @@ public class ContextualLogTest {
     }
 
     @Test
+    public void multipleAnnotationsWithConflics() {
+        assertNoContext();
+        try (ContextualLog __ = new ContextualLog(new ConflictedContextContextualLogProvider())) {
+            String value = MDC.get(ConflictedContextContextualLogProvider.DUMMY_LOG_CONTEXT_ONE);
+            // precedence undefined, but one will get set
+            assertTrue(FOO.equals(value) || BAR.equals(value));
+        }
+    }
+
+    @Test
     public void raisesException() {
         assertNoContext();
         try (ContextualLog __ = new ContextualLog(new InheritedContextContextualLogProvider())) {
@@ -104,7 +114,7 @@ public class ContextualLogTest {
         assertTrue(copyOfContextMap == null || copyOfContextMap.isEmpty());
     }
 
-    public static class ComplexContextContextualLogProvider implements ContextualLogCapable {
+    private static class ComplexContextContextualLogProvider implements ContextualLogCapable {
 
         static final String DUMMY_LOG_CONTEXT_ONE = "dummyLogContextOne";
         static final String DUMMY_LOG_CONTEXT_TWO = "dummyLogContextTwo";
@@ -120,7 +130,22 @@ public class ContextualLogTest {
         }
     }
 
-    public static class InheritedContextContextualLogProvider extends ComplexContextContextualLogProvider {
+    private static class ConflictedContextContextualLogProvider implements ContextualLogCapable {
+
+        static final String DUMMY_LOG_CONTEXT_ONE = "dummyLogContextOne";
+
+        @LogContext(DUMMY_LOG_CONTEXT_ONE)
+        public String getDummyValueStringFoo() {
+            return FOO;
+        }
+
+        @LogContext(DUMMY_LOG_CONTEXT_ONE)
+        public String getDummyValueStringBar() {
+            return BAR;
+        }
+    }
+
+    private static class InheritedContextContextualLogProvider extends ComplexContextContextualLogProvider {
 
         static final String CHILD_LOG_CONTEXT_TWO = "child_log_context_two";
         static final String RAISE_EXCEPTION_CONTEXT = "raise_exception_context";

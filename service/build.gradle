@@ -29,20 +29,20 @@ buildscript {
 }
 
 def baseProjects = [
-    project("${modulesBase}:service:base:logging"),
-    project("${modulesBase}:service:base:logging-test")
+    project(":service:base:logging"),
+    project(":service:base:logging-test")
 ]
 def springCloudProjects = []
 def springBootProjects = [
-    project("${modulesBase}:service:sample-zbw-api")
+    project(":service:sample-zbw-api")
 ] + springCloudProjects
 def springProjects = [
-    project("${modulesBase}:service:aurea-boot-autoconfigure:data-user"),
-    project("${modulesBase}:service:aurea-boot-autoconfigure:rest-api"),
-    project("${modulesBase}:service:aurea-boot-autoconfigure:rest-api-user"),
-    project("${modulesBase}:service:aurea-boot-autoconfigure:oauth2"),
-    project("${modulesBase}:service:aurea-boot-starter:rest-api-oauth2-starter"),
-    project("${modulesBase}:service:aurea-boot-starter:rest-api-user-oauth2-starter")
+    project(":service:aurea-boot-autoconfigure:data-user"),
+    project(":service:aurea-boot-autoconfigure:rest-api"),
+    project(":service:aurea-boot-autoconfigure:rest-api-user"),
+    project(":service:aurea-boot-autoconfigure:oauth2"),
+    project(":service:aurea-boot-starter:rest-api-oauth2-starter"),
+    project(":service:aurea-boot-starter:rest-api-user-oauth2-starter")
 ] + springBootProjects
 def javaProjectsWithIt = []
 def javaProjectsWithSmoke = []
@@ -87,8 +87,8 @@ configure(javaProjects + baseProjects) {
 
 configure(javaProjects) {
     dependencies {
-        compile project("${modulesBase}:service:base:logging")
-        testCompile project("${modulesBase}:service:base:logging-test")
+        compile project(":service:base:logging")
+        testCompile project(":service:base:logging-test")
     }
 }
 
@@ -106,14 +106,14 @@ configure(springBootProjects) {
     dependencies {
         compile 'org.springframework.boot:spring-boot-starter'
         compile 'org.springframework.boot:spring-boot-starter-actuator'
-
-        testCompile 'org.springframework.boot:spring-boot-starter-test'
     }
 }
 
 configure(springProjects) {
 
     dependencies {
-        testCompile 'org.springframework:spring-test'
+        testCompile 'org.springframework.boot:spring-boot-starter-test'
+        testCompile 'org.springframework.security:spring-security-test'
+
     }
 }
