@@ -1,12 +1,16 @@
 package com.aurea.boot.autoconfigure.api.user.json;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class TokenPasswordJson {
-    
+@AllArgsConstructor
+@NoArgsConstructor
+public class TokenPassword {
+
     private String token;
     private String password;
 }

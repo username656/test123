@@ -5,7 +5,7 @@ import static com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping.RESET
 import com.aurea.boot.autoconfigure.api.annotation.ApiEndpointMapping;
 import com.aurea.boot.autoconfigure.api.error.BadRequestException;
 import com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping;
-import com.aurea.boot.autoconfigure.api.user.json.TokenPasswordJson;
+import com.aurea.boot.autoconfigure.api.user.json.TokenPassword;
 import com.aurea.boot.autoconfigure.data.user.User;
 import com.aurea.boot.autoconfigure.data.user.UserRepository;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +36,7 @@ public class ApiUserEndpoint {
 
     @ApiOperation("Reset Password")
     @PostMapping(RESET_PASSWORD)
-    public void resetPassword(@RequestBody TokenPasswordJson tokenPasswordJson) {
+    public void resetPassword(@RequestBody TokenPassword tokenPasswordJson) {
         if ("invalid-token".equals(tokenPasswordJson.getToken())) {
             throw new BadRequestException("Invalid reset key");
         }

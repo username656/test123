@@ -106,14 +106,14 @@ configure(springBootProjects) {
     dependencies {
         compile 'org.springframework.boot:spring-boot-starter'
         compile 'org.springframework.boot:spring-boot-starter-actuator'
-
-        testCompile 'org.springframework.boot:spring-boot-starter-test'
     }
 }
 
 configure(springProjects) {
 
     dependencies {
-        testCompile 'org.springframework:spring-test'
+        testCompile 'org.springframework.boot:spring-boot-starter-test'
+        testCompile 'org.springframework.security:spring-security-test'
+
     }
 }
