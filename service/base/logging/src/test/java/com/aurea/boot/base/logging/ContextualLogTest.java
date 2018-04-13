@@ -135,13 +135,13 @@ public class ContextualLogTest {
         static final String DUMMY_LOG_CONTEXT_ONE = "dummyLogContextOne";
 
         @LogContext(DUMMY_LOG_CONTEXT_ONE)
-        public String getDummyValueString() {
+        public String getDummyValueStringFoo() {
             return FOO;
         }
 
         @LogContext(DUMMY_LOG_CONTEXT_ONE)
-        public int getDummyValueInt() {
-            return 1;
+        public String getDummyValueStringBar() {
+            return BAR;
         }
     }
 
