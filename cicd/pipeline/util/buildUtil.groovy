@@ -14,7 +14,7 @@ def buildService(gradleOptions = "") {
     jacoco buildOverBuild: true, changeBuildStatus: true, deltaBranchCoverage: '15', deltaClassCoverage: '15',
             deltaComplexityCoverage: '15', deltaInstructionCoverage: '15', deltaLineCoverage: '15',
             deltaMethodCoverage: '15',
-            exclusionPattern: '**/*Test.class',
+            exclusionPattern: '**/*Application.class **/*Test.class **/*Config.class **/*Consts.class',
             maximumBranchCoverage: '100', maximumClassCoverage: '100', maximumComplexityCoverage: '100',
             maximumInstructionCoverage: '100', maximumLineCoverage: '100', maximumMethodCoverage: '100',
             minimumBranchCoverage: '50', minimumClassCoverage: '50', minimumComplexityCoverage: '50',
