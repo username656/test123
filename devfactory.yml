@@ -3,4 +3,3 @@ devfactory:
   coverage:
      excludes:
       - "**/*Test*"
-      - "**/*Consts*"

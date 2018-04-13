@@ -4,7 +4,6 @@ if ( !hasProperty('isAureaZeroBasedSubmodule') || !isAureaZeroBasedSubmodule.toB
             rootGradleDir = "${rootProject.rootDir}/gradle"
             serviceGradleDir = "${rootProject.rootDir}/service/gradle"
             gradlePluginsRepo= "https://plugins.gradle.org/m2/"
-            modulesBase = ""
         }
     }
 

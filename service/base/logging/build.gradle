@@ -16,5 +16,5 @@ dependencies {
 
     testCompile 'org.mockito:mockito-core'
     testCompile 'junit:junit'
-    testCompile project("${modulesBase}:service:base:logging-test")
+    testCompile project(":service:base:logging-test")
 }

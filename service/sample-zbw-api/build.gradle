@@ -1,5 +1,5 @@
 dependencies {
     runtime 'com.h2database:h2'
 
-    compile project("${modulesBase}:service:aurea-boot-starter:rest-api-user-oauth2-starter")
+    compile project(":service:aurea-boot-starter:rest-api-user-oauth2-starter")
 }
