@@ -55,7 +55,7 @@ public class ApiUserEndpointTest {
     @WithMockUser
     public void checkResetPasswordToken() throws Exception {
         this.mockMvc.perform(get(Mapping.API_USER + Mapping.CHECK_RESET_PASSWORD_TOKEN)
-                .content("{\"token\": \"token\"}")
+                .param("token", "tokenValue")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
