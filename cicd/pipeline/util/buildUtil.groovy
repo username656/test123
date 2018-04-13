@@ -15,10 +15,10 @@ def buildService(gradleOptions = "") {
             deltaComplexityCoverage: '15', deltaInstructionCoverage: '15', deltaLineCoverage: '15',
             deltaMethodCoverage: '15',
             exclusionPattern: '**/*Application.class **/*Test.class **/*Config.class **/*Consts.class',
-            maximumBranchCoverage: '100', maximumClassCoverage: '100', maximumComplexityCoverage: '100',
-            maximumInstructionCoverage: '100', maximumLineCoverage: '100', maximumMethodCoverage: '100',
-            minimumBranchCoverage: '50', minimumClassCoverage: '50', minimumComplexityCoverage: '50',
-            minimumInstructionCoverage: '50', minimumLineCoverage: '80', minimumMethodCoverage: '50'
+            maximumBranchCoverage: '70', maximumClassCoverage: '70', maximumComplexityCoverage: '70',
+            maximumInstructionCoverage: '70', maximumLineCoverage: '80', maximumMethodCoverage: '70',
+            minimumBranchCoverage: '70', minimumClassCoverage: '70', minimumComplexityCoverage: '70',
+            minimumInstructionCoverage: '70', minimumLineCoverage: '80', minimumMethodCoverage: '70'
 
     echo 'Recorded Test coverage report'
 }
