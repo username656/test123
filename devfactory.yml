@@ -4,3 +4,4 @@ devfactory:
      excludes:
       - "**/*Test*"
       - "**/*Consts*"
+      - "**/*Json*"

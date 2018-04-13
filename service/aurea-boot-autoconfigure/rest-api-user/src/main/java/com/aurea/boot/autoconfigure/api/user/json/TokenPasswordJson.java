@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenPassword {
+public class TokenPasswordJson {
 
     private String token;
     private String password;

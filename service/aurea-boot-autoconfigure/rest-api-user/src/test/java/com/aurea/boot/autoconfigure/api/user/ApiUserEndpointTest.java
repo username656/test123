@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping;
-import com.aurea.boot.autoconfigure.api.user.json.TokenPassword;
+import com.aurea.boot.autoconfigure.api.user.json.TokenPasswordJson;
 import com.aurea.boot.autoconfigure.data.user.UserRepository;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class ApiUserEndpointTest {
     @Test
     @WithMockUser
     public void resetPassword() throws Exception {
-        TokenPassword tokenPasswordJson = new TokenPassword("token", "passowrd");
+        TokenPasswordJson tokenPasswordJson = new TokenPasswordJson("token", "passowrd");
         this.mockMvc.perform(post(Mapping.API_USER + Mapping.RESET_PASSWORD)
                 .content(new ObjectMapper().writeValueAsString(tokenPasswordJson))
                 .contentType(MediaType.APPLICATION_JSON))
