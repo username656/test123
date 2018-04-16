@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `enabled` TINYINT(1) NULL DEFAULT 0,
   `reset_key` VARCHAR(64) NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC));
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC),
+  UNIQUE INDEX `reset_key_UNIQUE` (`reset_key` ASC));
 
 --password=secret
 INSERT INTO users (id, username, password, first_name, last_name, image, status, enabled, reset_key)
