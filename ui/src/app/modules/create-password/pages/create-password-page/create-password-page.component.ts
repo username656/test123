@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { PasswordUtilities } from '@app/shared/utilities/password-utilities';
   templateUrl: './create-password-page.component.html',
   styleUrls: ['./create-password-page.component.scss']
 })
-export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
+export class CreatePasswordPageComponent implements OnInit {
   public form: FormGroup;
   public loading: boolean = false;
   public tokenValid: boolean = false;
@@ -29,32 +29,30 @@ export class CreatePasswordPageComponent implements OnInit, AfterViewInit {
     return !(this.length && this.uppercase && this.number && this.special);
   }
 
-  public constructor(
-    private fb: FormBuilder,
-    private authenticationService: AuthenticationService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router) {}
+  public constructor(private fb: FormBuilder,
+                     private authenticationService: AuthenticationService,
+                     private activatedRoute: ActivatedRoute,
+                     private router: Router) {
+  }
 
   public ngOnInit(): void {
     this.createForm();
     this.activatedRoute.params.subscribe((params) => {
       this.token = params['token'];
-      this.loading = true;
       this.authenticationService.isCreatePasswordTokenValid(this.token).subscribe(() => {
-          this.loading = false;
-          this.tokenValid = true;
-        }, () => {
-          this.loading = false;
-          this.router.navigateByUrl('/create-password/error');
-        });
+        this.loading = false;
+        this.tokenValid = true;
+      }, () => {
+        this.loading = false;
+        this.router.navigateByUrl('/create-password/error');
+      });
     });
   }
 
-  public ngAfterViewInit(): void {
-    setTimeout(() => this.passwordInput.nativeElement.focus());
-  }
-
   public onSubmit(): void {
+    if (this.isDisabled) {
+      return;
+    }
     this.loading = true;
     this.authenticationService.resetPassword(this.token, this.form.value.password).subscribe(response => {
       this.loading = false;

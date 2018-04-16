@@ -37,7 +37,7 @@ public class ApiUserEndpoint {
     @ApiOperation("Reset Password")
     @PostMapping(RESET_PASSWORD)
     public void resetPassword(@RequestBody TokenPasswordJson tokenPasswordJson) {
-        if ("invalid-token".equals(tokenPasswordJson.getToken())) {
+        if ("post-submit-token".equals(tokenPasswordJson.getToken())) {
             throw new BadRequestException("Invalid reset key");
         }
     }
