@@ -2,7 +2,6 @@ package com.aurea.boot.autoconfigure.api.user;
 
 import static com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping.RESET_PASSWORD;
 
-import com.aurea.boot.autoconfigure.api.ApiBaseEndpoint;
 import com.aurea.boot.autoconfigure.api.annotation.ApiEndpointMapping;
 import com.aurea.boot.autoconfigure.api.error.BadRequestException;
 import com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
         tags = "User API"
 )
 @RequiredArgsConstructor
-public class ApiUserEndpoint extends ApiBaseEndpoint {
+public class ApiUserEndpoint {
 
     @NonNull
     private final UserService userService;
