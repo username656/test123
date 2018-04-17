@@ -9,11 +9,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping;
+import com.aurea.boot.autoconfigure.api.user.impl.UserServiceImpl;
 import com.aurea.boot.autoconfigure.api.user.json.TokenPasswordJson;
 import com.aurea.boot.autoconfigure.data.user.User;
-import com.aurea.boot.autoconfigure.data.user.UserRepository;
 import java.security.Principal;
-import java.util.Optional;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -24,8 +23,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 public class ApiUserEndpointTest {
 
-    private final UserRepository userRepository = mock(UserRepository.class);
-    private final MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new ApiUserEndpoint(userRepository))
+    private final UserService userService = mock(UserServiceImpl.class);
+    private final MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new ApiUserEndpoint(userService))
             .addFilter(new SecurityContextPersistenceFilter()).build();
 
     @Test
@@ -53,7 +52,7 @@ public class ApiUserEndpointTest {
     public void getCurrentUser() throws Exception {
         Principal principal = mock(Principal.class);
         when(principal.getName()).thenReturn("name");
-        when(userRepository.findByUsername(anyString())).thenReturn(Optional.of(new User()));
+        when(userService.getCurrentUser(anyString())).thenReturn(new User());
         mockMvc.perform(get(Mapping.API_USER + Mapping.CURRENT_USER)
                 .principal(principal))
                 .andDo(print())

@@ -1,5 +1,6 @@
 
 dependencies {
+    compile project(":service:aurea-boot-autoconfigure:data")
     compile 'org.springframework.boot:spring-boot-autoconfigure'
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'io.springfox:springfox-swagger-ui'

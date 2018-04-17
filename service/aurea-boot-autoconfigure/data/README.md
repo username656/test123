@@ -1,9 +1,8 @@
-# Aurea Boot Module with Autoconfiguration for User Data
+# Aurea Boot Module with Data Autoconfiguration
 
-This module autoconfigures default Aurea User data and access. 
+This module autoconfigures default Aurea data and access. 
 It includes in module's resources `META-INF/spring.factories` property file with mapping 
-to main `DataAutoConfiguration` class which autoconfigures `User` entity 
-and `UserRepository` repository interface
+to main `DataAutoConfiguration` class which autoconfigures JPA entities and repository interfaces
 
 `META-INF/spring.factories` content:
 ```

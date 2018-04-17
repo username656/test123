@@ -45,6 +45,7 @@ public class User {
     private boolean enabled;
 
     @JsonIgnore
+    @Column(unique = true)
     private String resetKey;
 
 }
