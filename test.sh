@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###########################################################################################################
-# This shell script helps in the creation and publication of the environment for an specific JIRA ticket. #                             
+# This shell script helps in the creation and publication of the environment for an specific JIRA ticket. #
 ###########################################################################################################
 
 if [[ $# -ne 3 ]] ; then
