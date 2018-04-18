@@ -60,4 +60,19 @@ public class UserServiceTest {
         TokenPasswordJson tokenPasswordJson = new TokenPasswordJson(RESET_KEY, PASSWORD);
         userService.resetPassword(tokenPasswordJson);
     }
+
+    @Test
+    public void checkResetPasswordToken() {
+        when(userRepository.findByResetKey(RESET_KEY)).thenReturn(
+                Optional.of(User.builder().username(USERNAME).build()));
+        userService.checkResetToken(RESET_KEY);
+        verify(userRepository).findByResetKey(RESET_KEY);
+    }
+
+    @Test(expected = ResetTokenInvalidException.class)
+    public void checkResetPasswordTokenException() {
+        when(userRepository.findByResetKey(RESET_KEY)).thenThrow(
+                new ResetTokenInvalidException("Reset token invalid"));
+        userService.checkResetToken(RESET_KEY);
+    }
 }

@@ -35,4 +35,11 @@ public class UserServiceImpl implements UserService {
         user.setResetKey(null);
         userRepository.save(user);
     }
+
+    @Override
+    public void checkResetToken(String token) {
+        userRepository
+                .findByResetKey(token)
+                .orElseThrow(() -> new ResetTokenInvalidException("Reset token invalid"));
+    }
 }

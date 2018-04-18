@@ -8,4 +8,6 @@ public interface UserService {
     User getCurrentUser(String username);
 
     void resetPassword(TokenPasswordJson tokenPasswordJson);
+
+    void checkResetToken(String token);
 }
