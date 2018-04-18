@@ -37,10 +37,11 @@ def springBootProjects = [
     project(":service:sample-zbw-api")
 ] + springCloudProjects
 def springProjects = [
-    project(":service:aurea-boot-autoconfigure:data-user"),
+    project(":service:aurea-boot-autoconfigure:data"),
     project(":service:aurea-boot-autoconfigure:rest-api"),
     project(":service:aurea-boot-autoconfigure:rest-api-user"),
     project(":service:aurea-boot-autoconfigure:oauth2"),
+    project(":service:aurea-boot-module:data-user"),
     project(":service:aurea-boot-starter:rest-api-oauth2-starter"),
     project(":service:aurea-boot-starter:rest-api-user-oauth2-starter")
 ] + springBootProjects
