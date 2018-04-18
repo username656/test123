@@ -5,9 +5,9 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(BAD_REQUEST)
-public class BadRequestException extends RuntimeException {
+public class EmailNotFoundException extends RuntimeException {
 
-    public BadRequestException(String message) {
+    public EmailNotFoundException(String message) {
         super(message);
     }
 }

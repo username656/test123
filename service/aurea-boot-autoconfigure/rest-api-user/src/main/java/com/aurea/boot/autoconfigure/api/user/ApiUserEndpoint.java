@@ -3,8 +3,8 @@ package com.aurea.boot.autoconfigure.api.user;
 import static com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping.RESET_PASSWORD;
 
 import com.aurea.boot.autoconfigure.api.annotation.ApiEndpointMapping;
-import com.aurea.boot.autoconfigure.api.error.BadRequestException;
 import com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping;
+import com.aurea.boot.autoconfigure.api.user.json.ForgotPasswordJson;
 import com.aurea.boot.autoconfigure.api.user.json.TokenPasswordJson;
 import com.aurea.boot.autoconfigure.data.user.User;
 import io.swagger.annotations.ApiOperation;
@@ -30,10 +30,11 @@ public class ApiUserEndpoint {
 
     @ApiOperation("Forgot Password")
     @PostMapping(Mapping.FORGOT_PASSWORD)
-    public void forgotPassword(@ApiParam(required = true) @RequestBody String email) {
-        if ("error@example.org".equals(email)) {
-            throw new BadRequestException("The email provided does not appear on our records");
+    public void forgotPassword(@ApiParam(required = true) @RequestBody ForgotPasswordJson forgotPasswordJson) {
+        if (StringUtils.isEmpty(forgotPasswordJson.getEmail())) {
+            throw new IllegalArgumentException("Email parameter empty");
         }
+        userService.forgotPassword(forgotPasswordJson.getEmail());
     }
 
     @ApiOperation("Reset Password")
@@ -58,7 +59,7 @@ public class ApiUserEndpoint {
     @GetMapping(Mapping.CHECK_RESET_PASSWORD_TOKEN)
     public void checkResetPasswordToken(@ApiParam(required = true) @RequestParam String token) {
         if (StringUtils.isEmpty(token)) {
-            throw new IllegalArgumentException("Reset token empty");
+            throw new IllegalArgumentException("Reset token parameter empty");
         }
         userService.checkResetToken(token);
     }

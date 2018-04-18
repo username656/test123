@@ -11,6 +11,19 @@ aurea:
       maxAge: 3600
     securitySchemeKeyName: ZeroBasedWebsite
 
+spring:
+  mail:
+    host: localhost
+    port: 25
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
 security:
   oauth2:
     client:

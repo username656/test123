@@ -38,6 +38,7 @@ def springBootProjects = [
 ] + springCloudProjects
 def springProjects = [
     project(":service:aurea-boot-autoconfigure:data"),
+    project(":service:aurea-boot-autoconfigure:mail"),
     project(":service:aurea-boot-autoconfigure:rest-api"),
     project(":service:aurea-boot-autoconfigure:rest-api-user"),
     project(":service:aurea-boot-autoconfigure:oauth2"),

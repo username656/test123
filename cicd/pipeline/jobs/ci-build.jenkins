@@ -7,7 +7,9 @@ def pipelineScriptPath = "cicd/pipeline/"
 def buildFlow
 
 pipeline {
-    agent any
+    agent {
+        label 'docker&&docker-compose&&docker-tls-cert'
+    }
     environment {
         DOCKER_HOST = 'tcp://dlb1.aureacentral.com:2375'
     }
