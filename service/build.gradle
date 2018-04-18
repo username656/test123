@@ -78,11 +78,8 @@ configure(javaProjects + baseProjects) {
     sourceCompatibility = JavaVersion.VERSION_1_8
 
     dependencies {
-        // we don't use latest and embed with spring as aline has bug on agent side that breaks a build
-        // java.lang.ClassCastException: lombok.javac.apt.InterceptingJavaFileManager cannot be cast
-        // to javax.tools.StandardJavaFileManager
-        compileOnly 'org.projectlombok:lombok:1.16.18'
-        testCompileOnly 'org.projectlombok:lombok:1.16.18'
+        compileOnly 'org.projectlombok:lombok:1.16.20'
+        testCompileOnly 'org.projectlombok:lombok:1.16.20'
     }
 }
 

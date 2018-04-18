@@ -126,7 +126,7 @@ def params = [GIT_REPO_URL        : githubUrlEncoded,
 ]
 
 Request request = new Request.Builder()
-        .url("http://jenkins.aureacentral.com/job/KayakoRewrite/job/Zero%20Base%20Website%20Jenkins%20Job%20Cloning/" +
+        .url("http://jenkins.aureacentral.com/job/AureaZeroBased/job/Zero%20Base%20Website%20Jenkins%20Job%20Cloning/" +
             "buildWithParameters?" + params.collect { k,v -> "$k=$v" }.join('&'))
         .post(new FormBody.Builder().build())
         .addHeader("Authorization", authHeader)
