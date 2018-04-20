@@ -8,9 +8,10 @@ def buildFlow
 
 pipeline {
     agent {
-        label 'docker&&docker-compose&&docker-tls-cert'
+        label 'npm'
     }
     environment {
+        CHROME_BIN='/usr/bin/chromium-browser'
         DOCKER_HOST = 'tcp://dlb1.aureacentral.com:2375'
     }
     triggers {

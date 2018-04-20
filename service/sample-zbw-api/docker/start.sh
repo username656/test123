@@ -27,7 +27,7 @@ if (( SYSTEM_MEMORY > 1024 )); then
     JAVA_MEMORY=$((SYSTEM_MEMORY * 8 / 10))
 
     # Set mandatory options, which are not overridden by JAVA_OPTS setting
-    MANDATORY_JAVA_OPTS=${MANDATORY_JAVA_OPTS:-" -Xmx${JAVA_MEMORY}m -XX:+PrintGC -Djava.security.egd=file:/dev/./urandom"}
+    MANDATORY_JAVA_OPTS=${MANDATORY_JAVA_OPTS:-"-agentpath:/opt/libyjpagent.so=disablestacktelemetry,disableexceptiontelemetry,delay=10000 -Xmx${JAVA_MEMORY}m -XX:+PrintGC -Djava.security.egd=file:/dev/./urandom"}
 else
     echo "Host reported ${SYSTEM_MEMORY} MB of memory which is less than 1024. Skipping setting any JVM options"
 fi

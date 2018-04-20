@@ -4,6 +4,9 @@ MAINTAINER alexander.yushchenko@aurea.com
 
 RUN mkdir -p /opt
 
+#Add yourkit agent
+ADD docker/yourkit-linux-x86-64/libyjpagent.so /opt
+
 # Launcher script.
 ADD docker/start.sh /opt/start.sh
 RUN chmod +x /opt/start.sh

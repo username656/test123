@@ -4,3 +4,6 @@ rm -rf aurea-zero-based
 git clone https://github.com/trilogy-group/aurea-zero-based.git
 ./aurea-zero-based/init.groovy
 rm -rf aurea-zero-based
+git add .
+git commit -am "Cloned"
+git push

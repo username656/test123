@@ -8,7 +8,7 @@ def buildFlow
 
 pipeline {
     agent {
-        label 'docker&&docker-compose&&docker-tls-cert'
+        label 'npm'
     }
     environment {
         DOCKER_HOST = 'tcp://dlb1.aureacentral.com:2375'

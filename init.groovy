@@ -5,12 +5,12 @@
 )
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
-import java.nio.file.Files
-import java.nio.file.Paths
 import okhttp3.*
 
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 import java.util.concurrent.TimeUnit
-
 // Init properties
 Properties properties = new Properties()
 File propertiesFile = new File('aurea-zero-based.properties')
@@ -81,7 +81,12 @@ new AntBuilder().sequential {
     chmod(dir: myDir, perm:"+x", includes:"gradlew")
     chmod(dir: "cicd/scripts/", perm:"+x", includes:"*.sh")
 }
-Files.copy(Paths.get('aurea-zero-based/.gitignore'), Paths.get('.gitignore'))
+Files.copy(Paths.get('aurea-zero-based/.gitignore'), Paths.get('.gitignore'),
+        StandardCopyOption.REPLACE_EXISTING)
+Files.copy(Paths.get('aurea-zero-based/.stignore'), Paths.get('.stignore'),
+        StandardCopyOption.REPLACE_EXISTING)
+Files.copy(Paths.get('aurea-zero-based/devspaces'), Paths.get('devspaces'),
+        StandardCopyOption.REPLACE_EXISTING)
 
 static def copyAndReplaceText(source, dest, Closure replaceText){
     dest.write(replaceText(source.text))
