@@ -95,7 +95,10 @@ describe('CreatePasswordPageComponent', () => {
       spyOn(authenticationService, 'isCreatePasswordTokenValid').and.returnValue(of({status: 200}));
       component.ngOnInit();
       component.form.setValue({ password: 'password' });
-
+      component.length = true;
+      component.special = true;
+      component.uppercase = true;
+      component.number = true;
       component.onSubmit();
 
       expect(authenticationService.resetPassword).toHaveBeenCalledWith('token', 'password');
@@ -110,15 +113,41 @@ describe('CreatePasswordPageComponent', () => {
           }
         }));
       const spy: Spy = spyOn(router, 'navigateByUrl');
-
       spyOn(authenticationService, 'isCreatePasswordTokenValid').and.returnValue(of({status: 200}));
+
       component.ngOnInit();
       component.form.setValue({ password: 'password' });
+      component.length = true;
+      component.special = true;
+      component.uppercase = true;
+      component.number = true;
 
       component.onSubmit();
 
       expect(authenticationService.resetPassword).toHaveBeenCalledWith('token', 'password');
       expect(spy.calls.mostRecent().args[0]).toEqual('/create-password/error');
     });
+
+    it('should handle not submit the form due to validation', () => {
+      spyOn(authenticationService, 'resetPassword').and
+        .returnValue(_throw({
+          error: {
+            message: 'Sample error text'
+          }
+        }));
+      const spy: Spy = spyOn(router, 'navigateByUrl');
+      spyOn(authenticationService, 'isCreatePasswordTokenValid').and.returnValue(of({status: 200}));
+      component.ngOnInit();
+      component.form.setValue({ password: 'password' });
+      component.length = false;
+      component.special = true;
+      component.uppercase = true;
+      component.number = true;
+
+      component.onSubmit();
+
+      expect(authenticationService.resetPassword).not.toHaveBeenCalled();
+    });
+
   });
 });

@@ -7,14 +7,13 @@ import 'rxjs/add/operator/do';
 import { map, mergeMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 
-
-const URLs: { [string: string]: string } = {
-  login: `${environment.serverPath}/oauth/token`,
+export const URLs: { [string: string]: string } = {
+  token: `${environment.serverPath}/oauth/token`,
   forgotPassword: `${environment.apiPath}/users/forgot-password`,
   resetPassword: `${environment.apiPath}/users/reset-password`,
   user: `${environment.apiPath}/users/current`,
   users: `${environment.apiPath}/data/users`,
-  token: `${environment.apiPath}/users/check-reset-password-token`
+  resetPasswordToken: `${environment.apiPath}/users/check-reset-password-token`
 };
 
 interface TokenResponse {
@@ -51,20 +50,38 @@ export class AuthenticationService {
    */
   public login(username: string, password: string, remember: boolean): Observable<User> {
     const data: string = `username=${username}&password=${password}&grant_type=password&scope=read`;
-
-
     const headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': AuthenticationService.BASIC_AUTH
     });
-    return this.http.post<TokenResponse>(URLs.login, data, {headers: headers})
+    return this.http.post<TokenResponse>(URLs.token, data, { headers: headers })
       .pipe(
-        tap(res => this.storeToken(remember, res)),
+        tap(responseToken => this.storeToken(remember, responseToken)),
         mergeMap(() => {
           return this.getUser()
             .pipe(tap(user => {
               this.storageService.setItem(AuthenticationService.CURRENT_USER_STORAGE_KEY, JSON.stringify(user), remember);
             }));
+        })
+      );
+  }
+
+  /**
+   * Refresh the access token using the refresh token
+   */
+  public refreshToken(): Observable<string> {
+    const storageType: boolean = this.getStorageType();
+    const refreshToken: string = this.getCurrentRefreshToken();
+    const data: string = `refresh_token=${refreshToken}&grant_type=refresh_token&scope=read`;
+    const headers: HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': AuthenticationService.BASIC_AUTH
+    });
+    return this.http.post<TokenResponse>(URLs.token, data, { headers: headers })
+      .pipe(
+        map(responseToken => {
+          this.storeToken(storageType, responseToken);
+          return responseToken.access_token;
         })
       );
   }
@@ -85,32 +102,35 @@ export class AuthenticationService {
     this.storageService.removeItem(AuthenticationService.CURRENT_USER_STORAGE_KEY, true);
   }
 
-
   public forgotPassword(email: string): Observable<boolean> {
-    return this.http.post(`${URLs.forgotPassword}`, email)
+    return this.http.post(`${URLs.forgotPassword}?email=${email}`, null)
       .pipe(
         map(() => true) // There is no response from the backend apart from OK (which is implicit)
       );
   }
 
-  /**
-   * @param {string} token generated reset token
-   * @param {string} password New password
-   */
-
-  /* tslint:disable:no-any */
+  // tslint:disable-next-line:no-any
   public resetPassword(token: string, password: string): Observable<HttpResponse<any>> {
     return this.http.post(URLs.resetPassword, JSON.stringify({token, password}), {observe: 'response'});
   }
 
   public isUserLogged(): boolean {
-    return !!this.getCurrentToken();
+    return !!this.getCurrentRefreshToken();
   }
 
   public getCurrentToken(): string {
     const storageType: boolean = this.getStorageType();
     if (storageType !== undefined) {
       return this.storageService.getItem(AuthenticationService.CURRENT_ACCESS_TOKEN_LOCAL_STORAGE, storageType);
+    } else {
+      return undefined; // The user is not logged or login expired
+    }
+  }
+
+  public getCurrentRefreshToken(): string {
+    const storageType: boolean = this.getStorageType();
+    if (storageType !== undefined) {
+      return this.storageService.getItem(AuthenticationService.CURRENT_REFRESH_TOKEN_LOCAL_STORAGE, storageType);
     } else {
       return undefined; // The user is not logged or login expired
     }
@@ -135,7 +155,7 @@ export class AuthenticationService {
    * Get the token from the backend if not expired.
    */
   public isCreatePasswordTokenValid(token: string): Observable<Response> {
-    return this.http.get<Response>(`${URLs.token}?token=${token}`);
+    return this.http.get<Response>(`${URLs.resetPasswordToken}?token=${token}`);
   }
 
   /**
@@ -161,7 +181,7 @@ export class AuthenticationService {
     return undefined;
   }
 
-  private storeToken(remember: boolean, res: TokenResponse): void {
+  private storeToken(remember: boolean, responseToken: TokenResponse): void {
     if (remember) {
       const expiration: Date = new Date();
       expiration.setDate(expiration.getDate() + AuthenticationService.CURRENT_LOGIN_EXPIRATION_DAYS);
@@ -171,8 +191,8 @@ export class AuthenticationService {
       this.storageService.setItem(AuthenticationService.CURRENT_LOGIN_EXPIRATION_STORAGE_KEY,
         AuthenticationService.CURRENT_LOGIN_EXPIRATION_SESSION, true);
     }
-    this.storageService.setItem(AuthenticationService.CURRENT_ACCESS_TOKEN_LOCAL_STORAGE, res.access_token, remember);
-    this.storageService.setItem(AuthenticationService.CURRENT_REFRESH_TOKEN_LOCAL_STORAGE, res.refresh_token, remember);
+    this.storageService.setItem(AuthenticationService.CURRENT_ACCESS_TOKEN_LOCAL_STORAGE, responseToken.access_token, remember);
+    this.storageService.setItem(AuthenticationService.CURRENT_REFRESH_TOKEN_LOCAL_STORAGE, responseToken.refresh_token, remember);
   }
 
   private getUser(): Observable<User> {

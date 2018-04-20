@@ -23,7 +23,7 @@ describe('AuthenticationService', () => {
   const CURRENT_LOGIN_EXPIRATION_SESSION: string = 'session';
   const CURRENT_LOGIN_EXPIRATION_DAYS: number = 30;
 
-  /* tslint:disable:no-any */
+  // tslint:disable-next-line:no-any
   const AUTH_TOKEN_RESPONSE: any = {
     access_token: CURRENT_ACCESS_TOKEN_LOCAL_STORAGE,
     refresh_token: CURRENT_REFRESH_TOKEN_LOCAL_STORAGE,
@@ -136,7 +136,7 @@ describe('AuthenticationService', () => {
     });
 
     it('should not have user after logout / no remember option', () => {
-      spyOn(storageService, 'getItem').and.callFake(function (arg1: string, arg2: boolean): string {
+      spyOn(storageService, 'getItem').and.callFake(function(arg1: string, arg2: boolean): string {
         if (arg1 === CURRENT_LOGIN_EXPIRATION_LOCAL_STORAGE && arg2 === true) {
           return CURRENT_LOGIN_EXPIRATION_SESSION;
         } else {
@@ -153,7 +153,7 @@ describe('AuthenticationService', () => {
     });
 
     it('should not have user after logout / no remember option', () => {
-      spyOn(storageService, 'getItem').and.callFake(function (arg1: string, arg2: boolean): string {
+      spyOn(storageService, 'getItem').and.callFake(function(arg1: string, arg2: boolean): string {
         if (arg1 === CURRENT_LOGIN_EXPIRATION_LOCAL_STORAGE && arg2 === true) {
           return CURRENT_LOGIN_EXPIRATION_LOCAL_STORAGE;
         }
@@ -180,7 +180,7 @@ describe('AuthenticationService', () => {
     });
 
     it('user is logged', () => {
-      spyOn(storageService, 'getItem').and.callFake(function (arg1: string, arg2: boolean): string {
+      spyOn(storageService, 'getItem').and.callFake(function(arg1: string, arg2: boolean): string {
         if (arg1 === CURRENT_LOGIN_EXPIRATION_LOCAL_STORAGE && arg2 === true) {
           return CURRENT_LOGIN_EXPIRATION_SESSION;
         } else {
@@ -219,7 +219,6 @@ describe('AuthenticationService', () => {
     });
 
     it('should clear the data on logout / remember option', () => {
-
       service.login('sample', 'secret', true).subscribe((res) => {
         expect(res).toBeDefined();
         expect(res).toBe(mockUser);
@@ -249,8 +248,7 @@ describe('AuthenticationService', () => {
         expect(res).toBeTruthy();
       });
 
-      const request: TestRequest = httpMock.expectOne(`${URLs.forgotPassword}`);
-      expect(request.request.body).toEqual(email);
+      const request: TestRequest = httpMock.expectOne(`${URLs.forgotPassword}?email=${email}`);
       request.flush({});
     });
   });
@@ -274,9 +272,8 @@ describe('AuthenticationService', () => {
       spyOn(http, 'get').and.returnValue(_throw({status: 404}));
       authService.isCreatePasswordTokenValid('invalid-token').subscribe(
         (res) => {
-          expect(false).toBeTruthy();
+          fail();
         }, (err) => {
-          expect(true).toBeTruthy();
         });
     });
 
@@ -287,9 +284,8 @@ describe('AuthenticationService', () => {
       spyOn(http, 'get').and.returnValue(of(null));
       authService.isCreatePasswordTokenValid('invalid-token').subscribe(
         (res) => {
-          expect(true).toBeTruthy();
         }, (err) => {
-          expect(false).toBeTruthy();
+          fail();
         });
     });
   });
