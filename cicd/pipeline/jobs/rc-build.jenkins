@@ -10,7 +10,7 @@ def buildFlow
 
 pipeline {
     agent {
-        label 'npm'
+        label 'npm&docker&&docker-compose&&docker-tls-cert'
     }
     triggers {
         pollSCM('23 0 * * *')
