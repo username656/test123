@@ -8,10 +8,9 @@ def buildFlow
 
 pipeline {
     agent {
-        label 'npm'
+        label 'nodejs_9.11&&browsers'
     }
     environment {
-        CHROME_BIN='/usr/bin/chromium-browser'
         DOCKER_HOST = 'tcp://dlb1.aureacentral.com:2375'
     }
     triggers {
@@ -26,21 +25,17 @@ pipeline {
                 }
             }
         }
-        stage('Build Service and UI') {
-            parallel {
-                stage('Build UI') {
-                    steps {
-                        script {
-                            buildFlow.buildUI()
-                        }
-                    }
+        stage('Build UI') {
+            steps {
+                script {
+                    buildFlow.buildUI()
                 }
-                stage('Build service') {
-                    steps {
-                        script {
-                            buildFlow.buildService()
-                        }
-                    }
+            }
+        }
+        stage('Build service') {
+            steps {
+                script {
+                    buildFlow.buildService()
                 }
             }
         }

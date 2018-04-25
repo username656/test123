@@ -36,6 +36,11 @@ def buildUI() {
     echo "Finished the UI build"
 }
 
+def runE2eUI() {
+    sh "cd zbw-autotest-protractor; ./e2e-ui.sh "
+    echo "Finished UI e2e tests (protractor)."
+}
+
 def runIntegrationTests() {
     //empty for now
 }

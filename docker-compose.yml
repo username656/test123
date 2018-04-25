@@ -3,6 +3,7 @@ version: '3'
 services:
   sample-zbw-ui:
     image: sample-zbw-ui:$tag
+    network_mode: bridge
     container_name: sample-zbw-ui
     ports:
       - 10234:80
@@ -15,6 +16,7 @@ services:
 
   sample-zbw-api:
     image: sample-zbw-api:$tag
+    network_mode: bridge
     container_name: sample-zbw-api
     ports:
       - 10233:8080

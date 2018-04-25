@@ -72,6 +72,7 @@ new AntBuilder().sequential {
             include(name: "cicd/**/*")
             include(name: "config/**/*")
             include(name: "ui/**/*")
+            include(name: "zbw-autotest-protractor/**/*")
             include(name: "service/**/*")
             include(name: "lombok.config")
             include(name: "devfactory.yml")
@@ -80,6 +81,7 @@ new AntBuilder().sequential {
     }
     chmod(dir: myDir, perm:"+x", includes:"gradlew")
     chmod(dir: "cicd/scripts/", perm:"+x", includes:"*.sh")
+    chmod(dir: "zbw-autotest-protractor/", perm:"+x", includes:"*.sh")
 }
 Files.copy(Paths.get('aurea-zero-based/.gitignore'), Paths.get('.gitignore'),
         StandardCopyOption.REPLACE_EXISTING)

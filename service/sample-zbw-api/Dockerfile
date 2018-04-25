@@ -29,6 +29,9 @@ LABEL com.trilogy.product=aurea-zero-based
 LABEL com.trilogy.service=sample-zbw-api
 LABEL com.trilogy.stage=dev
 LABEL com.trilogy.team=Easier.BackendRewrite
+LABEL SERVICE_NAME=sample-zbw-api
+LABEL SERVICE_TAGS="trilogy.expose-v2,trilogy.http,trilogy.endpoint=sample-zbw-ui.webproxy.aureacentral.com sample-zbw-ui.devfactory.com"
+
 
 # Run in foreground.
 CMD [ "/opt/start.sh" ]

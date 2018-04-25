@@ -28,7 +28,7 @@ multibranchPipelineJob(jenikinsProjectName + "/CI Build") {
         }
     }
     triggers {
-        cron('H */4 * * *')
+        periodic(1)
     }
 }
 
@@ -58,7 +58,7 @@ pipelineJob(jenikinsProjectName + "/Increment Build") {
         }
     }
     triggers {
-        cron('H */4 * * *')
+        scm('H */4 * * *')
     }
 }
 
@@ -84,6 +84,6 @@ pipelineJob(jenikinsProjectName + "/RC_Build") {
         }
     }
     triggers {
-        cron('@daily')
+        cron('H 23 * * *')
     }
 }

@@ -13,7 +13,6 @@ describe(SuiteNames.regressionSuite, () => {
     let loginPage: LoginPage;
 
     beforeEach(async () => {
-        await PageHelper.maximizeWindow();
         loginPage = new LoginPage();
         await loginPage.goTo();
         await LoginPageHelper.verifyLoginPage();

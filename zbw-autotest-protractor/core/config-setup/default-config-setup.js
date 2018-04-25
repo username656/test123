@@ -5,7 +5,7 @@ const setupUtilities = require('./setup-utilities');
 const browserStackBrowser = browserList[setupUtilities.getParam("chrome", "--params.browserstack.browser", false)];
 const maxBrowserInstances = process.env.MAX_INSTANCES || setupUtilities.getParam(5, "--params.maxInstances", false);
 const chromeOptions = {
-        args: [ '--disable-gpu', '--no-sandbox', '--test-type=browser' ],
+        args: [ 'headless', '--disable-gpu', '--window-size=1920x1080', '--no-sandbox', '--test-type=browser' ],
         // Set download path and avoid prompting for download even though
         // this is already the default on Chrome but for completeness
         prefs: {

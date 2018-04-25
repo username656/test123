@@ -7,7 +7,7 @@ export class BasePage implements Page {
     url: string;
 
     async goTo() {
-        PageHelper.getMaximizeWindow();
+        browser.waitForAngularEnabled(false);
         return this.get(this.url);
     }
 
