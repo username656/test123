@@ -23,7 +23,7 @@
              formControlName="password"
              placeholder="Password">
     </df-input-container>
-    <button class="btn-primary mb-4 w-100"
+    <button class="btn-primary mb-4 w-100 focusable"
             type="submit"
             df-button
             [loading]="loading"
@@ -31,8 +31,10 @@
       Login
     </button>
     <div class="d-flex justify-content-between align-items-center">
-      <df-checkbox class="mb-2 mb-sm-0" formControlName="remember">Remember me</df-checkbox>
-      <a class="link d-block text-right" routerLink="/forgot-password">Forgot password?</a>
+      <df-checkbox class="mb-2 mb-sm-0"
+        [class.focused-text]="checkboxFocused"
+        formControlName="remember">Remember me</df-checkbox>
+      <a class="link d-block text-right focusable" routerLink="/forgot-password">Forgot password?</a>
     </div>
   </form>
 </div>

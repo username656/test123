@@ -28,6 +28,13 @@
   z-index: 1;
 }
 
+button.focusable:focus {
+  border: 1px solid black !important;
+}
+a.focusable:focus, .focused-text {
+  text-decoration: underline;
+}
+
 .link {
   color: $au-gray-main;
 }

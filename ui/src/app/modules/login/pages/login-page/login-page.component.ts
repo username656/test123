@@ -14,6 +14,7 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
   public form: FormGroup;
   public alert: { show: boolean, message: string } = { show: false, message: '' };
   public loading: boolean = false;
+  public checkboxFocused: boolean = false;
 
   @ViewChild('email') public email: ElementRef;
 
@@ -31,6 +32,13 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
 
   public ngAfterViewInit(): void {
     setTimeout(() => this.email.nativeElement.focus());
+    const visuallyHiddenCheckbox = document.querySelector('input.df-visually-hidden');
+    visuallyHiddenCheckbox.addEventListener('focus', (evt) => {
+      this.checkboxFocused = true;
+    });
+    visuallyHiddenCheckbox.addEventListener('blur', (evt) => {
+      this.checkboxFocused = false;
+    });
   }
 
   public get isDisabled(): boolean {
