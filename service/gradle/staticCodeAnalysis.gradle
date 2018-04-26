@@ -12,7 +12,7 @@ checkstyle {
 
 findbugs {
     toolVersion = "3.0.1"
-    ignoreFailures =
+    ignoreFailures = false
     excludeFilter = file("${serviceGradleDir}/static-code-analysis/findbugs/exclude.xml")
 }
 
@@ -44,4 +44,18 @@ pitest {
     targetClasses = ['com.aurea.staticcodeanalysis.*']  //by default "${project.group}.*"
     threads = 4
     outputFormats = ['XML', 'HTML']
+}
+
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
+}
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
 }

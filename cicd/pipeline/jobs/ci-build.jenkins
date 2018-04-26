@@ -35,7 +35,7 @@ pipeline {
         stage('Build service') {
             steps {
                 script {
-                    buildFlow.buildService()
+                    buildFlow.buildService("--continue")
                 }
             }
         }

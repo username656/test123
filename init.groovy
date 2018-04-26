@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 
 @Grapes(
-        @Grab(group='com.squareup.okhttp3', module='okhttp', version='3.10.0')
+        @Grab(group = 'com.squareup.okhttp3', module = 'okhttp', version = '3.10.0')
 )
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
@@ -11,10 +11,11 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 import java.util.concurrent.TimeUnit
+
 // Init properties
 Properties properties = new Properties()
 File propertiesFile = new File('aurea-zero-based.properties')
-if(!propertiesFile.exists()) {
+if (!propertiesFile.exists()) {
     Files.copy(Paths.get('aurea-zero-based/cloning/aurea-zero-based-template.properties'),
             Paths.get('aurea-zero-based.properties'))
     println "Fill in aurea-zero-base.properties file to proceed."
@@ -54,7 +55,7 @@ if (!properties.ad_password) {
 
 // Basic authorization is used both for aline and jenkins
 String auth = properties.ad_user + ":" + properties.ad_password
-String authHeader = "Basic " +  auth.bytes.encodeBase64().toString();
+String authHeader = "Basic " + auth.bytes.encodeBase64().toString();
 
 def alineProductName = getAlineProductNameById(client, properties.aline_product_id, authHeader)
 
@@ -72,25 +73,23 @@ new AntBuilder().sequential {
             include(name: "cicd/**/*")
             include(name: "config/**/*")
             include(name: "ui/**/*")
-            include(name: "zbw-autotest-protractor/**/*")
             include(name: "service/**/*")
+            include(name: "devspaces/**/*")
             include(name: "lombok.config")
             include(name: "devfactory.yml")
             include(name: "docker-compose.yml")
         }
     }
-    chmod(dir: myDir, perm:"+x", includes:"gradlew")
-    chmod(dir: "cicd/scripts/", perm:"+x", includes:"*.sh")
-    chmod(dir: "zbw-autotest-protractor/", perm:"+x", includes:"*.sh")
+    chmod(dir: myDir, perm: "+x", includes: "gradlew")
+    chmod(dir: "cicd/scripts/", perm: "+x", includes: "*.sh")
+    chmod(dir: "ui/autotest-protractor/", perm: "+x", includes: "*.sh")
 }
 Files.copy(Paths.get('aurea-zero-based/.gitignore'), Paths.get('.gitignore'),
         StandardCopyOption.REPLACE_EXISTING)
 Files.copy(Paths.get('aurea-zero-based/.stignore'), Paths.get('.stignore'),
         StandardCopyOption.REPLACE_EXISTING)
-Files.copy(Paths.get('aurea-zero-based/devspaces'), Paths.get('devspaces'),
-        StandardCopyOption.REPLACE_EXISTING)
 
-static def copyAndReplaceText(source, dest, Closure replaceText){
+static def copyAndReplaceText(source, dest, Closure replaceText) {
     dest.write(replaceText(source.text))
 }
 
@@ -126,19 +125,19 @@ if (properties.aline_product_id) {
 // Cloning jenkins jobs
 def githubUrlEncoded = URLEncoder.encode(githubUrl, "UTF-8")
 def params = [GIT_REPO_URL        : githubUrlEncoded,
-           GIT_CREDENTIALS_ID  : properties.jenkins_credentials_id,
-           GITHUB_REPO_OWNER   : properties.github_owner,
-           GITHUB_REPO_NAME    : properties.github_repo,
-           JENKINS_PROJECT_NAME: properties.jenkins_project
+              GIT_CREDENTIALS_ID  : properties.jenkins_credentials_id,
+              GITHUB_REPO_OWNER   : properties.github_owner,
+              GITHUB_REPO_NAME    : properties.github_repo,
+              JENKINS_PROJECT_NAME: properties.jenkins_project
 ]
 
 Request request = new Request.Builder()
         .url("http://jenkins.aureacentral.com/job/AureaZeroBased/job/Zero%20Base%20Website%20Jenkins%20Job%20Cloning/" +
-            "buildWithParameters?" + params.collect { k,v -> "$k=$v" }.join('&'))
+        "buildWithParameters?" + params.collect { k, v -> "$k=$v" }.join('&'))
         .post(new FormBody.Builder().build())
         .addHeader("Authorization", authHeader)
         .build();
 
-Response response = client.newCall(request).execute();
+Response response = client.newCall(request).execute()
 assert response.code == 201
 println "Jenkins jobs are updated: " + response

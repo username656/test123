@@ -37,7 +37,7 @@ def buildUI() {
 }
 
 def runE2eUI() {
-    sh "cd zbw-autotest-protractor; ./e2e-ui.sh "
+    sh "cd ui/autotest-protractor; ./e2e-ui.sh "
     echo "Finished UI e2e tests (protractor)."
 }
 
@@ -57,13 +57,13 @@ def runPerfTests() {
     }
 }
 
-def buildDockerImage(String branchName, String tag, String workspace, String dockerImageName) {
-    sh "cd cicd/scripts; ./build-docker.sh $branchName $tag $workspace $dockerImageName;"
+def buildDockerImage(String tag, String workspace, String dockerImageName) {
+    sh "cd cicd/scripts; ./build-docker.sh $tag $workspace $dockerImageName;"
     echo 'Built Docker Image'
 }
 
-def pushDockerImageToRegistry(String branchName, String tag, String dockerImageName) {
-    sh "cd cicd/scripts; ./push-docker-to-registry.sh $branchName $tag $dockerImageName;"
+def pushDockerImageToRegistry(String tag, String dockerImageName) {
+    sh "cd cicd/scripts; ./push-docker-to-registry.sh $tag $dockerImageName;"
     echo 'Pushed docker image to Docker Registry successfully'
 }
 

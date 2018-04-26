@@ -11,7 +11,7 @@ multibranchPipelineJob(jenikinsProjectName + "/CI Build") {
             scanCredentialsId(gitCredentialsId)
             repoOwner(githubRepoOwner)
             repository(githubRepoName)
-            includes('feature/* bugfix/* hotfix/* env/stage revert-* revert/* bugifx/* env/dev')
+            includes('feature/* bugfix/* hotfix/* env/stage revert-* revert/* bugifx/*')
             buildOriginBranchWithPR()
         }
     }

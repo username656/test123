@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
-BRANCH=$1
-SHA1=$2
-NAME=$3
+TAG=$1
+NAME=$2
 
-VERSION=$BRANCH-$SHA1
-PROJECT=aurea-zero-based
+PROJECT=zbw
 
-
-docker tag $NAME:$VERSION registry2.swarm.devfactory.com/$PROJECT/$NAME:$VERSION
-docker push registry2.swarm.devfactory.com/$PROJECT/$NAME:$VERSION
+docker tag $NAME:$TAG registry2.swarm.devfactory.com/$PROJECT/$NAME:$TAG
+docker push registry2.swarm.devfactory.com/$PROJECT/$NAME:$TAG

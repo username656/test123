@@ -43,8 +43,8 @@ pipeline {
                 script {
                     def serviceWorkspace = pwd() + "/service/sample-zbw-api"
                     def serviceDockerImageName = "sample-zbw-api"
-                    buildFlow.buildDockerImage(sanitizedBranchName, buildVersion, serviceWorkspace, serviceDockerImageName)
-                    buildFlow.pushDockerImageToRegistry(sanitizedBranchName, buildVersion, serviceDockerImageName)
+                    buildFlow.buildDockerImage(buildVersion, serviceWorkspace, serviceDockerImageName)
+                    buildFlow.pushDockerImageToRegistry("latest", serviceDockerImageName)
                 }
             }
 
@@ -54,8 +54,9 @@ pipeline {
                 script {
                     def uiWorkspace = pwd() + "/ui"
                     def uiDockerImagename = "sample-zbw-ui"
-                    buildFlow.buildDockerImage(sanitizedBranchName, buildVersion, uiWorkspace, uiDockerImagename)
-                    buildFlow.pushDockerImageToRegistry(sanitizedBranchName, buildVersion, uiDockerImagename)
+                    def tag = "latest"
+                    buildFlow.buildDockerImage(tag, uiWorkspace, uiDockerImagename)
+                    buildFlow.pushDockerImageToRegistry(tag, uiDockerImagename)
                 }
             }
         }
@@ -63,7 +64,7 @@ pipeline {
             steps {
                 script {
                     def deployFlow = load pipelineScriptPath + "util/deployUtil.groovy"
-                    deployFlow.deploy(sanitizedBranchName, buildVersion)
+                    deployFlow.deploy("latest")
                 }
             }
         }
@@ -72,6 +73,17 @@ pipeline {
                 script {
                     buildFlow = load pipelineScriptPath + "util/buildUtil.groovy"
                     buildFlow.runE2eUI()
+                }
+            }
+        }
+        stage('Preparing devspaces image.') {
+            steps {
+                script {
+                    def uiWorkspace = pwd() + "/devspaces"
+                    def uiDockerImagename = "devspaces"
+                    def tag = "latest"
+                    buildFlow.buildDockerImage(tag, uiWorkspace, uiDockerImagename)
+                    buildFlow.pushDockerImageToRegistry(tag, uiDockerImagename)
                 }
             }
         }

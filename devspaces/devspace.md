@@ -42,12 +42,5 @@ So you have to connect to http://10.224.131.92:31040 or http://10.224.131.92:320
 ## Build Image
 
 In order to create the image from scratch run the following:
-`docker build -f Dockerfile -t registry2.swarm.devfactory.com/zbw/devspace:vXXX .`
-for example: `docker build -t registry2.swarm.devfactory.com/zbw/devspace:v1 .`
-
-In order to transfer the image to the registry (where XXX is the version you want to generate):
-`docker push registry2.swarm.devfactory.com/zbw/devspace:vXXX`
-for example: `docker push registry2.swarm.devfactory.com/zbw/devspace:v1`
-
-### Image Log
-* v1 (**LATEST**): Initial version.
+`docker build -f Dockerfile -t registry2.swarm.devfactory.com/zbw/devspaces .`
+for example: `docker build -t registry2.swarm.devfactory.com/zbw/devspaces .`
