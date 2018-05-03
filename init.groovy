@@ -102,7 +102,7 @@ copyAndReplaceText(source, source) {
 println "Templates are copied"
 
 // aline integration
-if (properties.aline_product_id) {
+if (properties.aline_product_id && !properties.aline_off) {
     println 'Starting aline integration'
     def inputFile = new File("aurea-zero-based/cloning/aline-product-version-template.json")
     def alineJson = new JsonSlurper().parseText(inputFile.text)
@@ -141,3 +141,22 @@ Request request = new Request.Builder()
 Response response = client.newCall(request).execute()
 assert response.code == 201
 println "Jenkins jobs are updated: " + response
+
+if (!properties.git_push_off) {
+    executeAndPrint("git add .")
+    executeAndPrint('git commit -m "Init"')
+    executeAndPrint("git push origin " + properties.github_branch)
+}
+
+def executeAndPrint(command) {
+    def sout = new StringBuilder(), serr = new StringBuilder()
+    def proc = command.execute()
+    proc.consumeProcessOutput(sout, serr)
+    proc.waitForOrKill(1000)
+
+    println "Executing $command"
+    println "out> $sout err> $serr"
+//    check that we don't have errors. We could not check for status as status code could be different on success.
+    assert proc.exitValue() != 1
+}
+println "Repository is initialised and pushed."

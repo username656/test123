@@ -7,6 +7,9 @@ def pipelineScriptPath = "cicd/pipeline/"
 def buildFlow
 
 pipeline {
+    options {
+        disableConcurrentBuilds()
+    }
     agent {
         label 'nodejs_9.11&&browsers'
     }

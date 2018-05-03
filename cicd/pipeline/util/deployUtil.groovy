@@ -9,4 +9,4 @@ def deploy(String tag) {
     }
 }
 
-return this;
+this

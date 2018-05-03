@@ -14,7 +14,7 @@ def buildService(gradleOptions = "") {
     jacoco buildOverBuild: true, changeBuildStatus: true, deltaBranchCoverage: '15', deltaClassCoverage: '15',
             deltaComplexityCoverage: '15', deltaInstructionCoverage: '15', deltaLineCoverage: '15',
             deltaMethodCoverage: '15',
-            exclusionPattern: '**/*Application.class **/*Test.class **/*Config.class **/*Consts.class',
+            exclusionPattern: '**/*Application.class,**/*Test.class,**/*Config.class,**/*Consts.class',
             maximumBranchCoverage: '70', maximumClassCoverage: '70', maximumComplexityCoverage: '70',
             maximumInstructionCoverage: '70', maximumLineCoverage: '80', maximumMethodCoverage: '70',
             minimumBranchCoverage: '70', minimumClassCoverage: '70', minimumComplexityCoverage: '70',
@@ -67,4 +67,4 @@ def pushDockerImageToRegistry(String tag, String dockerImageName) {
     echo 'Pushed docker image to Docker Registry successfully'
 }
 
-return this;
+this

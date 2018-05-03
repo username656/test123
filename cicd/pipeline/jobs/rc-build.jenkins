@@ -4,11 +4,14 @@
 //build, deploy docker image and trigger deployment pipeline
 
 def pipelineScriptPath = "cicd/pipeline/"
-def sanitizedBranchName = "develop"
 def buildVersion = env.BUILD_NUMBER
+def DOCKER_TAG = "latest"
 def buildFlow
 
 pipeline {
+    options {
+        disableConcurrentBuilds()
+    }
     agent {
         label 'nodejs_9.11&&browsers'
     }
@@ -44,7 +47,7 @@ pipeline {
                     def serviceWorkspace = pwd() + "/service/sample-zbw-api"
                     def serviceDockerImageName = "sample-zbw-api"
                     buildFlow.buildDockerImage(buildVersion, serviceWorkspace, serviceDockerImageName)
-                    buildFlow.pushDockerImageToRegistry("latest", serviceDockerImageName)
+                    buildFlow.pushDockerImageToRegistry(DOCKER_TAG, serviceDockerImageName)
                 }
             }
 
@@ -54,9 +57,8 @@ pipeline {
                 script {
                     def uiWorkspace = pwd() + "/ui"
                     def uiDockerImagename = "sample-zbw-ui"
-                    def tag = "latest"
-                    buildFlow.buildDockerImage(tag, uiWorkspace, uiDockerImagename)
-                    buildFlow.pushDockerImageToRegistry(tag, uiDockerImagename)
+                    buildFlow.buildDockerImage(DOCKER_TAG, uiWorkspace, uiDockerImagename)
+                    buildFlow.pushDockerImageToRegistry(DOCKER_TAG, uiDockerImagename)
                 }
             }
         }
@@ -64,7 +66,7 @@ pipeline {
             steps {
                 script {
                     def deployFlow = load pipelineScriptPath + "util/deployUtil.groovy"
-                    deployFlow.deploy("latest")
+                    deployFlow.deploy(DOCKER_TAG)
                 }
             }
         }
@@ -81,9 +83,8 @@ pipeline {
                 script {
                     def uiWorkspace = pwd() + "/devspaces"
                     def uiDockerImagename = "devspaces"
-                    def tag = "latest"
-                    buildFlow.buildDockerImage(tag, uiWorkspace, uiDockerImagename)
-                    buildFlow.pushDockerImageToRegistry(tag, uiDockerImagename)
+                    buildFlow.buildDockerImage(DOCKER_TAG, uiWorkspace, uiDockerImagename)
+                    buildFlow.pushDockerImageToRegistry(DOCKER_TAG, uiDockerImagename)
                 }
             }
         }
