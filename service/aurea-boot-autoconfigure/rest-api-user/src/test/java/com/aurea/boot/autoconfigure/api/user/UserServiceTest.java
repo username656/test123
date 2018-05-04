@@ -52,36 +52,21 @@ public class UserServiceTest {
     @Test
     public void resetPassword() {
         User user = User.builder().username(USERNAME_EMAIL).build();
-        when(userRepository.findByResetKey(RESET_KEY)).thenReturn(Optional.of(user));
+        when(userRepository.findByResetPasswordToken(RESET_KEY)).thenReturn(Optional.of(user));
         when(passwordEncoder.encode(PASSWORD)).thenReturn(ENCODED_PASSWORD);
         TokenPasswordJson tokenPasswordJson = new TokenPasswordJson(RESET_KEY, PASSWORD);
         userService.resetPassword(tokenPasswordJson);
-        verify(userRepository).findByResetKey(RESET_KEY);
+        verify(userRepository).findByResetPasswordToken(RESET_KEY);
         verify(passwordEncoder).encode(PASSWORD);
         verify(userRepository).save(user);
     }
 
     @Test(expected = ResetTokenInvalidException.class)
     public void resetPasswordException() {
-        when(userRepository.findByResetKey(RESET_KEY)).thenThrow(
+        when(userRepository.findByResetPasswordToken(RESET_KEY)).thenThrow(
                 new ResetTokenInvalidException("Reset token invalid"));
         TokenPasswordJson tokenPasswordJson = new TokenPasswordJson(RESET_KEY, PASSWORD);
         userService.resetPassword(tokenPasswordJson);
-    }
-
-    @Test
-    public void checkResetPasswordToken() {
-        when(userRepository.findByResetKey(RESET_KEY)).thenReturn(
-                Optional.of(User.builder().username(USERNAME_EMAIL).build()));
-        userService.checkResetToken(RESET_KEY);
-        verify(userRepository).findByResetKey(RESET_KEY);
-    }
-
-    @Test(expected = ResetTokenInvalidException.class)
-    public void checkResetPasswordTokenException() {
-        when(userRepository.findByResetKey(RESET_KEY)).thenThrow(
-                new ResetTokenInvalidException("Reset token invalid"));
-        userService.checkResetToken(RESET_KEY);
     }
 
     @Test

@@ -9,11 +9,11 @@ import { Observable } from 'rxjs/Observable';
 
 export const URLs: { [string: string]: string } = {
   token: `${environment.serverPath}/oauth/token`,
-  forgotPassword: `${environment.apiPath}/users/forgot-password`,
-  resetPassword: `${environment.apiPath}/users/reset-password`,
+  forgotPassword: `${environment.apiPath}/users/forgot_password`,
+  resetPassword: `${environment.apiPath}/users/reset_password`,
   user: `${environment.apiPath}/users/current`,
-  users: `${environment.apiPath}/data/users`,
-  resetPasswordToken: `${environment.apiPath}/users/check-reset-password-token`
+  users: `${environment.apiPath}/users`,
+  resetPasswordToken: `${environment.apiPath}/users/search/by_reset_password_token`
 };
 
 interface TokenResponse {
@@ -102,16 +102,13 @@ export class AuthenticationService {
     this.storageService.removeItem(AuthenticationService.CURRENT_USER_STORAGE_KEY, true);
   }
 
-  public forgotPassword(email: string): Observable<boolean> {
-    return this.http.post(`${URLs.forgotPassword}?email=${email}`, null)
-      .pipe(
-        map(() => true) // There is no response from the backend apart from OK (which is implicit)
-      );
+  public forgotPassword(email: string): Observable<HttpResponse<any>> {
+    return this.http.patch(URLs.forgotPassword, JSON.stringify({email}), {observe: 'response'});
   }
 
   // tslint:disable-next-line:no-any
   public resetPassword(token: string, password: string): Observable<HttpResponse<any>> {
-    return this.http.post(URLs.resetPassword, JSON.stringify({token, password}), {observe: 'response'});
+    return this.http.patch(URLs.resetPassword, JSON.stringify({token, password}), {observe: 'response'});
   }
 
   public isUserLogged(): boolean {

@@ -4,7 +4,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,7 +30,7 @@ public class ApiUserEndpointTest {
     @Test
     @WithMockUser
     public void forgotPassword() throws Exception {
-        this.mockMvc.perform(post(Mapping.API_USER + Mapping.FORGOT_PASSWORD)
+        this.mockMvc.perform(patch(Mapping.API_USERS + Mapping.FORGOT_PASSWORD)
                 .content("{\"email\": \"dummy@email.com\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -41,7 +41,7 @@ public class ApiUserEndpointTest {
     @WithMockUser
     public void resetPassword() throws Exception {
         TokenPasswordJson tokenPasswordJson = new TokenPasswordJson("token", "passowrd");
-        this.mockMvc.perform(post(Mapping.API_USER + Mapping.RESET_PASSWORD)
+        this.mockMvc.perform(patch(Mapping.API_USERS + Mapping.RESET_PASSWORD)
                 .content(new ObjectMapper().writeValueAsString(tokenPasswordJson))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -53,18 +53,8 @@ public class ApiUserEndpointTest {
         Principal principal = mock(Principal.class);
         when(principal.getName()).thenReturn("name");
         when(userService.getCurrentUser(anyString())).thenReturn(new User());
-        mockMvc.perform(get(Mapping.API_USER + Mapping.CURRENT_USER)
+        mockMvc.perform(get(Mapping.API_USERS + Mapping.CURRENT)
                 .principal(principal))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser
-    public void checkResetPasswordToken() throws Exception {
-        this.mockMvc.perform(get(Mapping.API_USER + Mapping.CHECK_RESET_PASSWORD_TOKEN)
-                .param("token", "tokenValue")
-                .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

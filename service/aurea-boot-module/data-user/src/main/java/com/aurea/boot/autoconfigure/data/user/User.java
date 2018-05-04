@@ -46,6 +46,6 @@ public class User {
 
     @JsonIgnore
     @Column(unique = true)
-    private String resetKey;
+    private String resetPasswordToken;
 
 }

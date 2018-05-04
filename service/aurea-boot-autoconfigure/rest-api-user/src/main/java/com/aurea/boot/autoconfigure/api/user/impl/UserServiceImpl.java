@@ -40,18 +40,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void resetPassword(TokenPasswordJson tokenPasswordJson) {
         User user = userRepository
-                .findByResetKey(tokenPasswordJson.getToken())
+                .findByResetPasswordToken(tokenPasswordJson.getToken())
                 .orElseThrow(() -> new ResetTokenInvalidException("Reset token invalid"));
         user.setPassword(passwordEncoder.encode(tokenPasswordJson.getPassword()));
-        user.setResetKey(null);
+        user.setResetPasswordToken(null);
         userRepository.save(user);
-    }
-
-    @Override
-    public void checkResetToken(String token) {
-        userRepository
-                .findByResetKey(token)
-                .orElseThrow(() -> new ResetTokenInvalidException("Reset token invalid"));
     }
 
     @Override
@@ -60,7 +53,7 @@ public class UserServiceImpl implements UserService {
                 .findByUsername(email)
                 .orElseThrow(() -> new EmailNotFoundException("The email provided does not appear on our records"));
         String resetKey = UUID.randomUUID().toString();
-        user.setResetKey(resetKey);
+        user.setResetPasswordToken(resetKey);
         userRepository.save(user);
         log.debug(format("Reset key %s created for user with email %s", resetKey, email));
         mailService.compose()

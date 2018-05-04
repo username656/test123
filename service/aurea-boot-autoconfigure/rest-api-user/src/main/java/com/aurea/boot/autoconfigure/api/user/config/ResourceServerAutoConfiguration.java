@@ -1,5 +1,9 @@
 package com.aurea.boot.autoconfigure.api.user.config;
 
+import static com.aurea.boot.autoconfigure.api.user.ApiConsts.API_ROOT;
+import static com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping.FORGOT_PASSWORD;
+import static com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping.RESET_PASSWORD;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -13,10 +17,10 @@ public class ResourceServerAutoConfiguration extends ResourceServerConfigurerAda
         http
                 .authorizeRequests()
                 .antMatchers("/swagger-ui.html").permitAll()
-                .antMatchers("/api/data/browser/**").permitAll()
-                .antMatchers("/api/users/forgot-password").permitAll()
-                .antMatchers("/api/users/check-reset-password-token").permitAll()
-                .antMatchers("/api/users/reset-password").permitAll()
+                .antMatchers("/api/browser/**").permitAll()
+                .antMatchers(API_ROOT + FORGOT_PASSWORD).permitAll()
+                .antMatchers(API_ROOT + RESET_PASSWORD).permitAll()
+                .antMatchers(API_ROOT + "/search/by_reset_password_token").permitAll()
                 .antMatchers("/oauth/**").authenticated()
                 .antMatchers("/api/**").authenticated();
     }

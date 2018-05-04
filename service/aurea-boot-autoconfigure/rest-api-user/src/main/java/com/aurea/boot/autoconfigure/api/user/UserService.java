@@ -9,7 +9,5 @@ public interface UserService {
 
     void resetPassword(TokenPasswordJson tokenPasswordJson);
 
-    void checkResetToken(String token);
-
     void forgotPassword(String email);
 }

@@ -42,10 +42,10 @@ describe('AuthenticationService', () => {
 
   const URLs: { [string: string]: string } = {
     login: `${environment.serverPath}/oauth/token`,
-    forgotPassword: `${environment.apiPath}/users/forgot-password`,
-    resetPassword: `${environment.apiPath}/users/reset-password`,
+    forgotPassword: `${environment.apiPath}/users/forgot_password`,
+    resetPassword: `${environment.apiPath}/users/reset_password`,
     user: `${environment.apiPath}/users/current`,
-    users: `${environment.apiPath}/data/users`
+    users: `${environment.apiPath}/users`
   };
 
   const headers: HttpHeaders = new HttpHeaders({
@@ -248,7 +248,7 @@ describe('AuthenticationService', () => {
         expect(res).toBeTruthy();
       });
 
-      const request: TestRequest = httpMock.expectOne(`${URLs.forgotPassword}?email=${email}`);
+      const request: TestRequest = httpMock.expectOne(URLs.forgotPassword);
       request.flush({});
     });
   });

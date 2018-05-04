@@ -21,7 +21,7 @@ spring:
     driver-class-name: org.h2.Driver
   data:
     rest:
-      base-path: /api/data
+      base-path: /api
   jpa:
     show-sql: true
   jackson:
@@ -78,7 +78,7 @@ spring:
   profiles: mail-aws-ses
   mail:
     # AWS SES properties
-    host: email-smtp.us-west-2.amazonaws.com
+    host: email-smtp.us-east-1.amazonaws.com
     username: ${MAIL_HOST_USERNAME}
     password: ${MAIL_HOST_PASSWORD}
     properties:
