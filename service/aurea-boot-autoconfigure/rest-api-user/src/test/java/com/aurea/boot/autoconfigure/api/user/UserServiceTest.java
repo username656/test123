@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import com.aurea.boot.autoconfigure.api.error.EmailNotFoundException;
 import com.aurea.boot.autoconfigure.api.error.ResetTokenInvalidException;
+import com.aurea.boot.autoconfigure.api.user.config.props.ApiUserProps;
 import com.aurea.boot.autoconfigure.api.user.impl.UserServiceImpl;
 import com.aurea.boot.autoconfigure.api.user.json.TokenPasswordJson;
 import com.aurea.boot.autoconfigure.data.user.User;
@@ -32,7 +33,9 @@ public class UserServiceTest {
     private final JavaMailSender mailSender = mock(JavaMailSender.class);
 
     private final MailService mailService = new MailService(mailSender);
-    private final UserService userService = new UserServiceImpl(userRepository, passwordEncoder, mailService);
+    private final ApiUserProps apiUserProps = new ApiUserProps();
+    private final UserService userService = new UserServiceImpl(
+            userRepository, passwordEncoder, mailService, apiUserProps);
 
     @Test
     public void getCurrentUser() {

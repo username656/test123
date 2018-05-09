@@ -5,6 +5,7 @@ import static java.lang.String.format;
 import com.aurea.boot.autoconfigure.api.error.EmailNotFoundException;
 import com.aurea.boot.autoconfigure.api.error.ResetTokenInvalidException;
 import com.aurea.boot.autoconfigure.api.user.UserService;
+import com.aurea.boot.autoconfigure.api.user.config.props.ApiUserProps;
 import com.aurea.boot.autoconfigure.api.user.json.TokenPasswordJson;
 import com.aurea.boot.autoconfigure.data.user.User;
 import com.aurea.boot.autoconfigure.data.user.UserRepository;
@@ -31,6 +32,9 @@ public class UserServiceImpl implements UserService {
     @NonNull
     private final MailService mailService;
 
+    @NonNull
+    private final ApiUserProps apiUserProps;
+
     @Override
     public User getCurrentUser(String username) {
         return userRepository.findByUsername(username)
@@ -52,15 +56,16 @@ public class UserServiceImpl implements UserService {
         User user = userRepository
                 .findByUsername(email)
                 .orElseThrow(() -> new EmailNotFoundException("The email provided does not appear on our records"));
-        String resetKey = UUID.randomUUID().toString();
-        user.setResetPasswordToken(resetKey);
+        String resetPasswordToken = UUID.randomUUID().toString();
+        user.setResetPasswordToken(resetPasswordToken);
         userRepository.save(user);
-        log.debug(format("Reset key %s created for user with email %s", resetKey, email));
+        log.debug(format("Reset token %s created for user with email %s", resetPasswordToken, email));
         mailService.compose()
                 .from("no-reply@aurea-zero-based.com")
                 .to(user.getUsername())
                 .subject("Reset password token created")
-                .content(format("Following reset password token has been created for your account: %s", resetKey))
+                .content(format("Please use following link to create new password: %s/create-password/%s",
+                        apiUserProps.getUiUrl(), resetPasswordToken))
                 .send();
     }
 }
