@@ -24,3 +24,9 @@ INSERT INTO users (id, username, password, first_name, last_name, image, status,
 VALUES (1, 'user@example.org', '$2a$10$x5udSzDyTMWOkXG7HRJx5.LpqHayAUkvZ98Gw/aKxiMsdR3gboDJG', 'Default', 'User',
   '/assets/img/profile-image.jpg', 'ONLINE', 1, 'valid-token');
 
+INSERT INTO users (id, username, password, first_name, last_name, image, status, enabled, reset_password_token)
+VALUES (2, 'anouser100@gmail.com', '$2a$10$x5udSzDyTMWOkXG7HRJx5.LpqHayAUkvZ98Gw/aKxiMsdR3gboDJG', 'TestName', 'TestSecondName',
+  '/assets/img/profile-image.jpg', 'ONLINE', 1, 'valid-token-test1');
+INSERT INTO users (id, username, password, first_name, last_name, image, status, enabled, reset_password_token)
+VALUES (3, 'anouser500@gmail.com', '$2a$10$x5udSzDyTMWOkXG7HRJx5.LpqHayAUkvZ98Gw/aKxiMsdR3gboDJG', 'TestName', 'TestSecondName',
+  '/assets/img/profile-image.jpg', 'ONLINE', 1, 'valid-token-test2');
