@@ -1,9 +1,9 @@
 buildscript {
     ext {
         versions = [
-                springBoot          : '2.0.0.RELEASE',
-                springCloud         : 'Finchley.M9',
-                ioSpringPlatform    : 'Cairo-RC1',
+                springBoot          : '1.5.13.RELEASE',
+                springCloud         : 'Edgware.SR3',
+                ioSpringPlatform    : 'Brussels-SR10',
                 logstashGelf        : '1.7.2',
                 springFoxSwagger    : '2.8.0'
         ]

@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
 @Component
-public class CorsFilter implements Filter {
+public class RestCorsFilter implements Filter {
 
     @NonNull
     private final ApiProps apiProps;

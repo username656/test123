@@ -29,6 +29,6 @@ public class TopLevelExceptionHandlerTest {
 
         verify(log, times(2)).error(anyString(), any(ContextualLogCapable.class),
                 any(Throwable.class));
-        verify(log, times(4)).error(anyString(), any(Throwable.class));
+        verify(log, times(5)).error(anyString(), any(Throwable.class));
     }
 }

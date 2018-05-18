@@ -1,8 +1,5 @@
 package com.aurea.boot.autoconfigure.api.user;
 
-import static com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping.FORGOT_PASSWORD;
-import static com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping.RESET_PASSWORD;
-
 import com.aurea.boot.autoconfigure.data.user.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +15,12 @@ public class ApiUserLinks {
     private final EntityLinks entityLinks;
 
     Link getForgotPasswordLink() {
-        return entityLinks.linkToCollectionResource(User.class)
-                .withRel("action:forgot-password")
-                .withHref(entityLinks.linkFor(User.class) + FORGOT_PASSWORD);
+        return entityLinks.linkFor(User.class).slash("forgot_password")
+                .withRel("action:forgot-password");
     }
 
     Link getResetPasswordLink() {
-        return entityLinks.linkToCollectionResource(User.class)
-                .withRel("action:reset-password")
-                .withHref(entityLinks.linkFor(User.class) + RESET_PASSWORD);
+        return entityLinks.linkFor(User.class).slash("reset_password")
+                .withRel("action:reset-password");
     }
 }

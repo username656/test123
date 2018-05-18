@@ -24,6 +24,8 @@ spring:
       base-path: /api
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: none
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false

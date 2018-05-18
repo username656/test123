@@ -33,6 +33,8 @@ public class AuthUserDetailsServiceTest {
 
     @Test(expected = UsernameNotFoundException.class)
     public void loadUserByUsernameFailsIfNoUserFound() {
-        authUserDetailsService.loadUserByUsername("not exist");
+        final String name = "not exist";
+        when(userRepository.findByUsername(name)).thenThrow(new UsernameNotFoundException("Not found"));
+        authUserDetailsService.loadUserByUsername(name);
     }
 }
