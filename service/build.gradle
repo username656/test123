@@ -64,6 +64,8 @@ configure(javaProjects + baseProjects) {
         dependencies {
             dependency "biz.paluch.logging:logstash-gelf:${versions.logstashGelf}"
             dependency "io.springfox:springfox-swagger-ui:${versions.springFoxSwagger}"
+            dependency "io.springfox:springfox-data-rest:${versions.springFoxSwagger}"
+            dependency "io.springfox:springfox-bean-validators:${versions.springFoxSwagger}"
             dependency "io.springfox:springfox-swagger2:${versions.springFoxSwagger}"
         }
     }
