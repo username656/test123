@@ -6,7 +6,7 @@
 -- Table `users`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` LONG NOT NULL,
+  `id` BIGINT NOT NULL,
   `username` VARCHAR(254) NOT NULL,
   `password` VARCHAR(255) NULL,
   `first_name` VARCHAR(255) NULL,

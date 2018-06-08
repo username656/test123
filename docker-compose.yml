@@ -20,6 +20,9 @@ services:
     container_name: sample-zbw-api
     ports:
       - 10233:8080
+    environment:
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_PASSWORD
     deploy:
       mode: global
       update_config:

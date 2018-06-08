@@ -12,23 +12,24 @@ aurea:
     securitySchemeKeyName: ZeroBasedWebsite
 
 server.error.whitelabel.enabled: false
-
 spring:
+  profiles:
+    active: mail-local
   datasource:
-    url: jdbc:h2:mem:zwb_h2_db
-    driver-class-name: org.h2.Driver
+    url: mysql_url
+    driver-class-name: com.mysql.jdbc.Driver
   data:
     rest:
       base-path: /api
   jpa:
+    generate-ddl: false
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
   mail:
-    # AWS SES properties
     host: email-smtp.us-east-1.amazonaws.com
     username: ${MAIL_HOST_USERNAME}
     password: ${MAIL_HOST_PASSWORD}
@@ -56,3 +57,4 @@ security:
       client-secret: zwbsecret
     authorization:
       check-token-access: isAuthenticated()
+

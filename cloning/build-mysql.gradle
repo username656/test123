@@ -1,0 +1,7 @@
+dependencies {
+    runtime 'mysql:mysql-connector-java'
+
+
+    compile project(":service:aurea-boot-starter:rest-api-user-oauth2-starter")
+    compile 'org.flywaydb:flyway-core'
+}

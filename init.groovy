@@ -1,11 +1,13 @@
 #!/usr/bin/env groovy
+@Grapes([
+        @Grab(group = 'com.squareup.okhttp3', module = 'okhttp', version = '3.10.0'),
+        @Grab(group = 'org.apache.commons', module = 'commons-lang3', version = '3.7')
+])
 
-@Grapes(
-        @Grab(group = 'com.squareup.okhttp3', module = 'okhttp', version = '3.10.0')
-)
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import okhttp3.*
+import org.apache.commons.lang3.RandomStringUtils
 
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -57,6 +59,38 @@ if (!properties.ad_password) {
 String auth = properties.ad_user + ":" + properties.ad_password
 String authHeader = "Basic " + auth.bytes.encodeBase64().toString();
 
+
+if (!properties.jenkins_credentials_id) {
+//    create credentials automatically in jenkins
+    MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+    properties.jenkins_credentials_id = RandomStringUtils.randomAlphabetic(32)
+    String json = '{ "": "0", "credentials": {"scope": "GLOBAL","id": "${id}",' +
+            '"username": "${username}","password": "${password}","description": "Auto generated credential by ' +
+            'zero-base cloning","$class": "com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl"}}';
+    json=json.replace('${username}', (String) properties.github_user)
+            .replace('${password}', (String) properties.github_password)
+            .replace('${id}', (String) properties.jenkins_credentials_id)
+    def jenkinsProject = (String) properties.jenkins_project
+    def projects = []
+    if (jenkinsProject.indexOf('/') > 0) {
+        for (def project in jenkinsProject.split("/")) {
+            projects.add(project)
+        }
+        jenkinsProject= projects.join("/job/")
+    }
+
+    RequestBody body = RequestBody.create(mediaType, "json=" + URLEncoder.encode(json, "UTF-8"));
+    Request request = new Request.Builder()
+            .url("http://jenkins.aureacentral.com/job/" + jenkinsProject + "/credentials/store/folder/domain/_/createCredentials")
+            .post(body)
+            .addHeader("Authorization", authHeader)
+            .build();
+
+    Response response = client.newCall(request).execute()
+
+    assert response.code == 200
+}
+
 def alineProductName = getAlineProductNameById(client, properties.aline_product_id, authHeader)
 
 // Template initialisation
@@ -89,20 +123,39 @@ Files.copy(Paths.get('aurea-zero-based/.gitignore'), Paths.get('.gitignore'),
 Files.copy(Paths.get('aurea-zero-based/.stignore'), Paths.get('.stignore'),
         StandardCopyOption.REPLACE_EXISTING)
 
+use_mysql = ((String)properties.use_mysql).toBoolean()
+println "Use mysql as database: ${use_mysql}"
+if (use_mysql) {
+    Files.copy(Paths.get('aurea-zero-based/cloning/application-mysql.yml'),
+            Paths.get('service/sample-zbw-api/src/main/resources/application.yml'), StandardCopyOption.REPLACE_EXISTING)
+    Files.copy(Paths.get('aurea-zero-based/cloning/build-mysql.gradle'),
+            Paths.get('service/sample-zbw-api/build.gradle'), StandardCopyOption.REPLACE_EXISTING)
+
+}
+
 static def copyAndReplaceText(source, dest, Closure replaceText) {
     dest.write(replaceText(source.text))
 }
 
+//RC build adjustment
 def source = new File('cicd/pipeline/util/buildUtil.groovy')
-
 copyAndReplaceText(source, source) {
     it.replaceAll('Develop', properties.github_branch)
     it.replaceAll('ZeroBasedProject', alineProductName)
 }
+
+//Mysql url adjustment
+source = new File('service/sample-zbw-api/src/main/resources/application.yml')
+copyAndReplaceText(source, source) {
+    it.replaceAll('mysql_url', properties.mysql_url)
+}
+
 println "Templates are copied"
 
+aline_enabled = ((String)properties.aline_enabled).toBoolean()
+println "Aline integration is ${aline_enabled}"
 // aline integration
-if (properties.aline_product_id && !properties.aline_off) {
+if (properties.aline_product_id && aline_enabled) {
     println 'Starting aline integration'
     def inputFile = new File("aurea-zero-based/cloning/aline-product-version-template.json")
     def alineJson = new JsonSlurper().parseText(inputFile.text)
@@ -124,11 +177,14 @@ if (properties.aline_product_id && !properties.aline_off) {
 
 // Cloning jenkins jobs
 def githubUrlEncoded = URLEncoder.encode(githubUrl, "UTF-8")
-def params = [GIT_REPO_URL        : githubUrlEncoded,
-              GIT_CREDENTIALS_ID  : properties.jenkins_credentials_id,
-              GITHUB_REPO_OWNER   : properties.github_owner,
-              GITHUB_REPO_NAME    : properties.github_repo,
-              JENKINS_PROJECT_NAME: properties.jenkins_project
+def params = [GIT_REPO_URL              : githubUrlEncoded,
+              GIT_CREDENTIALS_ID        : properties.jenkins_credentials_id,
+              GITHUB_REPO_OWNER         : properties.github_owner,
+              GITHUB_REPO_NAME          : properties.github_repo,
+              SPRING_DATASOURCE_USERNAME: properties.db_user,
+              SPRING_DATASOURCE_PASSWORD: properties.db_password,
+              MYSQL_ON                  : properties.mysql_on,
+              JENKINS_PROJECT_NAME      : properties.jenkins_project
 ]
 
 Request request = new Request.Builder()
@@ -142,7 +198,9 @@ Response response = client.newCall(request).execute()
 assert response.code == 201
 println "Jenkins jobs are updated: " + response
 
-if (!properties.git_push_off) {
+git_push_enabled = ((String)properties.git_push_enabled).toBoolean()
+println "Push into github: ${git_push_enabled}"
+if (git_push_enabled) {
     executeAndPrint("git add .")
     executeAndPrint('git commit -m "Init"')
     executeAndPrint("git push origin " + properties.github_branch)
@@ -159,4 +217,5 @@ def executeAndPrint(command) {
 //    check that we don't have errors. We could not check for status as status code could be different on success.
     assert proc.exitValue() != 1
 }
+
 println "Repository is initialised and pushed."

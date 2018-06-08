@@ -3,6 +3,9 @@ String gitCredentialsId = "${GIT_CREDENTIALS_ID}"
 String gitRepoUrl = "${GIT_REPO_URL}"
 String githubRepoOwner = "${GITHUB_REPO_OWNER}"
 String githubRepoName = "${GITHUB_REPO_NAME}"
+String dbUser = "${SPRING_DATASOURCE_USERNAME}"
+String dbPassword = "${SPRING_DATASOURCE_PASSWORD}"
+Boolean mysqlOn = "${MYSQL_ON}"
 
 //CI Job
 multibranchPipelineJob(jenikinsProjectName + "/CI Build") {
@@ -58,12 +61,14 @@ pipelineJob(jenikinsProjectName + "/Increment Build") {
         }
     }
     triggers {
-        scm('H */4 * * *')
+        scm('H/5 * * * *')
     }
 }
 
 //RC Job
 pipelineJob(jenikinsProjectName + "/RC_Build") {
+    environmentVariables(SPRING_DATASOURCE_USERNAME: dbUser, SPRING_DATASOURCE_PASSWORD: dbPassword)
+
     logRotator {
         daysToKeep(10)
         numToKeep(30)
