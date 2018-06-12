@@ -8,6 +8,8 @@ services:
     ports:
       - 10234:80
     deploy:
+      limits:
+        memory: 2000M
       mode: global
       update_config:
         delay: 10s
@@ -24,6 +26,8 @@ services:
       - SPRING_DATASOURCE_USERNAME
       - SPRING_DATASOURCE_PASSWORD
     deploy:
+      limits:
+        memory: 2000M
       mode: global
       update_config:
         parallelism: 1
