@@ -102,8 +102,8 @@ export class AuthenticationService {
     this.storageService.removeItem(AuthenticationService.CURRENT_USER_STORAGE_KEY, true);
   }
 
-  public forgotPassword(email: string): Observable<HttpResponse<any>> {
-    return this.http.patch(URLs.forgotPassword, JSON.stringify({email}), {observe: 'response'});
+  public forgotPassword(email: string): Observable<HttpResponse<boolean>> {
+    return this.http.patch<boolean>(URLs.forgotPassword, JSON.stringify({email}), {observe: 'response'});
   }
 
   // tslint:disable-next-line:no-any

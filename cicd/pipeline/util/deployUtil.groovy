@@ -1,11 +1,8 @@
-//Deploy related functions
-
-def deploy(String tag) {
+def deploy() {
     if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-        sh "export tag="+tag+"; " +
-                "docker stop sample-zbw-api || true && docker rm sample-zbw-api || true;" +
-                "docker stop sample-zbw-ui || true && docker rm sample-zbw-ui || true; " +
-                "docker-compose up -d;"
+        sh "docker stop ${ENV_NAME}_aurea-zero-based_ui || true && docker rm ${ENV_NAME}_aurea-zero-based_ui || true;" +
+                "docker stop ${ENV_NAME}_aurea-zero-based_api || true && docker rm ${ENV_NAME}_aurea-zero-based_api || true; "
+        sh "docker-compose  rm -fs; docker-compose pull; docker-compose up -d;"
     }
 }
 

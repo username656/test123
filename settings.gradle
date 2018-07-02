@@ -1,6 +1,6 @@
 rootProject.name = 'aurea-zero-based'
 
-include ':service:sample-zbw-api',
+include ':service:aurea-zero-based-api',
         ':service:aurea-boot-autoconfigure:data',
         ':service:aurea-boot-autoconfigure:mail',
         ':service:aurea-boot-autoconfigure:rest-api',

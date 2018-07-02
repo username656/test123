@@ -1,4 +1,4 @@
-package com.aurea.sample.zbw;
+package com.aurea.zbw;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SampleZbwApiApplicationTest {
+public class AureaZeroBaseApiApplicationTest {
 
     @Test
     public void contextLoads() {

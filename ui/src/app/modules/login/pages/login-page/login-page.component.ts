@@ -32,7 +32,7 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
 
   public ngAfterViewInit(): void {
     setTimeout(() => this.email.nativeElement.focus());
-    const visuallyHiddenCheckbox = document.querySelector('input.df-visually-hidden');
+    const visuallyHiddenCheckbox: Element = document.querySelector('input.df-visually-hidden');
     visuallyHiddenCheckbox.addEventListener('focus', (evt) => {
       this.checkboxFocused = true;
     });

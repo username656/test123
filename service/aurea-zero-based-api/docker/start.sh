@@ -41,4 +41,4 @@ MANDATORY_JAVA_OPTS=${MANDATORY_JAVA_OPTS:-"-XX:+PrintGC"}
 echo "Final java options are \"${MANDATORY_JAVA_OPTS} ${JAVA_OPTS}\""
 
 # Don't insert line breaks, otherwise exec fails
-exec java ${MANDATORY_JAVA_OPTS} ${JAVA_OPTS} -Dorg.eclipse.jetty.server.Request.maxFormContentSize=5000000 -jar /opt/sample-zbw-api.jar
+exec java ${MANDATORY_JAVA_OPTS} ${JAVA_OPTS} -Dorg.eclipse.jetty.server.Request.maxFormContentSize=5000000 -jar /opt/aurea-zero-based-api.jar

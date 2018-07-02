@@ -30,9 +30,9 @@ def buildServiceWithAline() {
     }
 }
 
-def buildUI() {
+def buildUI(ENV_NAME = "dev") {
     sh "cd ui; npm install --@devfactory:registry=http://nexus-rapid-proto.devfactory.com/repository/npm-proto/; " +
-            "npm run build"
+            "npm run lint; npm run test-coverage; npm run build --env=$ENV_NAME"
     echo "Finished the UI build"
 }
 
@@ -65,6 +65,11 @@ def buildDockerImage(String tag, String workspace, String dockerImageName) {
 def pushDockerImageToRegistry(String tag, String dockerImageName) {
     sh "cd cicd/scripts; ./push-docker-to-registry.sh $tag $dockerImageName;"
     echo 'Pushed docker image to Docker Registry successfully'
+}
+
+def buildAndPushDocker(String tag, String workspace, String dockerImageName) {
+    buildDockerImage(tag, workspace, dockerImageName)
+    pushDockerImageToRegistry(tag, dockerImageName)
 }
 
 this

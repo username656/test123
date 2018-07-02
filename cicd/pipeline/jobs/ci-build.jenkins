@@ -10,15 +10,11 @@ pipeline {
     options {
         disableConcurrentBuilds()
     }
-
     agent {
         label 'nodejs_9.11&&browsers'
     }
-    environment {
-        DOCKER_HOST = 'tcp://dlb1.aureacentral.com:2375'
-    }
     triggers {
-        pollSCM('H/2 * * * *')
+        pollSCM('H/5 * * * *')
     }
     stages {
         stage('Checkout code') {

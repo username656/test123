@@ -5,6 +5,9 @@ String githubRepoOwner = "${GITHUB_REPO_OWNER}"
 String githubRepoName = "${GITHUB_REPO_NAME}"
 String dbUser = "${SPRING_DATASOURCE_USERNAME}"
 String dbPassword = "${SPRING_DATASOURCE_PASSWORD}"
+String envName = "${ENV_NAME}"
+String portUi = "${PORT_UI}"
+String portApi = "${PORT_API}"
 Boolean mysqlOn = "${MYSQL_ON}"
 
 //CI Job
@@ -31,7 +34,7 @@ multibranchPipelineJob(jenikinsProjectName + "/CI Build") {
         }
     }
     triggers {
-        periodic(1)
+        periodic(7)
     }
 }
 
@@ -61,13 +64,19 @@ pipelineJob(jenikinsProjectName + "/Increment Build") {
         }
     }
     triggers {
-        scm('H/5 * * * *')
+        scm('H/7 * * * *')
     }
 }
 
 //RC Job
 pipelineJob(jenikinsProjectName + "/RC_Build") {
-    environmentVariables(SPRING_DATASOURCE_USERNAME: dbUser, SPRING_DATASOURCE_PASSWORD: dbPassword)
+    environmentVariables(
+            SPRING_DATASOURCE_USERNAME: dbUser,
+            SPRING_DATASOURCE_PASSWORD: dbPassword,
+            ENV_NAME: envName,
+            PORT_API: portApi,
+            PORT_UI: portUi
+    )
 
     logRotator {
         daysToKeep(10)

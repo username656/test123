@@ -34,7 +34,7 @@ def baseProjects = [
 ]
 def springCloudProjects = []
 def springBootProjects = [
-    project(":service:sample-zbw-api")
+    project(":service:aurea-zero-based-api")
 ] + springCloudProjects
 def springProjects = [
     project(":service:aurea-boot-autoconfigure:data"),

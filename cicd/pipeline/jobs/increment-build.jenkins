@@ -13,9 +13,6 @@ pipeline {
     agent {
         label 'nodejs_9.11&&browsers'
     }
-    environment {
-        DOCKER_HOST = 'tcp://dlb1.aureacentral.com:2375'
-    }
     stages {
         stage('Checkout code') {
             steps {
