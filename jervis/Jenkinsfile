@@ -1,0 +1,111 @@
+#!groovy
+//This is the increment pipeline which will normally be triggered manually (but can be done on every pull request)
+//and will try to do the build and deploy for the service, which includes:
+//Checkout GIT repo, compile, run code quality checks, run unit/integration/perf tests and build docker image
+
+def pipelineScriptPath = "cicd/pipeline/"
+def buildFlow = load pipelineScriptPath + "util/buildUtil.groovy"
+def ENV_NAME = 'dev'
+def PORT_UI = 4000
+def PORT_API = 8080
+
+pipeline {
+    options {
+        disableConcurrentBuilds()
+    }
+    agent {
+        label 'java8-node'
+    }
+    environment {
+        DOCKER_HOST = 'tcp://dl1.aureacentral.com:2375'
+    }
+  
+    stages {
+        stage('Config env variables for development') {
+            when {  branch 'development' }
+            steps {
+                script {
+                    ENV_NAME='dev'
+                    PORT_UI=10234
+                    PORT_API=10233
+                }
+            }
+        }
+        stage('Config env variables for master or staging') {
+            when { anyOf { branch 'master'; branch 'staging';  } }
+            steps {
+                script {
+                    ENV_NAME='qa'
+                    PORT_UI=10234
+                    PORT_API=10233
+                }
+            }
+        }
+        stage('Checkout code') {
+            steps {
+                script {
+                    println("Deploying on env $ENV_NAME with port ui ${PORT_UI} and port api ${PORT_API}")
+                    buildFlow.checkout()
+                }
+            }
+        }
+        stage('Build UI') {
+            steps {
+                script {
+                    buildFlow.buildUI(ENV_NAME)
+                }
+            }
+        }
+        stage('Build service') {
+            steps {
+                script {
+                    // jacoco plugin not found in jervis yet
+                    buildFlow.buildServiceWithoutJacoco()
+                }
+            }
+        }
+        stage('Build and push service docker image') {
+            when { anyOf { branch 'master'; branch 'staging'; branch 'development' } }
+            steps {
+                script {
+                    buildFlow.buildAndPushDocker(ENV_NAME, pwd() + "/service/aurea-zero-based-api", "api")
+                }
+            }
+        }
+        stage('Push UI docker image') {
+            when { anyOf { branch 'master'; branch 'staging'; branch 'development' } }
+            steps {
+                script {
+                    buildFlow.buildAndPushDocker(ENV_NAME, pwd() + "/ui", "ui")
+                }
+            }
+        }
+        stage('Deployment') {
+            when { anyOf { branch 'master'; branch 'staging'; branch 'development' } }
+            steps {
+                script {
+                    def deployFlow = load pipelineScriptPath + "util/deployUtil.groovy"
+                    deployFlow.deploy()
+                }
+            }
+        }
+        stage('Preparing devspaces image') {
+            when { anyOf { branch 'master'; branch 'staging'; branch 'development' } }
+            steps {
+                script {
+                    buildFlow.buildAndPushDocker("latest", pwd() + "/devspaces", "devspaces")
+                }
+            }
+        }
+        
+    }
+    post {
+        always {
+            script {
+                def notifyFlow = load pipelineScriptPath + "util/notifyUtil.groovy"
+                notifyFlow.notifyBuild(currentBuild.result)
+                deleteDir()
+            }
+        }
+    }
+}

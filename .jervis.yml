@@ -1,0 +1,24 @@
+#######################
+# Aurea Central Jervis
+#######################
+# User guide and documentation can be found at: https://github.com/trilogy-group/central-jervis
+# This project is based on https://github.com/samrocketman/jervis
+language: shell
+
+env:
+ # target environment to deploy (docker, ec2, k8s)
+ - DEPLOYMENT_TARGET=docker
+
+branches:
+  only:
+    - master
+    - develop
+    - /^feature\/.*$/
+    - /^bugfix\/.*$/
+
+docker-agents:
+  - docker-image: misostc/docker-java8-mvn-node9-npm
+    labels: java8-node
+
+jenkins:
+  pipeline_jenkinsfile: 'jervis/Jenkinsfile'

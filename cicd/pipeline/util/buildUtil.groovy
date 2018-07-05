@@ -6,11 +6,15 @@ def checkout() {
     checkout scm
 }
 
-def buildService(gradleOptions = "") {
+def buildServiceWithoutJacoco(gradleOptions = "") {
     sh "./gradlew clean build $gradleOptions"
     echo 'Ran build successfully'
     junit allowEmptyResults: true, testResults: '**/build/test-results/**/*.xml'
     echo 'Generated unit test results'
+}
+
+def buildService(gradleOptions = "") {
+    buildServiceWithoutJacoco(gradleOptions) 
     jacoco buildOverBuild: true, changeBuildStatus: true, deltaBranchCoverage: '15', deltaClassCoverage: '15',
             deltaComplexityCoverage: '15', deltaInstructionCoverage: '15', deltaLineCoverage: '15',
             deltaMethodCoverage: '15',
