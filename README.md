@@ -40,6 +40,18 @@ Under the hood ZBW will create jenkins credentials and configure CICD to use it 
 `registry2.swarm.devfactory.com` - docker registry;
 `dl6.aureacentral.com` - docker host to deploy. 
 
+## Engine Yard deployments
+To deploy ZBW to Engine Yard please follow the steps in the [document](https://docs.google.com/document/d/1HjDh_5iPErTn1PhO8jAxas_yPSYqdzGOPvk2AjTZ9yA/edit#)
+
+Alternatively you can  use EngineYard CLI to improve/automate deployment process: 
+* install EY cli `pip3 install --upgrade --extra-index-url https://pypi.swarm.devfactory.com/ eycli`
+* configure cli with `ey configure` 
+* check list of command available with `ey help`
+* create new application with `ey create-application` eg. `ey create-application --health_check_path /health --git_repo_url git@github.com:stankonia/cybertron.git --name westeros `
+* create new environment with `ey create-environment` or update with  `ey update-environment` 
+* there any many options available in CLI make sure that you run `ey help` and `ey <command> help` to check for commands samples
+* also with in DevFactory Slack channel [#ey_nextgen_support](https://devfactorydev.slack.com/messages/C5RGB8JUB)
+
 # Support
 Contact to Alexander Yushchenko(alexander.yushchenko@aurea.com) 
 or Vladan Petrovic (vladan.petrovic@aurea.com) in case of any questions/issues.

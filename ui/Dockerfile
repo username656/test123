@@ -1,7 +1,8 @@
 FROM node:latest
 
 ENV NODE_OPTIONS --max_old_space_size=8192
-ENV NG_BUILD_ARGS --prod --aot
+ARG NG_BUILD_ARGS_VAR="--prod --aot"
+ENV NG_BUILD_ARGS=$NG_BUILD_ARGS_VAR
 
 # Create a directory where our app will be placed
 RUN mkdir -p /usr/src/app

@@ -1,4 +1,4 @@
-FROM sgrio/java-oracle:jre_8
+FROM openjdk:8-jdk-alpine
 
 MAINTAINER alexander.yushchenko@aurea.com
 
@@ -8,7 +8,7 @@ RUN mkdir -p /opt
 ADD service/docker/yourkit-linux-x86-64/libyjpagent.so /opt
 
 # Launcher script.
-ADD docker/start.sh /opt/start.sh
+ADD service/docker/start.sh /opt/start.sh
 RUN chmod +x /opt/start.sh
 
 # Logging.
@@ -19,8 +19,13 @@ ENV GRAYLOG_SWITCH_ON on \
 # Default port to be exposed.
 EXPOSE 8080
 
-# Import application.
-ADD build/libs/aurea-zero-based-api.jar /opt/aurea-zero-based-api.jar
+# Build application.
+WORKDIR /usr/src/aurea-zero-based
+COPY service/ /usr/src/aurea-zero-based/service
+COPY ./gradlew /usr/src/aurea-zero-based
+COPY /gradle /usr/src/aurea-zero-based/gradle
+COPY *gradle* /usr/src/aurea-zero-based/
+RUN /usr/src/aurea-zero-based/gradlew build
 
 LABEL com.trilogy.company=aurea \
   com.trilogy.maintainer=alexander.yushchenko@aurea.com \
