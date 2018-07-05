@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: aurea-zero-based-dev-ingress
+  annotations:
+    kubernetes.io/ingress.class: nonprod-internal
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - host:
+    http:
+      paths:
+      - path: /aurea-zero-based-api-dev
+        backend:
+          serviceName: aurea-zero-based-api-service
+          servicePort: 8080
+      - path: /aurea-zero-based-ui-dev
+        backend:
+          serviceName: aurea-zero-based-ui-service
+          servicePort: 80
+

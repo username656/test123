@@ -1,0 +1,21 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: aurea-zero-based-ui-deployment
+  labels:
+    app: aurea-zero-based-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aurea-zero-based-ui
+  template:
+    metadata:
+      labels:
+        app: aurea-zero-based-ui
+    spec:
+      containers:
+      - name: aurea-zero-based-ui
+        image: registry2.swarm.devfactory.com/aurea-zero-based/ui:dev
+        ports:
+        - containerPort: 80
