@@ -22,7 +22,7 @@ pipeline {
   
     stages {
         stage('Config env variables for development') {
-            when {  branch 'development' }
+            when {  branch 'develop' }
             steps {
                 script {
                     ENV_NAME='dev'
@@ -65,7 +65,7 @@ pipeline {
             }
         }
         stage('Build and push service docker image') {
-            when { anyOf { branch 'master'; branch 'staging'; branch 'development' } }
+            when { anyOf { branch 'master'; branch 'staging'; branch 'develop' } }
             steps {
                 script {
                     buildFlow.buildAndPushDocker(ENV_NAME, pwd() + "/service/aurea-zero-based-api", "api")
@@ -73,7 +73,7 @@ pipeline {
             }
         }
         stage('Push UI docker image') {
-            when { anyOf { branch 'master'; branch 'staging'; branch 'development' } }
+            when { anyOf { branch 'master'; branch 'staging'; branch 'develop' } }
             steps {
                 script {
                     buildFlow.buildAndPushDocker(ENV_NAME, pwd() + "/ui", "ui")
@@ -81,7 +81,7 @@ pipeline {
             }
         }
         stage('Deployment') {
-            when { anyOf { branch 'master'; branch 'staging'; branch 'development' } }
+            when { anyOf { branch 'master'; branch 'staging'; branch 'develop' } }
             steps {
                 script {
                     def deployFlow = load pipelineScriptPath + "util/deployUtil.groovy"
@@ -90,7 +90,7 @@ pipeline {
             }
         }
         stage('Preparing devspaces image') {
-            when { anyOf { branch 'master'; branch 'staging'; branch 'development' } }
+            when { anyOf { branch 'master'; branch 'staging'; branch 'develop' } }
             steps {
                 script {
                     buildFlow.buildAndPushDocker("latest", pwd() + "/devspaces", "devspaces")
