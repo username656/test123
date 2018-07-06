@@ -14,12 +14,12 @@ pipeline {
         disableConcurrentBuilds()
     }
     agent {
-        label 'java8-node'
+        label 'java8-node-docker'
     }
     environment {
         DOCKER_HOST = 'tcp://dl1.aureacentral.com:2375'
     }
-  
+
     stages {
         stage('Config env variables for development') {
             when {  branch 'develop' }
@@ -97,7 +97,7 @@ pipeline {
                 }
             }
         }
-        
+
     }
     post {
         always {

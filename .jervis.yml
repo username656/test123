@@ -17,8 +17,8 @@ branches:
     - /^bugfix\/.*$/
 
 docker-agents:
-  - docker-image: misostc/docker-java8-mvn-node9-npm
-    labels: java8-node
+  - docker-image: circleci/openjdk:8u171-node-browsers
+    labels: java8-node-docker
 
 jenkins:
   pipeline_jenkinsfile: 'jervis/Jenkinsfile'
