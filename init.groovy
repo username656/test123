@@ -229,6 +229,7 @@ try {
                   PORT_UI                   : properties.port_ui,
                   ENV_NAME                  : properties.env_name,
                   PORT_API                  : properties.port_api,
+                  BACKEND_URL               : "http://dl1.aureacentral.com:${properties.port_api}",
                   JENKINS_PROJECT_NAME      : properties.jenkins_project
     ]
 

@@ -18,6 +18,10 @@ Notes:
 * The TeamCity build will automatically run: `npm run lint`, `npm run test-coverage` and `npm run build` so it is recommended to double check them locally first.
 * The TSLint rule `"lines-between-class-members": true`, doesn't work if the line break marker used is CRLF.
 
+## Multiple environments
+We support multiple runtime configuration. For that `./assets/environment.json` could be created and filled id.
+See `environmentLoader.ts`. For prod deployment we could use `BACKEND_URL` env variable.
+
 ## Running unit tests
 
 Run `npm test` to execute the unit tests via [Karma](https://karma-runner.github.io).

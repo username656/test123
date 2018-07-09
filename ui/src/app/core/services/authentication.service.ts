@@ -8,12 +8,12 @@ import { map, mergeMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 
 export const URLs: { [string: string]: string } = {
-  token: `${environment.serverPath}/oauth/token`,
-  forgotPassword: `${environment.apiPath}/users/forgot_password`,
-  resetPassword: `${environment.apiPath}/users/reset_password`,
-  user: `${environment.apiPath}/users/current`,
-  users: `${environment.apiPath}/users`,
-  resetPasswordToken: `${environment.apiPath}/users/search/by_reset_password_token`
+  get token(): string { return `${environment.serverPath}/oauth/token`; },
+  get forgotPassword(): string { return  `${environment.apiPath}/users/forgot_password`; },
+  get resetPassword(): string { return `${environment.apiPath}/users/reset_password`; },
+  get user(): string { return `${environment.apiPath}/users/current`; },
+  get users(): string { return `${environment.apiPath}/users`; },
+  get resetPasswordToken(): string { return  `${environment.apiPath}/users/search/by_reset_password_token`; }
 };
 
 interface TokenResponse {

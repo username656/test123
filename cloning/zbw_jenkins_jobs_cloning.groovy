@@ -75,6 +75,7 @@ pipelineJob(jenikinsProjectName + "/RC_Build") {
             SPRING_DATASOURCE_PASSWORD: dbPassword,
             ENV_NAME: envName,
             PORT_API: portApi,
+            BACKEND_URL: backendUrl,
             PORT_UI: portUi
     )
 

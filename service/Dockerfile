@@ -12,9 +12,9 @@ ADD service/docker/start.sh /opt/start.sh
 RUN chmod +x /opt/start.sh
 
 # Logging.
-ENV GRAYLOG_SWITCH_ON on \
-  APP_ENVIRONMENT dev \
-  FACILITY zero
+ENV GRAYLOG_SWITCH_ON=on \
+  APP_ENVIRONMENT=dev \
+  FACILITY=zero
 
 # Default port to be exposed.
 EXPOSE 8080

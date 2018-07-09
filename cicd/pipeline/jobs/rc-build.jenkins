@@ -15,7 +15,6 @@ pipeline {
     }
     environment {
         DOCKER_HOST = 'tcp://dl1.aureacentral.com:2375'
-        NG_BUILD_ARGS = "--env=${ENV_NAME} --aot"
     }
     stages {
         stage('Checkout code') {

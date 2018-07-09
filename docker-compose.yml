@@ -5,7 +5,7 @@ services:
     container_name: ${ENV_NAME}_aurea-zero-based_ui
     network_mode: bridge
     environment:
-      - NG_BUILD_ARGS
+      - BACKEND_URL
     ports:
       - ${PORT_UI}:80
     cpu_quota: 300000

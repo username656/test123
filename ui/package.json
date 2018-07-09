@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve --port=4000 --disable-host-check --proxy-config proxy.conf.json -o",
     "start-test": "ng serve --host 0.0.0.0 --port=4000 --env=test --disable-host-check --proxy-config proxy-test.conf.json",
-    "build": "ng build --prod",
+    "build": "ng build",
     "test": "ng test",
     "test-coverage": "ng test --watch=false --code-coverage",
     "lint": "ng lint --type-check",
