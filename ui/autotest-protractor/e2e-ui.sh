@@ -11,4 +11,4 @@ rm google-chrome.deb
 sudo npm install -g protractor
 npm install
 npm run postinstall
-npm run e2e
+npm run e2e --baseUrl=${AUREA_API_UI_URL}

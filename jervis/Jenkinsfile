@@ -6,8 +6,6 @@
 def pipelineScriptPath = "cicd/pipeline/"
 def buildFlow = load pipelineScriptPath + "util/buildUtil.groovy"
 def ENV_NAME = 'dev'
-def PORT_UI = 4000
-def PORT_API = 8080
 
 pipeline {
     options {
@@ -26,8 +24,6 @@ pipeline {
             steps {
                 script {
                     ENV_NAME='dev'
-                    PORT_UI=10234
-                    PORT_API=10233
                 }
             }
         }
@@ -36,15 +32,13 @@ pipeline {
             steps {
                 script {
                     ENV_NAME='qa'
-                    PORT_UI=10234
-                    PORT_API=10233
                 }
             }
         }
         stage('Checkout code') {
             steps {
                 script {
-                    println("Deploying on env $ENV_NAME with port ui ${PORT_UI} and port api ${PORT_API}")
+                    println("Deploying on env $ENV_NAME with AUREA_API_UI_URL ${AUREA_API_UI_URL} and BACKEND_URL ${BACKEND_URL}")
                     buildFlow.checkout()
                 }
             }

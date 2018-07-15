@@ -4,10 +4,10 @@ import static com.google.common.base.Predicates.or;
 import static springfox.documentation.builders.PathSelectors.ant;
 import static springfox.documentation.spi.DocumentationType.SWAGGER_2;
 
-import com.aurea.boot.autoconfigure.api.config.props.ApiProps;
+import com.aurea.boot.autoconfigure.api.config.props.AureaApiProperties;
 import com.google.common.base.Charsets;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
@@ -36,7 +36,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerAutoConfiguration {
 
     @NonNull
-    private final ApiProps apiProps;
+    private final AureaApiProperties aureaApiProperties;
 
     @Value("classpath:docs/api.md")
     private Resource apiDescriptionResource;
@@ -47,10 +47,10 @@ public class SwaggerAutoConfiguration {
     public Docket restApi() throws IOException {
         return new Docket(SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
-                        .title(apiProps.getInfo().getTitle())
+                        .title(aureaApiProperties.getInfo().getTitle())
                         .description(IOUtils.toString(apiDescriptionResource.getInputStream(), Charsets.UTF_8))
-                        .license(apiProps.getInfo().getLicense())
-                        .version(apiProps.getInfo().getVersion())
+                        .license(aureaApiProperties.getInfo().getLicense())
+                        .version(aureaApiProperties.getInfo().getVersion())
                         .build())
                 .select()
                 .apis(RequestHandlerSelectors.any())
@@ -59,13 +59,13 @@ public class SwaggerAutoConfiguration {
                         ant("/oauth/**"),
                         ant("/user")))
                 .build()
-                .securitySchemes(Arrays.asList(
+                .securitySchemes(Collections.singletonList(
                         new ApiKey("Aurea Security Schema", HttpHeaders.AUTHORIZATION, "header")))
-                .securityContexts(Arrays.asList(
+                .securityContexts(Collections.singletonList(
                         SecurityContext.builder()
-                                .securityReferences(Arrays.asList(
+                                .securityReferences(Collections.singletonList(
                                         new SecurityReference(
-                                                apiProps.getSecuritySchemeKeyName(),
+                                                aureaApiProperties.getSecuritySchemeKeyName(),
                                                 AUTHORIZATION_SCOPES)))
                                 .forPaths(PathSelectors.regex("/.*"))
                                 .build()

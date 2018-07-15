@@ -54,14 +54,4 @@ EXPOSE 80
 # Copy custom nginx.conf file and run entrypoint.sh to start nginx server
 WORKDIR /etc/app
 
-LABEL com.trilogy.company=aurea \
-  com.trilogy.maintainer=alexander.yushchenko@aurea.com \
-  com.trilogy.maintainer=alexander.yushchenko \
-  com.trilogy.product=aurea-zero-based \
-  com.trilogy.service=aurea-zero-based-ui \
-  com.trilogy.stage=dev \
-  com.trilogy.team=Easier.BackendRewrite
-
-# Copy custom nginx.conf file and run entrypoint.sh to start nginx server
-WORKDIR /etc/app
 CMD ["/etc/app/start.sh"]

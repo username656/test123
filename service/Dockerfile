@@ -27,13 +27,5 @@ COPY /gradle /usr/src/aurea-zero-based/gradle
 COPY *gradle* /usr/src/aurea-zero-based/
 RUN /usr/src/aurea-zero-based/gradlew build
 
-LABEL com.trilogy.company=aurea \
-  com.trilogy.maintainer=alexander.yushchenko@aurea.com \
-  com.trilogy.maintainer=alexander.yushchenko \
-  com.trilogy.product=aurea-zero-based \
-  com.trilogy.service=aurea-zero-based-api \
-  com.trilogy.stage=dev \
-  com.trilogy.team=Easier.BackendRewrite
-
 # Run in foreground.
 CMD [ "/opt/start.sh" ]

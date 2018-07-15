@@ -20,7 +20,7 @@ pipeline {
         stage('Checkout code') {
             steps {
                 script {
-                    println("Deploying on env $ENV_NAME with port ui ${PORT_UI} and port api ${PORT_API}")
+                    println("Deploying on env $ENV_NAME with AUREA_API_UI_URL ${AUREA_API_UI_URL} and BACKEND_URL ${BACKEND_URL}")
                     buildFlow = load pipelineScriptPath + "util/buildUtil.groovy"
                     buildFlow.checkout()
                 }

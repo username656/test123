@@ -6,8 +6,8 @@ String githubRepoName = "${GITHUB_REPO_NAME}"
 String dbUser = "${SPRING_DATASOURCE_USERNAME}"
 String dbPassword = "${SPRING_DATASOURCE_PASSWORD}"
 String envName = "${ENV_NAME}"
-String portUi = "${PORT_UI}"
-String portApi = "${PORT_API}"
+String backendUrl = "${BACKEND_URL}"
+String aureaApiUiUrl = "${AUREA_API_UI_URL}"
 Boolean mysqlOn = "${MYSQL_ON}"
 
 //CI Job
@@ -74,9 +74,8 @@ pipelineJob(jenikinsProjectName + "/RC_Build") {
             SPRING_DATASOURCE_USERNAME: dbUser,
             SPRING_DATASOURCE_PASSWORD: dbPassword,
             ENV_NAME: envName,
-            PORT_API: portApi,
             BACKEND_URL: backendUrl,
-            PORT_UI: portUi
+            AUREA_API_UI_URL: aureaApiUiUrl
     )
 
     logRotator {

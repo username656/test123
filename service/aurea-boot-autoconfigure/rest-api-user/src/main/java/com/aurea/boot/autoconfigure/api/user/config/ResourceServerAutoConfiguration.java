@@ -5,6 +5,7 @@ import static com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping.FORGO
 import static com.aurea.boot.autoconfigure.api.user.ApiConsts.User.Mapping.RESET_PASSWORD;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
@@ -16,6 +17,7 @@ public class ResourceServerAutoConfiguration extends ResourceServerConfigurerAda
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers("/api/browser/**").permitAll()
                 .antMatchers(API_ROOT + FORGOT_PASSWORD).permitAll()

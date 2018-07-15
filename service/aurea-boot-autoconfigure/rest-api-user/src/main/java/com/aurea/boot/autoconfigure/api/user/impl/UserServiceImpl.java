@@ -2,10 +2,10 @@ package com.aurea.boot.autoconfigure.api.user.impl;
 
 import static java.lang.String.format;
 
+import com.aurea.boot.autoconfigure.api.config.props.AureaApiProperties;
 import com.aurea.boot.autoconfigure.api.error.EmailNotFoundException;
 import com.aurea.boot.autoconfigure.api.error.ResetTokenInvalidException;
 import com.aurea.boot.autoconfigure.api.user.UserService;
-import com.aurea.boot.autoconfigure.api.user.config.props.ApiUserProps;
 import com.aurea.boot.autoconfigure.api.user.json.TokenPasswordJson;
 import com.aurea.boot.autoconfigure.data.user.User;
 import com.aurea.boot.autoconfigure.data.user.UserRepository;
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     private final MailService mailService;
 
     @NonNull
-    private final ApiUserProps apiUserProps;
+    private final AureaApiProperties aureaApiProperties;
 
     @Override
     public User getCurrentUser(String username) {
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
                 .to(user.getUsername())
                 .subject("Reset password token created")
                 .content(format("Please use following link to create new password: %s/create-password/%s",
-                        apiUserProps.getUiUrl(), resetPasswordToken))
+                        aureaApiProperties.getUiUrl(), resetPasswordToken))
                 .send();
     }
 }

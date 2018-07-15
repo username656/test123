@@ -7,11 +7,13 @@ services:
     environment:
       - BACKEND_URL
     ports:
-      - ${PORT_UI}:80
+      - 80
     cpu_quota: 300000
     mem_limit: 6GB
     restart: always
     labels:
+     - "SERVICE_NAME=${ENV_NAME}_aurea-zero-based_ui"
+     - "SERVICE_TAGS=trilogy.client_req_max_size=100M,trilogy.expose-v2,trilogy.http,trilogy.internal,trilogy.endpoint=${ENV_NAME}-aurea-zero-based-ui.internal-webproxy.aureacentral.com"
      - "com.trilogy.company=aurea"
      - "com.trilogy.team=KayakoRewrite.Backend"
      - "com.trilogy.product=aurea-zero-based"
@@ -27,12 +29,15 @@ services:
       - SPRING_MAIL_USERNAME
       - SPRING_MAIL_PASSWORD
       - BACKEND_URL
+      - AUREA_API_UI_URL
     ports:
-      - ${PORT_API}:8080
+      - 8080
     cpu_quota: 300000
     mem_limit: 6GB
     restart: always
     labels:
+      - "SERVICE_NAME=${ENV_NAME}_aurea-zero-based_api"
+      - "SERVICE_TAGS=trilogy.client_req_max_size=100M,trilogy.expose-v2,trilogy.http,trilogy.internal,trilogy.endpoint=${ENV_NAME}-aurea-zero-based-api.internal-webproxy.aureacentral.com"
       - "com.trilogy.company=aurea"
       - "com.trilogy.team=KayakoRewrite.Backend"
       - "com.trilogy.product=aurea-zero-based"

@@ -84,13 +84,13 @@ try {
     }
     if (!properties.project_name) {
         properties.project_name = Paths.get(".").toAbsolutePath().getParent().getFileName().toString()
-                .replace(" ", "-").toLowerCase()
     }
+    properties.project_name=((String)properties.project_name)
+            .replaceAll("[ _]", "-").toLowerCase()
 
 // Basic authorization is used both for aline and jenkins
     String auth = properties.ad_user + ":" + properties.ad_password
     String authHeader = "Basic " + auth.bytes.encodeBase64().toString();
-
 
     if (!properties.jenkins_credentials_id) {
 //    create credentials automatically in jenkins
@@ -165,15 +165,11 @@ try {
 
     }
 
-
-
     new File('.').traverse(type: FILES, nameFilter: ~/(.*\.java|.*\.groovy|.*\.sh|.*\Dockerfile|.*\.gradle|.*\.jenkins|.*\.yml|.*environment.prod.ts)/) {
         copyAndReplaceText(it.getAbsoluteFile(), it.getAbsoluteFile()) {
             it.replaceAll('Develop', properties.github_branch)
                     .replaceAll('ZeroBasedProject', alineProductName)
                     .replaceAll('aurea-zero-based', properties.project_name)
-                    .replaceAll('10234', properties.cdh_port_ui)
-                    .replaceAll('10233', properties.cdh_port_api)
         }
     }
 
@@ -226,10 +222,9 @@ try {
                   SPRING_DATASOURCE_USERNAME: properties.db_user,
                   SPRING_DATASOURCE_PASSWORD: properties.db_password,
                   MYSQL_ON                  : properties.mysql_on,
-                  PORT_UI                   : properties.port_ui,
                   ENV_NAME                  : properties.env_name,
-                  PORT_API                  : properties.port_api,
-                  BACKEND_URL               : "http://dl1.aureacentral.com:${properties.port_api}",
+                  BACKEND_URL               : "http://${properties.env_name}-${properties.project_name}-api.internal-webproxy.aureacentral.com",
+                  AUREA_API_UI_URL          : "http://${properties.env_name}-${properties.project_name}-ui.internal-webproxy.aureacentral.com",
                   JENKINS_PROJECT_NAME      : properties.jenkins_project
     ]
 
