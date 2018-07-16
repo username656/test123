@@ -32,8 +32,8 @@ public class RestCorsFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
         String origin = getHeaderValue(request, ORIGIN);
-        if (aureaApiProperties.getCors().getAllowedOrigins().contains(origin) ||
-                aureaApiProperties.getUiUrl().equals(origin)) {
+        if (aureaApiProperties.getCors().getAllowedOrigins().contains(origin)
+                || aureaApiProperties.getUiUrl().equals(origin)) {
             response.setHeader(ACCESS_CONTROL_ALLOW_ORIGIN, origin);
         }
         response.setHeader(ACCESS_CONTROL_ALLOW_METHODS, aureaApiProperties.getCors().getAllowedMethods());
