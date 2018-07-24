@@ -29,7 +29,7 @@ pipeline {
         stage('Build UI') {
             steps {
                 script {
-                    buildFlow.buildUI()
+                    buildFlow.buildUI(ENV_NAME)
                 }
             }
         }
