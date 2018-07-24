@@ -1,0 +1,41 @@
+plugins {
+  id "com.moowork.node" version "1.2.0"
+}
+
+group 'com.aurea.zbw.ui'
+
+description = "aurea-zero-based UI"
+
+node {
+  version = '9.11.1'
+  download = true
+}
+
+npmInstall {
+  args = ['--@devfactory:registry=http://nexus-rapid-proto.devfactory.com/repository/npm-proto/']
+}
+
+task lintCheck(type: NpmTask, dependsOn: [npmInstall]) {
+  args = ['run', 'lint']
+}
+
+task test(type: NpmTask, dependsOn: [npmInstall]) {
+  args = ['run', 'test-coverage']
+  outputs.dir("${projectDir}/coverage")
+}
+
+task buildAssets(type: NpmTask, dependsOn: [npmInstall, test, lintCheck]) {
+  args = ['run', 'build']
+  outputs.dir("${projectDir}/dist")
+}
+
+task build(dependsOn: buildAssets) {
+
+}
+
+task clean(type: Delete) {
+  delete "${projectDir}/dist", "${buildDir}", "${projectDir}/coverage"
+  followSymlinks = true
+}
+
+defaultTasks 'clean', 'build'

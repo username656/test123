@@ -14,7 +14,7 @@ def buildServiceWithoutJacoco(gradleOptions = "") {
 }
 
 def buildService(gradleOptions = "") {
-    buildServiceWithoutJacoco(gradleOptions) 
+    buildServiceWithoutJacoco(gradleOptions)
     jacoco buildOverBuild: true, changeBuildStatus: true, deltaBranchCoverage: '15', deltaClassCoverage: '15',
             deltaComplexityCoverage: '15', deltaInstructionCoverage: '15', deltaLineCoverage: '15',
             deltaMethodCoverage: '15',
@@ -32,12 +32,6 @@ def buildServiceWithAline() {
             jacocoFile: "**/*.exec") {
         buildService("--continue -x findbugsMain -x findbugsTest")
     }
-}
-
-def buildUI(ENV_NAME = "dev") {
-    sh "cd ui; npm install --@devfactory:registry=http://nexus-rapid-proto.devfactory.com/repository/npm-proto/; " +
-            "npm run lint; npm run test-coverage; npm run build --env=$ENV_NAME"
-    echo "Finished the UI build"
 }
 
 def runE2eUI() {
