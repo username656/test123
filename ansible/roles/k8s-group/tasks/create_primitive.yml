@@ -1,0 +1,60 @@
+---
+- name: Defining container name (stage-project-container_id)
+  set_fact:
+    container_name: "{{ environment_name }}-{{ project }}-{{ service_name | default('service')}}"
+- debug: var=container_name
+
+- name: Defining container hostname (stage-project-container_id)
+  set_fact:
+    container_hostname: "{{ container_name | regex_replace('_', '-') }}"
+
+- name: Include default deployment definition for "{{ type }}" and "{{ container_name }}"
+  set_fact:
+    deploymentDefinition: '{{ lookup("template", "vars/{{ type }}.yml") }}'
+
+- name: Create definition for "{{ type }}" and "{{ container_name }}"
+  set_fact:
+    rawDefinition: "{{ deploymentDefinition if definition == '' else definition }}"
+
+- debug: var=rawDefinition
+- copy:
+    content: "{{ rawDefinition }}"
+    dest: "/tmp/raw_definition_{{ type }}.yml"
+
+- name: Remove kubernetes primitive from an inline definition "{{ type }}"
+  kubernetes:
+    api_endpoint: "{{ api_host }}"
+    state: "absent"
+    service_token: "{{ api_key }}"
+    #propagation_policy: "Orphan", "Foreground", "Background"
+    propagation_policy: "{{ 'Foreground' if type == 'deployment' else omit }}"
+    inline_data: "{{ rawDefinition }}"
+  register: k8s_result_remove
+  when: type != 'deployment'
+
+
+- name: Show delete result for "{{ type }}"
+  debug: var=k8s_result_remove
+
+- name: Create kubernetes primitive from an inline definition "{{ type }}"
+  kubernetes:
+    api_endpoint: "{{ api_host }}"
+    state: "present"
+    service_token: "{{ api_key }}"
+    inline_data: "{{ rawDefinition }}"
+  register: k8s_result
+
+- name: Show create result for "{{ type }}"
+  debug: var=k8s_result
+
+- name: Apply replace for "{{ type }}"
+  kubernetes:
+    api_endpoint: "{{ api_host }}"
+    state: "replace"
+    service_token: "{{ api_key }}"
+    inline_data: "{{ rawDefinition }}"
+  register: k8s_replace_result
+  when: type == 'deployment'
+
+- name: Show replace result for "{{ type }}"
+  debug: var=k8s_replace_result

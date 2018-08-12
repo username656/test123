@@ -5,7 +5,7 @@
 
 def pipelineScriptPath = "cicd/pipeline/"
 def buildFlow = load pipelineScriptPath + "util/buildUtil.groovy"
-def ENV_NAME = 'dev'
+def ENV_STAGE = 'dev'
 
 pipeline {
     options {
@@ -23,7 +23,7 @@ pipeline {
             when {  branch 'develop' }
             steps {
                 script {
-                    ENV_NAME='dev'
+                    ENV_STAGE='dev'
                 }
             }
         }
@@ -31,14 +31,14 @@ pipeline {
             when { anyOf { branch 'master'; branch 'staging';  } }
             steps {
                 script {
-                    ENV_NAME='qa'
+                    ENV_STAGE='qa'
                 }
             }
         }
         stage('Checkout code') {
             steps {
                 script {
-                    println("Deploying on env $ENV_NAME with AUREA_API_UI_URL ${AUREA_API_UI_URL} and BACKEND_URL ${BACKEND_URL}")
+                    println("Deploying on env $ENV_STAGE with AUREA_API_UI_URL ${AUREA_API_UI_URL} and BACKEND_URL ${BACKEND_URL}")
                     buildFlow.checkout()
                 }
             }
@@ -46,7 +46,7 @@ pipeline {
         stage('Build UI') {
             steps {
                 script {
-                    buildFlow.buildUI(ENV_NAME)
+                    buildFlow.buildUi()
                 }
             }
         }
@@ -54,7 +54,7 @@ pipeline {
             steps {
                 script {
                     // jacoco plugin not found in jervis yet
-                    buildFlow.buildServiceWithoutJacoco()
+                    buildFlow.buildWithoutJacoco()
                 }
             }
         }
@@ -62,7 +62,7 @@ pipeline {
             when { anyOf { branch 'master'; branch 'staging'; branch 'develop' } }
             steps {
                 script {
-                    buildFlow.buildAndPushDocker(ENV_NAME, pwd() + "/service/aurea-zero-based-api", "api")
+                    buildFlow.buildAndPushDocker(ENV_STAGE, pwd() + "/service/aurea-zero-based-api", "api")
                 }
             }
         }
@@ -70,7 +70,7 @@ pipeline {
             when { anyOf { branch 'master'; branch 'staging'; branch 'develop' } }
             steps {
                 script {
-                    buildFlow.buildAndPushDocker(ENV_NAME, pwd() + "/ui", "ui")
+                    buildFlow.buildAndPushDocker(ENV_STAGE, pwd() + "/ui", "ui")
                 }
             }
         }

@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: "{{ namespace }}"
+  name: "{{ container_hostname }}"
+  labels:
+    name: "{{ container_hostname }}"
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: "{{ container_hostname }}"
+    spec:
+# todo: figure out why the policy "Always" is not working
+#      restartPolicy: "{{ restart_policy }}"
+      nodeSelector:
+        central-stage: "{{ 'prod' if environment_name == 'prod' else 'staging' }}"
+      containers:
+        - name: "{{ container_hostname }}"
+          imagePullPolicy: "{{ image_pull_policy }}"
+          image: "{{ container_base_image }}:{{ container_image_tag }}"
+          ports:
+          - containerPort: {{ container_port }}
+          envFrom:
+          - configMapRef:
+              name: "{{ config_map }}"
+  selector:
+    matchLabels:
+      name: "{{ container_hostname }}"
+

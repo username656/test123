@@ -1,0 +1,98 @@
+all:
+  vars:
+    environment_name: "{{ lookup('env', 'ENV_STAGE') }}"
+    project: aurea-zero-based
+    hostApi: "api.{{ project }}-{{ environment_name }}.k8s.aureacentral.com"
+    hostUi: "{{ project }}-{{ environment_name }}.k8s.aureacentral.com"
+
+k8s-group:
+  vars:
+    ansible_connection: local
+    # how to get api_key see here
+    # https://github.com/trilogy-group/aurea-eng-ansible-generic/tree/master/examples/api-setup
+    api_key: "{{ lookup('env', 'API_KEY') }}"
+    api_host: 'k8s.aureacentral.com:6443'
+    deployment_strategy: replace
+    namespace: "{{ lookup('env', 'K8S_NAMESPACE') }}"
+
+    #    for prod should be: k8s-st-node-1? check with techops
+    k8s_hostname: ""
+    restart_policy: Always
+
+    # imagePullPolcy for k8s (Always, Never, IfNotPresent)
+    image_pull_policy: Always
+
+#    resources_limits_cpu: 1
+#    resources_limits_memory: "2Gi"
+#    resources_requests_cpu: 0.25
+#    resources_requests_memory: "1Gi"
+    container_image_tag: "{{ environment_name }}"
+    container_project_image_url: "registry2.swarm.devfactory.com/{{ project }}/"
+
+  children:
+    k8s-object-group:
+    k8s-deployment-group:
+    k8s-service-group:
+    k8s-ingress-group:
+
+k8s-deployment-group:
+  hosts:
+    k8s-deployment-host:
+      api:
+        container_port: 8080
+        config_map: configmap-api
+        definition: ""
+      ui:
+        container_port: 80
+        config_map: configmap-ui
+        definition:
+
+k8s-service-group:
+  hosts:
+    k8s-service-host:
+      api:
+        service_port: 8080
+        definition:
+      ui:
+        service_port: 80
+        definition:
+
+k8s-ingress-group:
+  hosts:
+    k8s-ingress-host:
+      api:
+        host: "{{ hostApi }}"
+        service_port: 8080
+        definition:
+      ui:
+        host: "{{ hostUi }}"
+        service_port: 80
+        definition:
+
+# deploy all other k8s objects (configmaps, cronjobs, statefulsets, etc.)
+k8s-object-group:
+  hosts:
+    k8s-object-host:
+      ui:
+        # full yml definition
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            namespace: "{{ namespace }}"
+            name: configmap-ui
+          data:
+            BACKEND_URL: "http://{{ hostApi }}"
+      api:
+        # full yml definition
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            namespace: "{{ namespace }}"
+            name: configmap-api
+          data:
+            BACKEND_URL: "http://{{ hostApi }}"
+            SPRING_MAIL_USERNAME: "{{ lookup('env', 'SPRING_MAIL_USERNAME') }}"
+            SPRING_MAIL_PASSWORD: "{{ lookup('env', 'SPRING_MAIL_PASSWORD') }}"
+            AUREA_API_UI_URL: "http://{{ hostUi }}"

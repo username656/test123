@@ -209,8 +209,8 @@ try {
 
 // Validation:
     def envs = ['dev', 'qa', 'staging', 'regression', 'prod']
-    if (!envs.contains(properties.env_name)) {
-        println("env_name(${properties.env_name}) could have values from $envs only!")
+    if (!envs.contains(properties.env_stage)) {
+        println("env_stage(${properties.env_stage}) could have values from $envs only!")
     }
 
 // Cloning jenkins jobs
@@ -222,9 +222,9 @@ try {
                   SPRING_DATASOURCE_USERNAME: properties.db_user,
                   SPRING_DATASOURCE_PASSWORD: properties.db_password,
                   MYSQL_ON                  : properties.mysql_on,
-                  ENV_NAME                  : properties.env_name,
-                  BACKEND_URL               : "http://${properties.env_name}-${properties.project_name}-api.internal-webproxy.aureacentral.com",
-                  AUREA_API_UI_URL          : "http://${properties.env_name}-${properties.project_name}-ui.internal-webproxy.aureacentral.com",
+                  ENV_STAGE                  : properties.env_stage,
+                  BACKEND_URL               : "http://${properties.project_name}-api-${properties.env_stage}.internal-webproxy.aureacentral.com",
+                  AUREA_API_UI_URL          : "http://${properties.project_name}-ui-${properties.env_stage}.internal-webproxy.aureacentral.com",
                   JENKINS_PROJECT_NAME      : properties.jenkins_project
     ]
 

@@ -11,55 +11,90 @@ pipeline {
         disableConcurrentBuilds()
     }
     agent {
-        label 'nodejs_9.11&&browsers'
+        label 'node-10-stretch-browsers-ansible'
     }
     environment {
-        DOCKER_HOST = 'tcp://dl1.aureacentral.com:2375'
+        PLAYBOOK = 'ansible/playbook.yml'
+        INVENTORY = 'ansible/inventory.yml'
     }
     stages {
         stage('Checkout code') {
             steps {
                 script {
-                    println("Deploying on env $ENV_NAME with AUREA_API_UI_URL ${AUREA_API_UI_URL} and BACKEND_URL ${BACKEND_URL}")
+                    println("ENV_STAGE  $ENV_STAGE")
+                    println("PLAYBOOK  $PLAYBOOK")
+                    println("INVENTORY  $INVENTORY")
+                    println("K8S_NAMESPACE  $K8S_NAMESPACE")
                     buildFlow = load pipelineScriptPath + "util/buildUtil.groovy"
                     buildFlow.checkout()
                 }
             }
         }
-        stage('Build UI') {
-            steps {
-                script {
-                    buildFlow.buildUI(ENV_NAME)
+        stage("Build") {
+            parallel {
+                stage('UI') {
+                    steps {
+                        script {
+                            buildFlow.buildUi()
+                        }
+                    }
+                }
+                stage('API') {
+                    steps {
+                        script {
+                            buildFlow.build()
+                        }
+                    }
                 }
             }
         }
-        stage('Build service') {
-            steps {
-                script {
-                    buildFlow.buildService()
+        stage('Build and push docker images') {
+            environment {
+                DOCKER_HOST = 'tcp://docker-build.aureacentral.com:2375'
+            }
+            parallel {
+                stage('Build and push docker image service') {
+                    steps {
+                        script {
+                            buildFlow.buildAndPushDocker(ENV_STAGE, pwd() + "/service/aurea-zero-based-api", "api")
+                        }
+                    }
+                }
+                stage('Build and push docker image ui') {
+                    steps {
+                        script {
+                            buildFlow.buildAndPushDocker(ENV_STAGE, pwd() + "/ui", "ui")
+                        }
+                    }
                 }
             }
         }
-        stage('Build and push service docker image') {
-            steps {
-                script {
-                    buildFlow.buildAndPushDocker(ENV_NAME, pwd() + "/service/aurea-zero-based-api", "api")
+
+        stage('Deploy to CDH') {
+            when {
+                expression {
+                    return env.CDH_DEPLOY == 'on';
                 }
             }
-        }
-        stage('Push UI docker image') {
-            steps {
-                script {
-                    buildFlow.buildAndPushDocker(ENV_NAME, pwd() + "/ui", "ui")
-                }
+            environment {
+                //      sometimes we must use _, sometimes -
+                ENV_SUFFIX = "-${ENV_STAGE}"
+                DOCKER_HOST = 'tcp://dl6.aureacentral.com:2375'
+                BACKEND_URN = "aurea-zero-based-api${ENV_SUFFIX}.internal-webproxy.aureacentral.com"
+                AUREA_API_UI_URN = "aurea-zero-based-ui${ENV_SUFFIX}.internal-webproxy.aureacentral.com"
+                BACKEND_URL = "http://${BACKEND_URN}"
+                AUREA_API_UI_URL = "http://${AUREA_API_UI_URN}"
             }
-        }
-        stage('Deployment to dev env') {
             steps {
                 script {
                     def deployFlow = load pipelineScriptPath + "util/deployUtil.groovy"
                     deployFlow.deploy()
                 }
+            }
+        }
+        stage('Deploy to K8s') {
+            steps {
+                sh 'ansible-playbook ${PLAYBOOK} -i ${INVENTORY} --tags all'
             }
         }
         stage('Preparing devspaces image') {

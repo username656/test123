@@ -11,7 +11,7 @@ pipeline {
         disableConcurrentBuilds()
     }
     agent {
-        label 'nodejs_9.11&&browsers'
+        label 'node-10-stretch-browsers-ansible'
     }
     triggers {
         pollSCM('H/5 * * * *')
@@ -25,17 +25,21 @@ pipeline {
                 }
             }
         }
-        stage('Build UI') {
-            steps {
-                script {
-                    buildFlow.buildUI()
+        stage('Build') {
+            parallel {
+                stage('Build service') {
+                    steps {
+                        script {
+                            buildFlow.build("--continue --parallel -x :ui:build")
+                        }
+                    }
                 }
-            }
-        }
-        stage('Build service') {
-            steps {
-                script {
-                    buildFlow.buildService("--continue")
+                stage('Build ui') {
+                    steps {
+                        script {
+                            buildFlow.buildUi("--continue --parallel")
+                        }
+                    }
                 }
             }
         }

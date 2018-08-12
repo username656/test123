@@ -1,0 +1,8 @@
+---
+- name: Create kubernetes ingress
+  include_tasks: create_primitive.yml
+  vars:
+    type: 'ingress'
+    service_port: "{{ service.service_port }}"
+    host: "{{ service.host }}"
+    definition: "{{ service.definition }}"

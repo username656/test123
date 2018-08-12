@@ -1,0 +1,7 @@
+---
+- name: Create kubernetes services
+  include_tasks: create_primitive.yml
+  vars:
+    type: 'service'
+    service_port: "{{ service.service_port }}"
+    definition: "{{ service.definition }}"

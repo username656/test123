@@ -1,0 +1,23 @@
+---
+- name: Defining container name (stage-project-container_id)
+  set_fact:
+    service: '{{ lookup("vars", "{{ service_name }}") }}'
+
+- debug: var=service
+- debug: var=service_name
+
+- name: Run k8s object deployment tasks
+  include_tasks: object.yml
+  when: inventory_hostname == 'k8s-object-host'
+
+- name: Run k8s services tasks
+  include_tasks: service.yml
+  when: inventory_hostname == 'k8s-service-host'
+
+- name: Run k8s ingress tasks
+  include_tasks: ingress.yml
+  when: inventory_hostname == 'k8s-ingress-host'
+
+- name: Run k8s deployments tasks
+  include_tasks: deployment.yml
+  when: inventory_hostname == 'k8s-deployment-host'

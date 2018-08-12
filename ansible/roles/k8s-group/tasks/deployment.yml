@@ -1,0 +1,9 @@
+---
+- name: Create kubernetes deployment
+  include_tasks: create_primitive.yml
+  vars:
+    type: 'deployment'
+    definition: "{{ service.definition }}"
+    container_port: "{{ service.container_port }}"
+    config_map: "{{ service.config_map }}"
+    container_base_image: "{{ container_project_image_url }}{{ service_name }}"

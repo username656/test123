@@ -1,0 +1,6 @@
+---
+- name: Create kubernetes objects
+  include_tasks: create_primitive.yml
+  vars:
+    type: 'object'
+    definition: "{{ service.definition }}"

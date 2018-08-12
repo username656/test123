@@ -25,13 +25,12 @@ import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.service.contexts.SecurityContext;
-import springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-@Import({SpringDataRestConfiguration.class, BeanValidatorPluginsConfiguration.class})
+@Import(BeanValidatorPluginsConfiguration.class)
 @RequiredArgsConstructor
 public class SwaggerAutoConfiguration {
 
@@ -56,8 +55,8 @@ public class SwaggerAutoConfiguration {
                 .apis(RequestHandlerSelectors.any())
                 .paths(or(
                         ant("/api/**"),
-                        ant("/oauth/**"),
-                        ant("/user")))
+                        ant("/api/oauth/**"),
+                        ant("/api/user")))
                 .build()
                 .securitySchemes(Collections.singletonList(
                         new ApiKey("Aurea Security Schema", HttpHeaders.AUTHORIZATION, "header")))

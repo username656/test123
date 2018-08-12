@@ -11,7 +11,7 @@ pipeline {
         disableConcurrentBuilds()
     }
     agent {
-        label 'nodejs_9.11&&browsers'
+        label 'node-10-stretch-browsers-ansible'
     }
     stages {
         stage('Checkout code') {
@@ -25,14 +25,14 @@ pipeline {
         stage('Build UI') {
             steps {
                 script {
-                    buildFlow.buildUI()
+                    buildFlow.buildUi()
                 }
             }
         }
         stage('Build service') {
             steps {
                 script {
-                    buildFlow.buildServiceWithAline()
+                    buildFlow.buildWithAline()
                 }
             }
         }

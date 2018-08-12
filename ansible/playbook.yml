@@ -1,0 +1,28 @@
+---
+- name: API Service Deploy
+  strategy: free
+  hosts:
+  - k8s-group
+  tags:
+  - api
+  - all
+  pre_tasks:
+  - name: Set API service to deploy
+    set_fact:
+      service_name: "api"
+  roles:
+  - k8s-group
+
+- name: UI Service Deploy
+  strategy: free
+  hosts:
+  - k8s-group
+  tags:
+  - ui
+  - all
+  pre_tasks:
+  - name: Set API service to deploy
+    set_fact:
+      service_name: "ui"
+  roles:
+  - k8s-group

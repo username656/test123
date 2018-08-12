@@ -36,7 +36,6 @@ RUN mkdir -p /etc/app/assets
 ADD "http://nexus-rapid-proto.devfactory.com/repository/npm-proto/@devfactory/dfproto-ey-docker/-/dfproto-ey-docker-1.0.0.tgz" /etc/app
 ADD docker /etc/app/docker
 
-# TODO - review for the future
 RUN tar -xzvf /etc/app/dfproto-ey-docker-1.0.0.tgz -C /etc/app \
   # Copy build files from first image to nginx dir
   && rm -rf /usr/share/nginx/html/* \

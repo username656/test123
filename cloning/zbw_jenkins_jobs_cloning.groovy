@@ -5,7 +5,7 @@ String githubRepoOwner = "${GITHUB_REPO_OWNER}"
 String githubRepoName = "${GITHUB_REPO_NAME}"
 String dbUser = "${SPRING_DATASOURCE_USERNAME}"
 String dbPassword = "${SPRING_DATASOURCE_PASSWORD}"
-String envName = "${ENV_NAME}"
+String envStage = "${ENV_STAGE}"
 String backendUrl = "${BACKEND_URL}"
 String aureaApiUiUrl = "${AUREA_API_UI_URL}"
 Boolean mysqlOn = "${MYSQL_ON}"
@@ -73,7 +73,7 @@ pipelineJob(jenikinsProjectName + "/RC_Build") {
     environmentVariables(
             SPRING_DATASOURCE_USERNAME: dbUser,
             SPRING_DATASOURCE_PASSWORD: dbPassword,
-            ENV_NAME: envName,
+            ENV_STAGE: envStage,
             BACKEND_URL: backendUrl,
             AUREA_API_UI_URL: aureaApiUiUrl
     )

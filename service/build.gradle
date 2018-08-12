@@ -1,11 +1,12 @@
 buildscript {
     ext {
         versions = [
-                springBoot          : '1.5.13.RELEASE',
-                springCloud         : 'Edgware.SR3',
-                ioSpringPlatform    : 'Brussels-SR10',
+                springBoot          : '2.0.3.RELEASE',
+                springCloud         : 'Finchley.RELEASE',
+                ioSpringPlatform    : 'Cairo-SR2',
                 logstashGelf        : '1.7.2',
-                springFoxSwagger    : '2.8.0'
+                springFoxSwagger    : '2.8.0',
+                lombok              : '1.16.18',
         ]
         // Spring repositories
         springReleaseRepo = 'https://repo.spring.io/libs-release'
@@ -13,16 +14,18 @@ buildscript {
         springMilestoneRepo = 'https://repo.spring.io/milestone'
     }
     repositories {
+        maven { url "http://repo.maven.apache.org/maven2/" }
+        maven { url "http://repo.spring.io/plugins-release/" }
+        maven { url 'https://plugins.gradle.org/m2/' }
+        maven { url 'https://nexus.devfactory.com/nexus/' }
         mavenCentral()
-        maven { url gradlePluginsRepo }
-        maven { url springReleaseRepo }
-        maven { url 'http://repo.spring.io/plugins-release' }
+        jcenter()
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${versions.springBoot}"
         classpath 'io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE'
         classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
-        classpath 'gradle.plugin.org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.4.2'
+        classpath 'gradle.plugin.org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.5.1'
         classpath 'de.aaschmid:gradle-cpd-plugin:1.0'
         classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.11'
     }
@@ -71,9 +74,13 @@ configure(javaProjects + baseProjects) {
     }
 
     repositories {
-        mavenCentral()
-        maven { url springMilestoneRepo }
+        maven { url "https://nexus.devfactory.com/nexus/content/groups/public/" }
+        maven { url 'https://nexus.devfactory.com/nexus/content/repositories/releases' }
+        maven { url "https://nexus.devfactory.com/nexus/content/repositories/df-thirdparty" }
+        maven { url "https://nexus.devfactory.com/nexus/" }
+        maven { url "https://nexus.devfactory.com/nexus/content/repositories/df-thirdparty" }
     }
+
 
     group = 'com.aurea.boot'
 

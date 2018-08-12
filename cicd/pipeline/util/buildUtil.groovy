@@ -6,15 +6,20 @@ def checkout() {
     checkout scm
 }
 
-def buildServiceWithoutJacoco(gradleOptions = "") {
+def buildWithoutJacoco(gradleOptions = "") {
     sh "./gradlew clean build $gradleOptions"
     echo 'Ran build successfully'
     junit allowEmptyResults: true, testResults: '**/build/test-results/**/*.xml'
     echo 'Generated unit test results'
 }
 
-def buildService(gradleOptions = "") {
-    buildServiceWithoutJacoco(gradleOptions) 
+def buildUi(gradleOptions = "") {
+    sh "./gradlew clean :ui:build $gradleOptions"
+    echo 'Ran build successfully'
+}
+
+def build(gradleOptions = "") {
+    buildWithoutJacoco(gradleOptions)
     jacoco buildOverBuild: true, changeBuildStatus: true, deltaBranchCoverage: '15', deltaClassCoverage: '15',
             deltaComplexityCoverage: '15', deltaInstructionCoverage: '15', deltaLineCoverage: '15',
             deltaMethodCoverage: '15',
@@ -27,17 +32,11 @@ def buildService(gradleOptions = "") {
     echo 'Recorded Test coverage report'
 }
 
-def buildServiceWithAline() {
-    devfactory(portfolio: 'TestPFAurea', product: 'ZeroBasedProject', productVersion: 'Develop', types: 'Java',
+def buildWithAline() {
+    devfactory(portfolio: 'TestPFAurea', product: 'ZeroBasedProject', types: 'Java',
             jacocoFile: "**/*.exec") {
-        buildService("--continue -x findbugsMain -x findbugsTest")
+        build("--continue -x findbugsMain -x findbugsTest")
     }
-}
-
-def buildUI(ENV_NAME = "dev") {
-    sh "cd ui; npm install --@devfactory:registry=http://nexus-rapid-proto.devfactory.com/repository/npm-proto/; " +
-            "npm run lint; npm run test-coverage; npm run build --env=$ENV_NAME"
-    echo "Finished the UI build"
 }
 
 def runE2eUI() {
@@ -63,7 +62,7 @@ def runPerfTests() {
 
 def buildDockerImage(String tag, String workspace, String dockerImageName) {
     sh "cd cicd/scripts; ./build-docker.sh $tag $workspace $dockerImageName;"
-    echo 'Built Docker Image'
+    echo 'Built Docker Image $dockerImageName'
 }
 
 def pushDockerImageToRegistry(String tag, String dockerImageName) {

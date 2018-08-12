@@ -10,4 +10,5 @@ include ':service:aurea-zero-based-api',
         ':service:aurea-boot-starter:rest-api-oauth2-starter',
         ':service:aurea-boot-starter:rest-api-user-oauth2-starter',
         ':service:base:logging',
-        ':service:base:logging-test'
+        ':service:base:logging-test',
+        ':ui'

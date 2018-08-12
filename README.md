@@ -34,6 +34,9 @@ Under the hood ZBW will create jenkins credentials and configure CICD to use it 
 `registry2.swarm.devfactory.com` - docker registry;
 `dl6.aureacentral.com` - docker host to deploy. 
 
+# Kubernetes: securing your namespace with token.
+RC k8s deployment should be secured with [service account](https://confluence.devfactory.com/pages/viewpage.action?spaceKey=DE&title=Programmatic+access+to+Kubernetes+API)
+
 ## Engine Yard deployments
 To deploy ZBW to Engine Yard please follow the steps in the [document](https://docs.google.com/document/d/1HjDh_5iPErTn1PhO8jAxas_yPSYqdzGOPvk2AjTZ9yA/edit#)
 
