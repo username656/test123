@@ -41,7 +41,6 @@ spring:
           starttls:
             enable: true
             required: true
-
 springfox:
   documentation:
     swagger:

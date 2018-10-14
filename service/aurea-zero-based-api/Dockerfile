@@ -1,26 +1,35 @@
 FROM sgrio/java-oracle:jre_8
 
-MAINTAINER alexander.yushchenko@aurea.com
-
 RUN mkdir -p /opt
 
-#Add yourkit agent
-ADD docker/yourkit-linux-x86-64/libyjpagent.so /opt
-
-# Launcher script.
-ADD docker/start.sh /opt/start.sh
-RUN chmod +x /opt/start.sh
+LABEL com.trilogy.company=aurea \
+  com.trilogy.maintainer=alexander.yushchenko@aurea.com \
+  com.trilogy.maintainer=alexander.yushchenko \
+  com.trilogy.product=kayako \
+  com.trilogy.service=api \
+  com.trilogy.stage=dev \
+  com.trilogy.team=Easier.BackendRewrite
 
 # Logging.
-ENV GRAYLOG_SWITCH_ON=on \
-  APP_ENVIRONMENT=dev \
-  FACILITY=zero
+ENV GRAYLOG_SWITCH_ON on \
+  APP_ENVIRONMENT dev \
+  FACILITY zero
 
-# Default port to be exposed.
+# Service API
 EXPOSE 8080
+# management port "/mng/*" urls
+EXPOSE 8282
+# Below port is needed for connecting to yourkit agent
+EXPOSE 10001
 
-# Import application.
-ADD build/libs/aurea-zero-based-api.jar /opt/aurea-zero-based-api.jar
+# Remote debug
+EXPOSE 5005
+
+COPY docker/ build/libs/aurea-zero-based-api.jar /opt/
+
+RUN chmod +x /opt/start.sh;
+
+WORKDIR /opt
 
 # Run in foreground.
 CMD [ "/opt/start.sh" ]

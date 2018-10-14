@@ -11,7 +11,7 @@ pipeline {
         disableConcurrentBuilds()
     }
     agent {
-        label 'node-10-stretch-browsers-ansible'
+        label 'node-10-stretch-browsers-ansible11'
     }
     triggers {
         pollSCM('H/5 * * * *')

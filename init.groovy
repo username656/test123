@@ -222,7 +222,7 @@ try {
                   SPRING_DATASOURCE_USERNAME: properties.db_user,
                   SPRING_DATASOURCE_PASSWORD: properties.db_password,
                   MYSQL_ON                  : properties.mysql_on,
-                  ENV_STAGE                  : properties.env_stage,
+                  ENV_STAGE                 : properties.env_stage,
                   BACKEND_URL               : "http://${properties.project_name}-api-${properties.env_stage}.internal-webproxy.aureacentral.com",
                   AUREA_API_UI_URL          : "http://${properties.project_name}-ui-${properties.env_stage}.internal-webproxy.aureacentral.com",
                   JENKINS_PROJECT_NAME      : properties.jenkins_project

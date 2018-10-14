@@ -80,7 +80,6 @@ pipelineJob(jenikinsProjectName + "/RC_Build") {
 
     logRotator {
         daysToKeep(10)
-        numToKeep(30)
     }
     concurrentBuild(false)
     definition {
