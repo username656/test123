@@ -10,8 +10,6 @@ k8s-group:
     ansible_connection: local
     # how to get api_key see here
     # https://github.com/trilogy-group/aurea-eng-ansible-generic/tree/master/examples/api-setup
-    api_key: "{{ lookup('env', 'API_KEY') }}"
-    api_host: 'k8s.aureacentral.com:6443'
     deployment_strategy: replace
     namespace: "{{ lookup('env', 'K8S_NAMESPACE') }}"
 

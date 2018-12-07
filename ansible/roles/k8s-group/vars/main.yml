@@ -1,0 +1,6 @@
+restart_policy: Always
+
+# imagePullPolcy for k8s (Always, Never, IfNotPresent)
+image_pull_policy: Always
+api_host: 'https://16063ae6fbff2580476407dc4f20bb6a.yl4.us-east-1.eks.amazonaws.com'
+ansible_connection: local

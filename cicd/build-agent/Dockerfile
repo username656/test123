@@ -24,5 +24,3 @@ RUN apt-get update && \
     apt-get install ansible  -y && \
     pip uninstall docker-py; pip uninstall docker; pip install docker docker-compose "pywinrm>=0.2.2" PyVmomi python-dateutil boto boto3 botocore && \
     npm cache verify && npm install -g @angular/cli@latest
-ADD files/kubernetes.py /usr/lib/python2.7/dist-packages/ansible/modules/clustering/kubernetes.py
-

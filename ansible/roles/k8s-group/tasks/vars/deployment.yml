@@ -14,8 +14,6 @@ spec:
     spec:
 # todo: figure out why the policy "Always" is not working
 #      restartPolicy: "{{ restart_policy }}"
-      nodeSelector:
-        central-stage: "{{ 'prod' if environment_name == 'prod' else 'staging' }}"
       containers:
         - name: "{{ container_hostname }}"
           imagePullPolicy: "{{ image_pull_policy }}"

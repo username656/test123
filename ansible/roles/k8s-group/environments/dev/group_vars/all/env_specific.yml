@@ -1,0 +1,10 @@
+environment_name: dev
+
+#^[a-z]([0-9])?[a-z0-9]{3}$
+environment_prefix: d4dev
+namespace: "aurea-zero-based-{{ environment_name }}"
+java_opts: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+#  resources_limits_cpu: 1
+#  resources_limits_memory: "2Gi"
+#  resources_requests_cpu: 0.25
+#  resources_requests_memory: "1Gi"

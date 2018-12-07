@@ -1,0 +1,70 @@
+project: aurea-kayako
+#    for prod should be: k8s-st-node-1? check with techops
+k8s_hostname: ""
+
+ansible_python_interpreter: "{{ ansible_playbook_python }}"
+api_urn: "{{ project }}-{{ environment_name }}.private.central-eks.aureacentral.com"
+ui_urn: "{{ project }}-{{ environment_name }}.private.central-eks.aureacentral.com"
+container_image_tag: "{{ lookup('env', 'CONTAINER_IMAGE_TAG') }}"
+container_project_image_url: "registry2.swarm.devfactory.com/{{ project }}/"
+api_path: "/v1"
+ui_uri: "http://{{ ui_urn }}"
+config_map_ui: "config-map-ui"
+config_map_api: "config-map-api"
+ui_port: 80
+api_port: 8080
+api_management_port: 8282
+
+ui:
+  service:
+    service_port: "{{ ui_port }}"
+    definition:
+  object:
+    definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        namespace: "{{ namespace }}"
+        name: "{{ config_map_ui }}"
+      data:
+        BACKEND_URL: "{{ api_path }}"
+  deployment:
+    container_port: "{{ ui_port }}"
+    config_map: "{{ config_map_ui }}"
+    definition:
+  ingress:
+    host: "*.{{ ui_urn }}"
+    service_port: "{{ ui_port }}"
+    path: "/"
+    definition:
+
+api:
+  ingress:
+    host: "*.{{ api_urn }}"
+    service_port: "{{ api_port }}"
+    path: "{{ api_path }}"
+    host_2: "management-{{ api_urn }}"
+    service_port_2: "{{ api_management_port }}"
+    path_2: "/"
+    definition:
+  service:
+    service_port: "{{ api_port }}"
+    service_port_2: "{{ api_management_port }}"
+    definition:
+  deployment:
+    container_port: "{{ api_port }}"
+    container_port_2: "{{ api_management_port }}"
+    config_map: "{{ config_map_api }}"
+    definition:
+  object:
+    # full yml definition
+    definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        namespace: "{{ namespace }}"
+        name: "{{ config_map_api }}"
+      data:
+        SPRING_PROFILES_ACTIVE: "{{ lookup('env', 'SPRING_PROFILES_ACTIVE_PARAM') }}"
+        JAVA_OPTS: "{{ java_opts | default('') }}"
+        NUM_CPUS: "{{ cpu_number | default('3') }}"
